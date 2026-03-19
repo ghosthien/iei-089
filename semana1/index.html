@@ -1516,209 +1516,317 @@ srv.<span class="fn">Agregar</span>(<span class="kw">new</span> <span class="ty"
   <div class="scroll-inner">
 
   <h2 class="s-title">💻 Primer Programa C# — Paso a Paso</h2>
-  <p class="s-sub">Desde Hello World hasta clase completa con validación. Cada línea comentada.</p>
+  <p class="s-sub">Desde Hello World hasta clase completa con validación. Antes de cada código aprenderás <strong>qué hace, cómo funciona y por qué existe</strong> esa estructura en C#.</p>
 
   <div class="ex-tabs">
     <button class="ex-tab on"  onclick="switchEx(this,'ex1')">Ej.1: Hello World</button>
     <button class="ex-tab"     onclick="switchEx(this,'ex2')">Ej.2: Variables</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex3')">Ej.3: Control de flujo</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex4')">Ej.4: class + Main</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex5')">Ej.5: Menú while</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex6')">Ej.6: Clase Producto</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex7')">Ej.7: List colección</button>
+    <button class="ex-tab"     onclick="switchEx(this,'ex3')">Ej.3: if / switch</button>
+    <button class="ex-tab"     onclick="switchEx(this,'ex4')">Ej.4: while / for</button>
+    <button class="ex-tab"     onclick="switchEx(this,'ex5')">Ej.5: Menú interactivo</button>
+    <button class="ex-tab"     onclick="switchEx(this,'ex6')">Ej.6: POO — La Clase</button>
+    <button class="ex-tab"     onclick="switchEx(this,'ex7')">Ej.7: Clase Producto</button>
     <button class="ex-tab"     onclick="switchEx(this,'ex8')">Ej.8: Validación</button>
   </div>
 
-  <!-- EJ 1 -->
+  <!-- ═══ EJ 1: HELLO WORLD ═══ -->
   <div class="ex-pane on" id="ex1">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear el primer programa y entender la estructura mínima de C# en .NET 8 (top-level statements).</div></div>
+
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Qué es una aplicación de consola?</div>
+    <p>Una <strong>aplicación de consola</strong> es un programa que no tiene ventanas ni botones — solo texto. Recibe y muestra información en la pantalla negra (la "consola" o "terminal"). Es el punto de partida de todos los programas C# porque es la forma más simple de escribir y probar código.</p>
+    <p>Cuando abres Visual Studio y creas una "Aplicación de consola (.NET 8)", el editor crea automáticamente un archivo llamado <code>Program.cs</code>. Ese archivo es donde escribirás tu código.</p>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box tl">
+        <div class="box-lbl">¿Qué es Console.WriteLine?</div>
+        <div class="box-body"><code>Console</code> es una clase de la BCL que representa la pantalla de texto. <code>WriteLine()</code> es un método que imprime texto <strong>y salta a la siguiente línea</strong>. Es el equivalente de <code>System.out.println()</code> de Java.</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">Top-level statements en .NET 8</div>
+        <div class="box-body">En versiones antiguas de C# necesitabas escribir <code>class Program { static void Main() { ... } }</code>. En .NET 8 puedes escribir el código <strong>directamente</strong> — el compilador genera esa estructura solo. Más simple al aprender.</div>
+      </div>
+    </div>
+
+    <div class="box am" style="margin-bottom:14px">
+      <div class="box-lbl">Estructura de un método en C#</div>
+      <div class="box-body"><code>Console.WriteLine("texto")</code> se lee así: <strong>Console</strong> = la clase (el "objeto" que tiene la función) → <strong>.</strong> = accedo a algo de esa clase → <strong>WriteLine</strong> = el método (la acción) → <strong>("texto")</strong> = los parámetros (qué le doy al método).</div>
+    </div>
+
     <div class="code-block">
       <div class="code-hdr"><span class="code-lang">C# .NET 8 — Hello World (Program.cs)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// En .NET 8 (top-level statements): NO necesitas class Program ni Main()
-// El compilador Roslyn los genera automáticamente — el código va directo</span>
+      <pre><span class="cm">// Una línea que empieza con // es un COMENTARIO
+// El compilador la ignora — es solo para explicar el código
+// Úsalos siempre para que otros (y tú en el futuro) entiendan el código</span>
 
-<span class="cm">// Console.WriteLine() imprime texto y salta de línea
-// Equivalente a System.out.println() en Java</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"¡Hola, Almacenes Por Ahí!"</span>);
+<span class="cm">// Console.WriteLine() → imprime texto Y salta a la siguiente línea</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"¡Hola desde Almacenes Por Ahí!"</span>);
 
-<span class="cm">// Console.Write() imprime SIN saltar de línea</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Semana 1"</span>);
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">" — "</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"IEI-089"</span>); <span class="cm">// ahora sí salta de línea</span>
+<span class="cm">// Console.Write() → imprime texto SIN saltar de línea
+// La siguiente impresión aparece en la misma línea</span>
+<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Hola "</span>);
+<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Mundo"</span>);       <span class="cm">// aparece en la misma línea que "Hola "</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"!"</span>);        <span class="cm">// ahora sí salta de línea → resultado: "Hola Mundo!"</span>
 
-<span class="cm">// Cambiar color de la consola</span>
+<span class="cm">// ForegroundColor: cambia el color del texto de la consola
+// ConsoleColor es una lista de colores disponibles (enum)</span>
 <span class="ty">Console</span>.ForegroundColor = <span class="ty">ConsoleColor</span>.Cyan;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Texto en color cyan"</span>);
-<span class="ty">Console</span>.ResetColor(); <span class="cm">// restaurar color por defecto</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Este texto es cyan"</span>);
+<span class="ty">Console</span>.ResetColor();          <span class="cm">// volver al color por defecto — siempre hacerlo</span>
 
-<span class="cm">// Interpolación de strings con $ — más limpio que concatenar con +</span>
-<span class="ty">string</span> curso  = <span class="st">"Programación .NET"</span>;
-<span class="ty">int</span>    semana = <span class="nm">1</span>;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Curso: {curso} | Semana: {semana}"</span>);
-<span class="cm">// Salida: Curso: Programación .NET | Semana: 1</span>
+<span class="cm">// Interpolación de strings: el $ antes de la comilla permite
+// meter variables y expresiones directamente dentro del texto
+// con {llaves}. Más limpio y legible que concatenar con +</span>
+<span class="ty">string</span> empresa = <span class="st">"Almacenes Por Ahí"</span>;
+<span class="ty">int</span>    semana  = <span class="nm">1</span>;
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Bienvenido a {empresa} — Semana {semana}"</span>);
+<span class="cm">// Resultado: "Bienvenido a Almacenes Por Ahí — Semana 1"</span>
 
-<span class="cm">// ReadKey(): espera que el usuario presione una tecla</span>
+<span class="cm">// Console.ReadKey() pausa el programa hasta que el usuario presione una tecla
+// Sin esto, la consola se cierra inmediatamente al terminar</span>
 <span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>
 
-  <!-- EJ 2 -->
+  <!-- ═══ EJ 2: VARIABLES ═══ -->
   <div class="ex-pane" id="ex2">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Declarar variables con los tipos más usados del proyecto. Notar diferencias con Java.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Variables y tipos básicos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// ===== TIPOS ENTEROS =====</span>
-<span class="ty">int</span>  stock    = <span class="nm">120</span>;      <span class="cm">// 32 bits — stocks, cantidades, IDs</span>
-<span class="ty">long</span> ventas   = <span class="nm">150000L</span>; <span class="cm">// 64 bits — números grandes (L al final)</span>
-<span class="ty">byte</span> talla    = <span class="nm">36</span>;       <span class="cm">// 0..255 — útil para tallas numéricas</span>
 
-<span class="cm">// ===== TIPOS DECIMALES =====</span>
-<span class="ty">decimal</span> precio = <span class="nm">9990.50m</span>; <span class="cm">// 'm' obligatorio — SIEMPRE para dinero</span>
-<span class="ty">double</span>  pct    = <span class="nm">0.15</span>;     <span class="cm">// sin sufijo (double es el tipo por defecto)</span>
-<span class="ty">float</span>   temp   = <span class="nm">22.5f</span>;   <span class="cm">// 'f' obligatorio para float</span>
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Qué es una variable?</div>
+    <p>Una <strong>variable</strong> es como una caja con nombre donde guardas un dato. Cuando declaras una variable, le dices al programa: "reserva un espacio en memoria con este nombre y guarda este tipo de dato". Luego puedes leer o cambiar ese dato usando el nombre de la variable.</p>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box tl">
+        <div class="box-lbl">Cómo se declara una variable</div>
+        <div class="box-body"><code>tipo nombre = valor;</code><br><br>Ejemplo: <code>int stock = 120;</code><br>— <code>int</code> = el tipo (número entero)<br>— <code>stock</code> = el nombre que le damos<br>— <code>= 120</code> = el valor inicial<br>— <code>;</code> = fin de la instrucción (obligatorio)</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">¿Por qué hay distintos tipos?</div>
+        <div class="box-body">Porque los datos son distintos: un precio necesita decimales, un nombre es texto, un stock es un número entero. Usar el tipo correcto ahorra memoria y evita errores. La regla más importante: <strong>siempre usa <code>decimal</code> para dinero</strong>, nunca <code>double</code>.</div>
+      </div>
+    </div>
+
+    <div class="box am" style="margin-bottom:14px">
+      <div class="box-lbl">¿Por qué decimal para precios y no double?</div>
+      <div class="box-body"><code>double</code> tiene errores de precisión con decimales: <code>0.1 + 0.2</code> puede dar <code>0.30000000000000004</code> en vez de <code>0.3</code>. En dinero eso es inaceptable. <code>decimal</code> tiene 28 dígitos de precisión exacta — por eso se usa para precios, sueldos y cálculos financieros. La <code>m</code> al final del número (<code>9990m</code>) le dice al compilador que es decimal.</div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-hdr"><span class="code-lang">C# .NET — Variables y tipos de datos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <pre><span class="cm">// ===== NÚMEROS ENTEROS — sin decimales =====</span>
+<span class="ty">int</span>  stock    = <span class="nm">120</span>;       <span class="cm">// int: el más común — cantidades, IDs, edades</span>
+<span class="ty">long</span> totalVentas = <span class="nm">5000000L</span>;<span class="cm">// long: números muy grandes — la L al final es obligatoria</span>
+
+<span class="cm">// ===== NÚMEROS CON DECIMALES =====</span>
+<span class="ty">decimal</span> precio    = <span class="nm">9990.50m</span>; <span class="cm">// decimal: OBLIGATORIO para dinero — la m es obligatoria</span>
+<span class="ty">double</span>  porcentaje = <span class="nm">0.15</span>;    <span class="cm">// double: cálculos científicos, nunca para dinero</span>
 
 <span class="cm">// ===== TEXTO =====</span>
-<span class="ty">string</span> nombre = <span class="st">"Polera básica"</span>; <span class="cm">// string (minúscula) — alias de String</span>
-<span class="ty">char</span>   inicial = <span class="st">'P'</span>;            <span class="cm">// char usa comillas SIMPLES</span>
+<span class="ty">string</span> nombre   = <span class="st">"Polera básica"</span>; <span class="cm">// string: texto de cualquier largo — comillas dobles</span>
+<span class="ty">char</span>   inicial  = <span class="st">'P'</span>;             <span class="cm">// char: UN solo carácter — comillas simples</span>
 
-<span class="cm">// ===== BOOLEANO =====</span>
-<span class="ty">bool</span> activo   = <span class="kw">true</span>;     <span class="cm">// boolean en Java → bool en C#</span>
-<span class="ty">bool</span> hayStock = stock > <span class="nm">0</span>; <span class="cm">// expresión booleana</span>
+<span class="cm">// ===== VERDADERO / FALSO =====</span>
+<span class="ty">bool</span> estaActivo = <span class="kw">true</span>;  <span class="cm">// bool: solo puede ser true o false — nunca otra cosa</span>
+<span class="ty">bool</span> hayStock   = stock > <span class="nm">0</span>; <span class="cm">// el resultado de una comparación también es bool</span>
 
-<span class="cm">// ===== INFERENCIA con 'var' (igual que Java 10+) =====</span>
-<span class="kw">var</span> categoria = <span class="st">"Ropa"</span>;     <span class="cm">// inferido como string</span>
-<span class="kw">var</span> ahora     = <span class="ty">DateTime</span>.Now; <span class="cm">// inferido como DateTime</span>
+<span class="cm">// ===== VAR — inferencia de tipo =====
+// var le dice al compilador: "deduce tú el tipo según el valor"
+// Recomendado cuando el tipo es obvio por el contexto</span>
+<span class="kw">var</span> categoria = <span class="st">"Ropa de mujer"</span>; <span class="cm">// el compilador sabe que es string</span>
+<span class="kw">var</span> ahora     = <span class="ty">DateTime</span>.Now;    <span class="cm">// el compilador sabe que es DateTime</span>
+<span class="kw">var</span> descuento = <span class="nm">0.20m</span>;           <span class="cm">// el compilador sabe que es decimal</span>
 
-<span class="cm">// ===== NULLABLE — puede ser null =====</span>
-<span class="ty">string</span>? email = <span class="kw">null</span>;  <span class="cm">// ? permite null</span>
-<span class="ty">int</span>?   desc   = <span class="kw">null</span>;  <span class="cm">// descuento opcional</span>
+<span class="cm">// ===== NULLABLE — variable que puede ser null =====
+// El ? después del tipo permite que la variable no tenga valor aún</span>
+<span class="ty">string</span>? email   = <span class="kw">null</span>; <span class="cm">// todavía no sabemos el email del cliente</span>
+<span class="ty">int</span>?    cuponId = <span class="kw">null</span>; <span class="cm">// cupón de descuento — puede que no tenga</span>
 
-<span class="cm">// ===== MOSTRAR RESULTADOS =====</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Producto: {nombre}"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio:   ${precio:N0}"</span>); <span class="cm">// :N0 = formato numérico</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Stock:    {stock} unidades"</span>);
+<span class="cm">// ===== MOSTRAR VARIABLES CON INTERPOLACIÓN =====</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Producto: {nombre}"</span>);           <span class="cm">// Producto: Polera básica</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio: ${precio:N0}"</span>);         <span class="cm">// Precio: $9.991 (con separador miles)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio: ${precio:F2}"</span>);         <span class="cm">// Precio: $9990,50 (2 decimales)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Stock: {stock} unidades"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"¿Hay stock? {(hayStock ? "Sí" : "No")}"</span>); <span class="cm">// operador ternario</span>
 <span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>
 
-  <!-- EJ 3 -->
+  <!-- ═══ EJ 3: IF / SWITCH ═══ -->
   <div class="ex-pane" id="ex3">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Estructuras de control: if/else, switch, for, foreach y while aplicadas al inventario.</div></div>
+
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Qué es el control de flujo?</div>
+    <p>El <strong>control de flujo</strong> son las instrucciones que le dicen al programa <em>cuándo</em> ejecutar cierto código. Sin control de flujo, el programa solo ejecutaría las instrucciones de arriba hacia abajo, siempre igual. Con él, el programa puede tomar decisiones.</p>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box tl">
+        <div class="box-lbl">¿Qué hace el if / else?</div>
+        <div class="box-body">Es una pregunta: <strong>"si se cumple esta condición, haz esto; si no, haz aquello"</strong>. La condición siempre debe dar verdadero o falso (un <code>bool</code>). Puedes encadenar varias condiciones con <code>else if</code>.</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">¿Qué hace el switch?</div>
+        <div class="box-body">Es como un if/else con muchos casos, pero más limpio. Toma un valor y lo compara con cada <code>case</code>. El <code>break</code> al final de cada caso es obligatorio: le dice "salir del switch". El <code>default</code> es el "si no coincide con ningún case".</div>
+      </div>
+    </div>
+
     <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Control de flujo</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <div class="code-hdr"><span class="code-lang">C# .NET — if / else if / else y switch</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
       <pre><span class="ty">int</span>    stock  = <span class="nm">15</span>;
-<span class="ty">string</span> estado = <span class="st">"activo"</span>;
+<span class="ty">string</span> opcion = <span class="st">"2"</span>; <span class="cm">// simula lo que el usuario escribe en el menú</span>
 
-<span class="cm">// ===== IF / ELSE IF / ELSE =====</span>
+<span class="cm">// ===== IF / ELSE IF / ELSE =====
+// Si stock es 0 → ejecuta el primer bloque
+// Si no, y stock es menor a 10 → ejecuta el segundo
+// Si no se cumple ninguno → ejecuta el else</span>
 <span class="kw">if</span> (stock == <span class="nm">0</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⛔ Sin stock"</span>);
+{
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⛔ Sin stock — no se puede vender"</span>);
+}
 <span class="kw">else if</span> (stock < <span class="nm">10</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠️ Stock crítico"</span>);
+{
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠️ Stock crítico — pedir reposición"</span>);
+}
 <span class="kw">else</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"✅ Stock normal"</span>);
-
-<span class="cm">// Operador ternario — versión corta del if/else</span>
-<span class="ty">string</span> disp = stock > <span class="nm">0</span> ? <span class="st">"Disponible"</span> : <span class="st">"Agotado"</span>;
-
-<span class="cm">// ===== SWITCH — múltiples casos =====</span>
-<span class="kw">switch</span> (estado)
 {
-    <span class="kw">case</span> <span class="st">"activo"</span>:
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"✅ Visible en catálogo"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"✅ Stock normal — se puede vender"</span>);
+}
+<span class="cm">// Con stock=15 → imprime "✅ Stock normal"</span>
+
+<span class="cm">// ===== OPERADOR TERNARIO — if/else en una línea =====
+// condición ? valor_si_true : valor_si_false
+// Útil para valores simples — NO usar para lógica compleja</span>
+<span class="ty">string</span> disponibilidad = stock > <span class="nm">0</span> ? <span class="st">"Disponible"</span> : <span class="st">"Agotado"</span>;
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Estado: {disponibilidad}"</span>); <span class="cm">// Estado: Disponible</span>
+
+<span class="cm">// ===== SWITCH — cuando hay muchos casos posibles =====
+// Compara la variable 'opcion' con cada 'case'
+// case "1": es lo mismo que if (opcion == "1")
+// break: OBLIGATORIO — sale del switch para no ejecutar el siguiente case</span>
+<span class="kw">switch</span> (opcion)
+{
+    <span class="kw">case</span> <span class="st">"1"</span>:
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Mostrando inventario..."</span>);
+        <span class="kw">break</span>; <span class="cm">// ← sin este break, seguiría ejecutando el case "2"</span>
+    <span class="kw">case</span> <span class="st">"2"</span>:
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Agregando producto..."</span>);
         <span class="kw">break</span>;
-    <span class="kw">case</span> <span class="st">"inactivo"</span>:
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"🔒 Producto oculto"</span>);
+    <span class="kw">case</span> <span class="st">"3"</span>:
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Buscando producto..."</span>);
         <span class="kw">break</span>;
-    <span class="kw">default</span>:
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Estado desconocido"</span>);
+    <span class="kw">default</span>: <span class="cm">// si opcion no es "1", "2" ni "3"</span>
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Opción no válida — intenta de nuevo"</span>);
         <span class="kw">break</span>;
 }
-
-<span class="cm">// ===== FOR — número fijo de iteraciones =====</span>
-<span class="kw">for</span> (<span class="ty">int</span> i = <span class="nm">1</span>; i <= <span class="nm">5</span>; i++) <span class="cm">// i desde 1 hasta 5 inclusive</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Sucursal #{i}"</span>);
-
-<span class="cm">// ===== FOREACH — recorrer colecciones =====</span>
-<span class="ty">string</span>[] categorias = { <span class="st">"Poleras"</span>, <span class="st">"Jeans"</span>, <span class="st">"Chaquetas"</span> };
-<span class="kw">foreach</span> (<span class="ty">string</span> cat <span class="kw">in</span> categorias)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  • {cat}"</span>);
-
-<span class="cm">// ===== WHILE — mientras se cumpla condición =====</span>
-<span class="ty">int</span> intentos = <span class="nm">0</span>;
-<span class="kw">while</span> (intentos < <span class="nm">3</span>)
-{
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Intento {intentos + 1}/3"</span>);
-    intentos++; <span class="cm">// incrementar (igual que Java)</span>
-}
-
+<span class="cm">// Con opcion="2" → imprime "Agregando producto..."</span>
 <span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>
 
-  <!-- EJ 4 -->
+  <!-- ═══ EJ 4: WHILE / FOR ═══ -->
   <div class="ex-pane" id="ex4">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear una clase con método Main estático (estilo Java clásico) y entender diferencia con top-level statements.</div></div>
+
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Qué son los bucles (loops)?</div>
+    <p>Un <strong>bucle</strong> repite un bloque de código varias veces. Sin bucles tendrías que copiar y pegar el mismo código cien veces para hacer cien cosas iguales. Los bucles lo hacen automáticamente.</p>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box tl">
+        <div class="box-lbl">¿Qué hace el while?</div>
+        <div class="box-body"><strong>"Mientras esta condición sea verdadera, sigue repitiendo"</strong>. El programa evalúa la condición al inicio de cada repetición. Cuando la condición es falsa, sale del bucle. Se usa cuando no sabes cuántas veces vas a repetir — típico para menús de aplicaciones.</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">¿Qué hace el for?</div>
+        <div class="box-body">Se usa cuando <strong>sí sabes cuántas veces</strong> vas a repetir. Tiene 3 partes: <code>for (inicio; condición; paso)</code> — inicio: valor inicial del contador → condición: mientras sea verdadera, continúa → paso: cómo cambia el contador en cada repetición.</div>
+      </div>
+    </div>
+
+    <div class="box am" style="margin-bottom:14px">
+      <div class="box-lbl">¿Qué hace foreach?</div>
+      <div class="box-body"><code>foreach</code> recorre automáticamente <strong>todos los elementos</strong> de una colección (lista, array, etc.) de inicio a fin. No necesitas índice ni contador — simplemente le dices "por cada elemento en la colección, haz esto". Es la forma más limpia de recorrer datos.</div>
+    </div>
+
     <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Clase Program con Main (estilo clásico Java)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="kw">namespace</span> AlmacenesPA;  <span class="cm">// en Java: package almacenespa;</span>
+      <div class="code-hdr"><span class="code-lang">C# .NET — while, for y foreach</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <pre><span class="cm">// ===== WHILE — mientras la condición sea verdadera =====
+// Uso típico: intentos de login, validar entrada del usuario, menús</span>
+<span class="ty">int</span> intentos = <span class="nm">0</span>;           <span class="cm">// variable de control fuera del bucle</span>
+<span class="ty">int</span> maxIntentos = <span class="nm">3</span>;
 
-<span class="cm">// En Java:  public class Program { ... }
-// En C#:    public class Program { ... } ← ¡Idéntico!</span>
-<span class="kw">public class</span> <span class="ty">Program</span>
+<span class="kw">while</span> (intentos < maxIntentos) <span class="cm">// mientras intentos sea menos de 3</span>
 {
-    <span class="cm">// En Java: public static void main(String[] args)
-    // En C#:  public static void Main(string[] args)
-    //         ↑ DIFERENCIA: Main con MAYÚSCULA en C#</span>
-    <span class="kw">public static void</span> <span class="fn">Main</span>(<span class="ty">string</span>[] args)
-    {
-        <span class="cm">// args = argumentos de línea de comandos (igual que Java)</span>
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Sistema de gestión iniciado"</span>);
-
-        <span class="cm">// Llamar a método estático de la misma clase</span>
-        <span class="fn">MostrarBienvenida</span>(<span class="st">"Almacenes Por Ahí"</span>);
-
-        <span class="cm">// Crear objeto e invocar método de instancia</span>
-        <span class="ty">GestorInventario</span> gestor = <span class="kw">new</span> <span class="ty">GestorInventario</span>();
-        gestor.<span class="fn">Inicializar</span>();
-
-        <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
-    }
-
-    <span class="cm">// Método estático — se llama desde la clase, sin objeto</span>
-    <span class="kw">private static void</span> <span class="fn">MostrarBienvenida</span>(<span class="ty">string</span> empresa)
-    {
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"=== {empresa} ==="</span>);
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Fecha: {DateTime.Now:dd/MM/yyyy}"</span>);
-    }
+    <span class="cm">// todo este bloque se repite cada vez que la condición sea true</span>
+    intentos++;  <span class="cm">// equivale a: intentos = intentos + 1</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Intento {intentos} de {maxIntentos}"</span>);
 }
+<span class="cm">// Imprime: "Intento 1 de 3", "Intento 2 de 3", "Intento 3 de 3"
+// Cuando intentos llega a 3, la condición (3 < 3) es false → para</span>
 
-<span class="cm">// Clase auxiliar en el mismo archivo (o en archivo separado)</span>
-<span class="kw">public class</span> <span class="ty">GestorInventario</span>
+<span class="cm">// ===== FOR — cuando sabes cuántas veces =====
+// Estructura: for (inicio; condición; paso)
+// inicio:     int i = 1  → empieza en 1
+// condición:  i <= 5     → continúa mientras i sea ≤ 5
+// paso:       i++        → después de cada vuelta, suma 1 a i</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\nSucursales de Almacenes Por Ahí:"</span>);
+<span class="kw">for</span> (<span class="ty">int</span> i = <span class="nm">1</span>; i <= <span class="nm">5</span>; i++) <span class="cm">// i toma valores: 1, 2, 3, 4, 5</span>
 {
-    <span class="kw">private</span> <span class="ty">int</span> _cantidadProductos = <span class="nm">0</span>; <span class="cm">// estado privado</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  Sucursal #{i}"</span>);
+}
+<span class="cm">// Imprime: Sucursal #1, Sucursal #2, Sucursal #3, Sucursal #4, Sucursal #5</span>
 
-    <span class="kw">public void</span> <span class="fn">Inicializar</span>()
-    {
-        _cantidadProductos = <span class="nm">5000</span>; <span class="cm">// total del catálogo</span>
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Inventario: {_cantidadProductos} productos"</span>);
-    }
-}</pre>
+<span class="cm">// ===== FOREACH — recorrer cada elemento de una colección =====
+// No necesitas índice — el foreach se encarga de ir elemento por elemento
+// Ventaja: más limpio, no puedes equivocarte con el índice</span>
+<span class="ty">string</span>[] categorias = { <span class="st">"Poleras"</span>, <span class="st">"Jeans"</span>, <span class="st">"Chaquetas"</span>, <span class="st">"Calzado"</span> };
+
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\nCategorías disponibles:"</span>);
+<span class="kw">foreach</span> (<span class="ty">string</span> cat <span class="kw">in</span> categorias) <span class="cm">// en cada vuelta, 'cat' toma el siguiente valor</span>
+{
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  • {cat}"</span>);
+}
+<span class="cm">// Imprime: • Poleras, • Jeans, • Chaquetas, • Calzado</span>
+
+<span class="cm">// ===== ACUMULADOR con while — calcular total de ventas =====</span>
+<span class="ty">decimal</span> totalVentas = <span class="nm">0m</span>;
+<span class="ty">decimal</span>[] ventasDia = { <span class="nm">15000m</span>, <span class="nm">28000m</span>, <span class="nm">9500m</span>, <span class="nm">42000m</span>, <span class="nm">11200m</span> };
+<span class="ty">int</span> indice = <span class="nm">0</span>;
+
+<span class="kw">while</span> (indice < ventasDia.Length) <span class="cm">// .Length = cantidad de elementos del array</span>
+{
+    totalVentas += ventasDia[indice]; <span class="cm">// += suma y guarda → totalVentas = totalVentas + ventasDia[indice]</span>
+    indice++;
+}
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\nTotal ventas del día: ${totalVentas:N0}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>
 
-  <!-- EJ 5 -->
+  <!-- ═══ EJ 5: MENÚ INTERACTIVO ═══ -->
   <div class="ex-pane" id="ex5">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear menú interactivo con while — base del Encargo 1.</div></div>
+
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Cómo funciona un menú de consola?</div>
+    <p>Un menú de consola combina todo lo aprendido: un <code>while</code> que mantiene el programa activo, un <code>switch</code> que reacciona a la opción del usuario, y <code>Console.ReadLine()</code> que lee lo que el usuario escribe. Es la estructura base del <strong>Encargo 1</strong>.</p>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box tl">
+        <div class="box-lbl">¿Qué es Console.ReadLine?</div>
+        <div class="box-body">Pausa el programa y espera que el usuario escriba texto y presione Enter. Retorna lo escrito como <code>string</code>. Si el usuario no escribe nada, puede retornar <code>null</code>. Por eso usamos <code>?? ""</code> — el operador null-coalescing — que dice: "si es null, usa cadena vacía en su lugar".</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">¿Qué es la bandera bool salir?</div>
+        <div class="box-body">Es una variable booleana que controla el bucle. Empieza en <code>false</code> (el menú está activo). Cuando el usuario elige "Salir", la ponemos en <code>true</code>. En la siguiente evaluación del <code>while (!salir)</code>, la condición es false y el programa termina.</div>
+      </div>
+    </div>
+
     <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Menú interactivo con while</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// Bandera de control del bucle principal</span>
+      <div class="code-hdr"><span class="code-lang">C# .NET — Menú interactivo completo</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <pre><span class="cm">// La variable 'salir' controla cuándo termina el bucle
+// Empieza en false: el menú seguirá mostrándose</span>
 <span class="ty">bool</span> salir = <span class="kw">false</span>;
 
-<span class="kw">while</span> (!salir) <span class="cm">// equivale a: while (salir == false)</span>
-{
-    <span class="ty">Console</span>.<span class="fn">Clear</span>(); <span class="cm">// limpiar la consola en cada iteración</span>
+<span class="kw">while</span> (!salir) <span class="cm">// !salir significa "mientras salir sea false"</span>
+{              <span class="cm">// es equivalente a: while (salir == false)</span>
 
-    <span class="cm">// Mostrar el menú con cuadro de líneas</span>
+    <span class="cm">// Console.Clear() borra todo lo anterior en la consola
+    // Úsalo al inicio del bucle para "limpiar" la pantalla en cada menú</span>
+    <span class="ty">Console</span>.<span class="fn">Clear</span>();
+
+    <span class="cm">// Dibujar el cuadro del menú con colores</span>
     <span class="ty">Console</span>.ForegroundColor = <span class="ty">ConsoleColor</span>.Cyan;
     <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔══════════════════════════════╗"</span>);
     <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  ALMACENES POR AHÍ v1.0     ║"</span>);
@@ -1728,223 +1836,352 @@ srv.<span class="fn">Agregar</span>(<span class="kw">new</span> <span class="ty"
     <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  3. Buscar producto          ║"</span>);
     <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  4. Salir                    ║"</span>);
     <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚══════════════════════════════╝"</span>);
-    <span class="ty">Console</span>.ResetColor();
+    <span class="ty">Console</span>.ResetColor(); <span class="cm">// siempre restaurar el color después</span>
 
-    <span class="cm">// Leer la opción del usuario</span>
-    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Seleccione: "</span>);
-    <span class="ty">string</span> opcion = <span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>; <span class="cm">// ?? = null-coalescing</span>
+    <span class="cm">// Leer la opción que escribe el usuario
+    // ?? "" → si ReadLine() retorna null, usamos "" (cadena vacía)</span>
+    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Selecciona una opción: "</span>);
+    <span class="ty">string</span> opcion = <span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>;
 
-    <span class="cm">// Procesar la opción elegida</span>
+    <span class="cm">// switch evalúa la opción y ejecuta el bloque correspondiente</span>
     <span class="kw">switch</span> (opcion)
     {
         <span class="kw">case</span> <span class="st">"1"</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n📦 Lista de productos..."</span>);
-            <span class="ty">Console</span>.<span class="fn">ReadKey</span>(); <span class="cm">// pausa para ver el resultado</span>
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n📦 Mostrando inventario..."</span>);
+            <span class="ty">Console</span>.<span class="fn">ReadKey</span>(); <span class="cm">// pausar para que el usuario lea el resultado</span>
             <span class="kw">break</span>;
+
         <span class="kw">case</span> <span class="st">"2"</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n➕ Agregar producto..."</span>);
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n➕ Ingresando nuevo producto..."</span>);
             <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
             <span class="kw">break</span>;
+
         <span class="kw">case</span> <span class="st">"3"</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n🔍 Buscando..."</span>);
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n🔍 Buscando producto..."</span>);
             <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
             <span class="kw">break</span>;
+
         <span class="kw">case</span> <span class="st">"4"</span>:
-            salir = <span class="kw">true</span>; <span class="cm">// activa bandera → sale del while</span>
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"¡Hasta pronto!"</span>);
+            salir = <span class="kw">true</span>; <span class="cm">// cambiar la bandera → el while terminará</span>
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n¡Hasta pronto! Cerrando sistema..."</span>);
             <span class="kw">break</span>;
-        <span class="kw">default</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠️ Opción inválida."</span>);
+
+        <span class="kw">default</span>: <span class="cm">// si escribe "5", "abc", "x", etc.</span>
+            <span class="ty">Console</span>.ForegroundColor = <span class="ty">ConsoleColor</span>.Red;
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n⚠️ Opción no válida. Intenta de nuevo."</span>);
+            <span class="ty">Console</span>.ResetColor();
             <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
             <span class="kw">break</span>;
     }
+    <span class="cm">// Al terminar el switch, vuelve al inicio del while y muestra el menú otra vez
+    // ...a menos que salir sea true, en cuyo caso el programa termina</span>
 }</pre>
     </div>
   </div>
 
-  <!-- EJ 6 -->
+  <!-- ═══ EJ 6: POO — LA CLASE ═══ -->
   <div class="ex-pane" id="ex6">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear la clase Producto completa con constructor, propiedades y métodos.</div></div>
+
+    <div class="sec-title" style="margin-top:0"><span>💡</span>Programación Orientada a Objetos — ¿Qué es una Clase?</div>
+    <p>La <strong>Programación Orientada a Objetos (POO)</strong> es una forma de organizar el código agrupando datos y funciones relacionadas en una sola unidad llamada <strong>objeto</strong>. En vez de tener variables sueltas por todas partes, los datos van juntos en objetos que representan cosas del mundo real.</p>
+
+    <div class="box tl" style="margin-bottom:14px">
+      <div class="box-lbl">Analogía — La Clase es el molde, el Objeto es el producto</div>
+      <div class="box-body">Piensa en una <strong>clase</strong> como el molde de una galleta: define la forma. Un <strong>objeto</strong> es una galleta concreta hecha con ese molde. Puedes hacer muchas galletas distintas (con distintos ingredientes) usando el mismo molde. En programación: la clase <code>Producto</code> es el molde, y <code>new Producto("Polera", 9990m, 120)</code> crea una galleta concreta (un objeto) con esos datos.</div>
+    </div>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box sg">
+        <div class="box-lbl">¿Qué son las Propiedades (get; set;)?</div>
+        <div class="box-body">Las propiedades son los <strong>datos que tiene el objeto</strong>. <code>get</code> permite leer el valor, <code>set</code> permite modificarlo. Escribir <code>{ get; set; }</code> es la forma corta de crear una propiedad que se puede leer y escribir libremente. Si solo pones <code>{ get; }</code> nadie puede cambiarla desde fuera.</div>
+      </div>
+      <div class="box am">
+        <div class="box-lbl">¿Qué es el Constructor?</div>
+        <div class="box-body">El constructor es un <strong>método especial que se ejecuta automáticamente</strong> cuando creas un objeto con <code>new</code>. Su trabajo es inicializar las propiedades con valores válidos. Sin constructor, las propiedades quedarían vacías o en 0. Se escribe igual que la clase pero sin tipo de retorno.</div>
+      </div>
+    </div>
+
+    <div class="box pl" style="margin-bottom:14px">
+      <div class="box-lbl">¿Qué es public y private?</div>
+      <div class="box-body"><strong>public</strong>: cualquier parte del código puede acceder a esto (leer o llamar). <strong>private</strong>: solo el código dentro de la misma clase puede acceder. Regla general: los datos internos van <code>private</code>, lo que otros necesitan usar va <code>public</code>. Esto protege los datos y evita errores.</div>
+    </div>
+
     <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Clase Producto (entidad base del semestre)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="kw">namespace</span> AlmacenesPA.Modelos;
+      <div class="code-hdr"><span class="code-lang">C# .NET — Estructura de una Clase (explicada paso a paso)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <pre><span class="cm">// namespace: agrupa clases relacionadas bajo un nombre común
+// Evita conflictos si dos clases tienen el mismo nombre en distintas librerías</span>
+<span class="kw">namespace</span> AlmacenesPA.Modelos;
+
+<span class="cm">// 'public' → esta clase es visible desde cualquier parte del proyecto
+// 'class'  → palabra reservada que indica que esto es una clase
+// 'Persona' → nombre de la clase (siempre con MAYÚSCULA inicial)</span>
+<span class="kw">public class</span> <span class="ty">Persona</span>
+{
+    <span class="cm">// ─── PROPIEDADES ─────────────────────────────────────────
+    // Son los DATOS que tiene cada persona
+    // 'public'   → se puede leer/modificar desde fuera de la clase
+    // 'string'   → tipo de dato
+    // 'Nombre'   → nombre de la propiedad (MAYÚSCULA inicial por convención)
+    // '{ get; set; }' → permite leer (get) y modificar (set)</span>
+    <span class="kw">public</span> <span class="ty">string</span> Nombre { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> <span class="ty">int</span>    Edad   { <span class="kw">get</span>; <span class="kw">set</span>; }
+    <span class="kw">public</span> <span class="ty">string</span> Email  { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    <span class="cm">// ─── CAMPO PRIVADO ────────────────────────────────────────
+    // Empieza con _ por convención → indica que es privado y "interno"
+    // Solo el código dentro de esta clase puede leerlo o modificarlo</span>
+    <span class="kw">private</span> <span class="ty">string</span> _contrasena;
+
+    <span class="cm">// ─── CONSTRUCTOR ─────────────────────────────────────────
+    // Se llama automáticamente cuando haces: new Persona(...)
+    // Tiene el MISMO nombre que la clase y NO tiene tipo de retorno (ni void)
+    // Sus parámetros reciben los valores iniciales</span>
+    <span class="kw">public</span> <span class="ty">Persona</span>(<span class="ty">string</span> nombre, <span class="ty">int</span> edad, <span class="ty">string</span> email)
+    {
+        <span class="cm">// 'this.Nombre' = la propiedad del objeto que estamos creando
+        // 'nombre' (minúscula) = el parámetro que llegó al constructor
+        // Asignamos el parámetro a la propiedad del objeto</span>
+        Nombre = nombre;  <span class="cm">// equivale a this.Nombre = nombre;</span>
+        Edad   = edad;
+        Email  = email;
+        _contrasena = <span class="st">"1234"</span>; <span class="cm">// valor por defecto interno</span>
+    }
+
+    <span class="cm">// ─── MÉTODOS ─────────────────────────────────────────────
+    // Son las ACCIONES que puede realizar el objeto
+    // 'public void' → método accesible, que no retorna nada
+    // 'Saludar()' → nombre del método (verbo, describe la acción)</span>
+    <span class="kw">public void</span> <span class="fn">Saludar</span>()
+    {
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Hola, soy {Nombre} y tengo {Edad} años."</span>);
+    }
+
+    <span class="cm">// Método que RETORNA un valor (bool en este caso)
+    // 'public bool' → retorna verdadero o falso</span>
+    <span class="kw">public</span> <span class="ty">bool</span> <span class="fn">EsMayorDeEdad</span>()
+    {
+        <span class="kw">return</span> Edad >= <span class="nm">18</span>; <span class="cm">// retorna true si Edad es ≥ 18</span>
+    }
+}
+
+<span class="cm">// ─── USANDO LA CLASE ─────────────────────────────────────
+// 'new Persona(...)' llama al constructor y crea un objeto en memoria</span>
+<span class="ty">Persona</span> persona1 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Ana López"</span>, <span class="nm">25</span>, <span class="st">"ana@mail.com"</span>);
+<span class="ty">Persona</span> persona2 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Juan Pérez"</span>, <span class="nm">17</span>, <span class="st">"juan@mail.com"</span>);
+
+<span class="cm">// Acceder a propiedades con el punto (.)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Nombre: {persona1.Nombre}"</span>);   <span class="cm">// Ana López</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Edad:   {persona2.Edad}"</span>);     <span class="cm">// 17</span>
+
+<span class="cm">// Llamar métodos con el punto (.)</span>
+persona1.<span class="fn">Saludar</span>();   <span class="cm">// Hola, soy Ana López y tengo 25 años.</span>
+
+<span class="cm">// Usar el resultado de un método</span>
+<span class="ty">bool</span> esMayor = persona2.<span class="fn">EsMayorDeEdad</span>();   <span class="cm">// false (17 < 18)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"¿Juan es mayor de edad? {(esMayor ? "Sí" : "No")}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
+    </div>
+  </div>
+
+  <!-- ═══ EJ 7: CLASE PRODUCTO ═══ -->
+  <div class="ex-pane" id="ex7">
+
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Por qué crear una clase Producto?</div>
+    <p>Sin POO tendrías que usar variables sueltas para cada dato de cada producto: <code>string nombre1, nombre2, nombre3</code> — <code>decimal precio1, precio2, precio3</code>... Eso se vuelve imposible de manejar con más de 3 productos. La clase <code>Producto</code> agrupa todos los datos en un solo objeto, y puedes crear tantos como necesites.</p>
+
+    <div class="box tl" style="margin-bottom:14px">
+      <div class="box-lbl">¿Por qué el constructor recibe todos los datos?</div>
+      <div class="box-body">El constructor garantiza que <strong>nunca puedas crear un Producto sin sus datos obligatorios</strong>. Si intentas hacer <code>new Producto()</code> sin parámetros, el compilador te da un error. Esto previene objetos "a medias" con nombre vacío o precio en cero que causarían errores más adelante.</div>
+    </div>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box sg">
+        <div class="box-lbl">¿Qué es override ToString()?</div>
+        <div class="box-body">Toda clase en C# hereda un método <code>ToString()</code> de la clase base <code>object</code>. Por defecto retorna el nombre de la clase. Con <code>override</code> lo reemplazamos para que retorne lo que nosotros queremos — así <code>Console.WriteLine(miProducto)</code> muestra info útil automáticamente.</div>
+      </div>
+      <div class="box am">
+        <div class="box-lbl">¿Qué es una propiedad calculada?</div>
+        <div class="box-body"><code>public bool HayStock => Stock > 0;</code> — El <code>=></code> define una propiedad que no almacena un valor, sino que lo <strong>calcula en el momento que se pide</strong>. Es como una función sin paréntesis. Cada vez que accedes a <code>HayStock</code> evalúa <code>Stock > 0</code> y retorna true o false.</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-hdr"><span class="code-lang">C# .NET — Clase Producto completa (entidad base del semestre)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <pre><span class="cm">// Archivo: Modelos/Producto.cs
+// Representa un artículo de ropa del inventario de Almacenes Por Ahí</span>
+<span class="kw">namespace</span> AlmacenesPA.Modelos;
 
 <span class="kw">public class</span> <span class="ty">Producto</span>
 {
-    <span class="cm">// PROPIEDADES auto-implementadas — versión más usada en la práctica</span>
-    <span class="kw">public</span> <span class="ty">int</span>     Id        { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// identificador único</span>
-    <span class="kw">public</span> <span class="ty">string</span>  Nombre    { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// nombre del artículo</span>
-    <span class="kw">public</span> <span class="ty">decimal</span> Precio    { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// precio de venta</span>
-    <span class="kw">public</span> <span class="ty">int</span>     Stock     { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// unidades disponibles</span>
-    <span class="kw">public</span> <span class="ty">string</span>  Talla     { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// XS/S/M/L/XL</span>
-    <span class="kw">public</span> <span class="ty">string</span>  Categoria { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// Poleras, Jeans, etc.</span>
+    <span class="cm">// ─── PROPIEDADES ─────────────────────────────────────────
+    // Cada propiedad representa un dato del producto
+    // { get; set; } = se puede leer y modificar desde fuera</span>
+    <span class="kw">public</span> <span class="ty">int</span>     Id        { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// número único que identifica el producto</span>
+    <span class="kw">public</span> <span class="ty">string</span>  Nombre    { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// nombre del artículo de ropa</span>
+    <span class="kw">public</span> <span class="ty">decimal</span> Precio    { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// decimal: SIEMPRE para precios</span>
+    <span class="kw">public</span> <span class="ty">int</span>     Stock     { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// unidades disponibles en bodega</span>
+    <span class="kw">public</span> <span class="ty">string</span>  Talla     { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// "XS", "S", "M", "L", "XL"</span>
 
-    <span class="cm">// CONSTRUCTOR sin parámetros — crea producto con valores por defecto</span>
-    <span class="kw">public</span> <span class="ty">Producto</span>()
-    {
-        Nombre    = <span class="st">"Sin nombre"</span>;
-        Precio    = <span class="nm">0m</span>;
-        Stock     = <span class="nm">0</span>;
-        Talla     = <span class="st">"U"</span>;
-        Categoria = <span class="st">"General"</span>;
-    }
-
-    <span class="cm">// CONSTRUCTOR con parámetros — el más usado</span>
+    <span class="cm">// ─── CONSTRUCTOR ─────────────────────────────────────────
+    // Se ejecuta automáticamente cuando hacemos: new Producto(...)
+    // Parámetros: los datos obligatorios para crear un producto válido
+    // Sin este constructor no podrías crear un producto "a medias"</span>
     <span class="kw">public</span> <span class="ty">Producto</span>(<span class="ty">int</span> id, <span class="ty">string</span> nombre, <span class="ty">decimal</span> precio, <span class="ty">int</span> stock)
     {
-        Id       = id;
-        Nombre   = nombre;
-        Precio   = precio;
-        Stock    = stock;
-        Talla    = <span class="st">"M"</span>;
-        Categoria = <span class="st">"General"</span>;
+        <span class="cm">// Asignamos cada parámetro a su propiedad correspondiente</span>
+        Id     = id;       <span class="cm">// el id que llegó como parámetro → se guarda en la propiedad Id</span>
+        Nombre = nombre;   <span class="cm">// el nombre → se guarda en Nombre</span>
+        Precio = precio;   <span class="cm">// el precio → se guarda en Precio</span>
+        Stock  = stock;    <span class="cm">// el stock → se guarda en Stock</span>
+        Talla  = <span class="st">"M"</span>;     <span class="cm">// valor por defecto si no se especifica</span>
     }
 
-    <span class="cm">// MÉTODOS de instancia</span>
-    <span class="kw">public</span> <span class="ty">bool</span>    <span class="fn">TieneStock</span>() => Stock > <span class="nm">0</span>;
+    <span class="cm">// ─── PROPIEDAD CALCULADA ──────────────────────────────────
+    // No almacena un valor — lo CALCULA cada vez que se accede
+    // El '=>' significa "retorna el resultado de esta expresión"
+    // Equivale a escribir: public bool HayStock { get { return Stock > 0; } }</span>
+    <span class="kw">public</span> <span class="ty">bool</span> HayStock => Stock > <span class="nm">0</span>;
 
-    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">PrecioConDescuento</span>(<span class="ty">int</span> pct)
+    <span class="cm">// ─── MÉTODOS ─────────────────────────────────────────────
+    // Acciones que puede hacer un producto</span>
+
+    <span class="cm">// Vender: descuenta unidades del stock, retorna true si pudo</span>
+    <span class="kw">public</span> <span class="ty">bool</span> <span class="fn">Vender</span>(<span class="ty">int</span> cantidad)
     {
-        <span class="kw">if</span> (pct < <span class="nm">0</span> || pct > <span class="nm">100</span>)
-            <span class="kw">throw new</span> <span class="ty">ArgumentException</span>(<span class="st">"Porcentaje entre 0 y 100"</span>);
-        <span class="kw">return</span> Precio * (<span class="nm">1</span> - pct / <span class="nm">100m</span>); <span class="cm">// precio reducido</span>
+        <span class="cm">// Validar que se puedan vender esas unidades</span>
+        <span class="kw">if</span> (cantidad <= <span class="nm">0</span> || cantidad > Stock)
+            <span class="kw">return false</span>; <span class="cm">// retornar false = no se pudo vender</span>
+
+        Stock -= cantidad; <span class="cm">// Stock = Stock - cantidad (descontar)</span>
+        <span class="kw">return true</span>;       <span class="cm">// venta exitosa</span>
     }
 
-    <span class="kw">public void</span> <span class="fn">ReducirStock</span>(<span class="ty">int</span> cant)
+    <span class="cm">// PrecioConDescuento: calcula el precio con un % de descuento</span>
+    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">PrecioConDescuento</span>(<span class="ty">int</span> porcentaje)
     {
-        <span class="kw">if</span> (cant > Stock)
-            <span class="kw">throw new</span> <span class="ty">InvalidOperationException</span>(<span class="st">$"Stock insuf. Disp: {Stock}"</span>);
-        Stock -= cant; <span class="cm">// equivale a: Stock = Stock - cant</span>
+        <span class="cm">// Validar que el porcentaje sea un valor razonable</span>
+        <span class="kw">if</span> (porcentaje < <span class="nm">0</span> || porcentaje > <span class="nm">100</span>)
+            <span class="kw">return</span> Precio; <span class="cm">// si el porcentaje no es válido, retorna el precio normal</span>
+
+        <span class="ty">decimal</span> factor = <span class="nm">1</span> - (porcentaje / <span class="nm">100m</span>);
+        <span class="cm">// porcentaje / 100m → ej: 20 / 100 = 0.20
+        // 1 - 0.20 = 0.80 → factor de multiplicación
+        // Precio × 0.80 = 80% del precio = precio con 20% de descuento</span>
+        <span class="kw">return</span> Precio * factor;
     }
 
-    <span class="cm">// Override de ToString() — representación del objeto como texto</span>
+    <span class="cm">// ToString(): cómo se muestra el objeto cuando se imprime con Console.WriteLine()
+    // 'override' = reemplazamos la versión que viene de la clase base (object)
+    // {Id:D3} → número con mínimo 3 dígitos: 1 → 001
+    // {Nombre,-22} → texto alineado a la izquierda en 22 caracteres</span>
     <span class="kw">public override</span> <span class="ty">string</span> <span class="fn">ToString</span>()
     {
-        <span class="ty">string</span> st = <span class="fn">TieneStock</span>() ? <span class="st">"✅"</span> : <span class="st">"⛔"</span>;
-        <span class="kw">return</span> <span class="st">$"[{Id:D3}] {Nombre,-22} ${Precio,8:N0}  {st}"</span>;
+        <span class="ty">string</span> estado = HayStock ? <span class="st">"✅ Disponible"</span> : <span class="st">"⛔ Agotado"</span>;
+        <span class="kw">return</span> <span class="st">$"[{Id:D3}] {Nombre,-22} T:{Talla,-4} ${Precio,8:N0}  Stock:{Stock,4}  {estado}"</span>;
     }
 }
 
-<span class="cm">// ===== PROGRAMA PRINCIPAL =====</span>
-<span class="ty">Producto</span> p1 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Polera básica"</span>, <span class="nm">9990m</span>,  <span class="nm">120</span>);
-<span class="ty">Producto</span> p2 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Jeans skinny"</span>,  <span class="nm">24990m</span>, <span class="nm">45</span>);
-<span class="ty">Producto</span> p3 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Chaqueta"</span>,      <span class="nm">49990m</span>, <span class="nm">0</span>);
+<span class="cm">// ─── USANDO LA CLASE PRODUCTO ─────────────────────────────
+// Crear objetos con 'new' — el constructor se ejecuta automáticamente</span>
+<span class="ty">Producto</span> polera   = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Polera básica"</span>,   <span class="nm">9990m</span>,  <span class="nm">120</span>);
+<span class="ty">Producto</span> jeans    = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Jeans skinny"</span>,    <span class="nm">24990m</span>, <span class="nm">45</span>);
+<span class="ty">Producto</span> chaqueta = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Chaqueta invierno"</span>,<span class="nm">49990m</span>, <span class="nm">0</span>);
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p1); <span class="cm">// llama a ToString() automáticamente</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p2);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p3);
+<span class="cm">// Console.WriteLine(polera) → llama a ToString() automáticamente</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(polera);    <span class="cm">// [001] Polera básica        T:M    $9.990  Stock: 120  ✅</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(jeans);     <span class="cm">// [002] Jeans skinny         T:M   $24.990  Stock:  45  ✅</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(chaqueta);  <span class="cm">// [003] Chaqueta invierno    T:M   $49.990  Stock:   0  ⛔</span>
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Polera 20% off: ${p1.PrecioConDescuento(20):N0}"</span>);
+<span class="cm">// Usar los métodos</span>
+<span class="ty">bool</span> vendido = polera.<span class="fn">Vender</span>(<span class="nm">3</span>);  <span class="cm">// descuenta 3 del stock → Stock queda en 117</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Venta: {(vendido ? "OK" : "Falló")}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Polera con 20% off: ${polera.PrecioConDescuento(20):N0}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"¿Hay chaquetas? {(chaqueta.HayStock ? "Sí" : "No")}"</span>);
 <span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>
 
-  <!-- EJ 7 -->
-  <div class="ex-pane" id="ex7">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Usar List&lt;T&gt; de la BCL para gestionar una colección dinámica de productos.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — List&lt;T&gt; colección de productos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="kw">using</span> System.Collections.Generic; <span class="cm">// necesario para List&lt;T&gt;</span>
-
-<span class="cm">// CREAR lista tipada — equivale a ArrayList de Java pero tipada</span>
-<span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; inventario = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt;();
-
-<span class="cm">// ADD: agregar elementos</span>
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Polera básica"</span>,   <span class="nm">9990m</span>,  <span class="nm">120</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Jeans skinny"</span>,     <span class="nm">24990m</span>, <span class="nm">45</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Chaqueta invierno"</span>, <span class="nm">49990m</span>, <span class="nm">0</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">4</span>, <span class="st">"Calcetines x3"</span>,    <span class="nm">4990m</span>,  <span class="nm">200</span>));
-
-<span class="cm">// COUNT: número de elementos (.size() en Java)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Productos: {inventario.Count}"</span>);
-
-<span class="cm">// FOREACH: recorrer todos</span>
-<span class="kw">foreach</span> (<span class="ty">Producto</span> p <span class="kw">in</span> inventario)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(p); <span class="cm">// llama a ToString()</span>
-
-<span class="cm">// FIND: buscar el primero que cumpla condición (lambda)</span>
-<span class="ty">Producto</span>? encontrado = inventario.<span class="fn">Find</span>(p => p.Id == <span class="nm">2</span>);
-<span class="kw">if</span> (encontrado != <span class="kw">null</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Encontrado: {encontrado.Nombre}"</span>);
-
-<span class="cm">// FINDALL: todos los que cumplen la condición</span>
-<span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; conStock = inventario.<span class="fn">FindAll</span>(p => p.<span class="fn">TieneStock</span>());
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Con stock: {conStock.Count}"</span>);
-
-<span class="cm">// SORT: ordenar por precio de menor a mayor</span>
-inventario.<span class="fn">Sort</span>((a, b) => a.Precio.<span class="fn">CompareTo</span>(b.Precio));
-
-<span class="cm">// REMOVE: eliminar un elemento</span>
-<span class="ty">Producto</span>? aElim = inventario.<span class="fn">Find</span>(p => p.Id == <span class="nm">3</span>);
-<span class="kw">if</span> (aElim != <span class="kw">null</span>) inventario.<span class="fn">Remove</span>(aElim);
-
-<span class="cm">// CALCULAR valor total del inventario</span>
-<span class="ty">decimal</span> total = <span class="nm">0</span>;
-<span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> inventario)
-    total += p.Precio * p.Stock; <span class="cm">// precio × unidades</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Valor inventario: ${total:N0}"</span>);
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
-    </div>
-  </div>
-
-  <!-- EJ 8 -->
+  <!-- ═══ EJ 8: VALIDACIÓN ═══ -->
   <div class="ex-pane" id="ex8">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Leer datos del usuario y validar con TryParse. Flujo base del módulo de ingreso de inventario.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Ingreso y validación con TryParse</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// Console.Write sin salto de línea — espera en la misma línea</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Nombre del producto: "</span>);
-<span class="ty">string</span> nombre = (<span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>).<span class="fn">Trim</span>(); <span class="cm">// Trim() elimina espacios</span>
 
+    <div class="sec-title" style="margin-top:0"><span>💡</span>¿Por qué validar la entrada del usuario?</div>
+    <p>Cuando el usuario escribe en la consola, lo que llega es <strong>siempre texto</strong> (un <code>string</code>). Si pides el precio y el usuario escribe "abc", tendrás un problema al intentar convertirlo a número. La validación evita que el programa se caiga por datos incorrectos.</p>
+
+    <div class="grid2" style="margin-bottom:18px">
+      <div class="box tl">
+        <div class="box-lbl">¿Qué es TryParse?</div>
+        <div class="box-body"><code>TryParse</code> intenta convertir un texto a número. Si puede → retorna <code>true</code> y guarda el resultado en la variable <code>out</code>. Si no puede (ej: "abc") → retorna <code>false</code> sin lanzar excepción. Mucho más seguro que <code>decimal.Parse()</code> que se cae con una excepción si el texto no es número.</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">¿Qué es la palabra out?</div>
+        <div class="box-body"><code>out</code> indica que ese parámetro es de <strong>salida</strong> — el método lo escribe, no lo lee. En <code>decimal.TryParse(texto, out decimal precio)</code>, si la conversión es exitosa, el método escribe el número convertido en la variable <code>precio</code>. Así obtienes el resultado sin necesitar una asignación separada.</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-hdr"><span class="code-lang">C# .NET — Ingresar y validar datos con TryParse</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+      <pre><span class="cm">// ─── LEER NOMBRE ─────────────────────────────────────────
+// Console.Write sin salto de línea → el usuario escribe en la misma línea</span>
+<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Nombre del producto: "</span>);
+
+<span class="cm">// Console.ReadLine() retorna lo que escribió el usuario (o null)
+// .Trim() elimina espacios en blanco al inicio y al final
+// ?? "" → si ReadLine() retorna null, usar "" para evitar errores</span>
+<span class="ty">string</span> nombre = (<span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>).<span class="fn">Trim</span>();
+
+<span class="cm">// Validar que el nombre no esté vacío</span>
 <span class="kw">if</span> (nombre == <span class="st">""</span>)
 {
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: el nombre no puede estar vacío."</span>);
-    <span class="kw">return</span>; <span class="cm">// salir del programa</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"❌ Error: el nombre no puede estar vacío."</span>);
+    <span class="kw">return</span>; <span class="cm">// salir inmediatamente si el dato es inválido</span>
 }
 
-<span class="cm">// TryParse: intenta convertir sin lanzar excepción
-// Si tiene éxito: retorna true y guarda el valor en 'out precio'
-// Si falla (ej: usuario escribe "abc"): retorna false
-// Mucho más seguro que decimal.Parse() que lanza excepción</span>
+<span class="cm">// ─── LEER PRECIO CON TRYPARSE ────────────────────────────
+// Problema: Console.ReadLine() siempre retorna string
+// Necesitamos convertirlo a decimal para hacer cálculos
+// NO usar: decimal precio = decimal.Parse(Console.ReadLine()); ← se cae si el user escribe "abc"
+// SÍ usar: TryParse → retorna false si falla, sin caerse</span>
 <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Precio ($): "</span>);
-<span class="ty">decimal</span> precio;
-<span class="kw">if</span> (!<span class="ty">decimal</span>.<span class="fn">TryParse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> precio) || precio <= <span class="nm">0</span>)
+<span class="cm">// Si el texto no es número → TryParse retorna false → el if se cumple → mostramos error
+// Si sí es número → TryParse retorna true y guarda el número en 'precio'
+// 'out decimal precio' → declara la variable 'precio' y la pasa como salida</span>
+<span class="kw">if</span> (!<span class="ty">decimal</span>.<span class="fn">TryParse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> <span class="ty">decimal</span> precio) || precio <= <span class="nm">0</span>)
 {
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: precio inválido."</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"❌ Error: ingresa un precio válido mayor a 0."</span>);
     <span class="kw">return</span>;
 }
 
-<span class="cm">// Lo mismo para el stock (int)</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Stock: "</span>);
-<span class="ty">int</span> stock;
-<span class="kw">if</span> (!<span class="ty">int</span>.<span class="fn">TryParse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> stock) || stock < <span class="nm">0</span>)
+<span class="cm">// ─── LEER STOCK CON TRYPARSE ─────────────────────────────</span>
+<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Stock inicial: "</span>);
+<span class="kw">if</span> (!<span class="ty">int</span>.<span class="fn">TryParse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> <span class="ty">int</span> stock) || stock < <span class="nm">0</span>)
 {
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: stock inválido."</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"❌ Error: el stock debe ser un número mayor o igual a 0."</span>);
     <span class="kw">return</span>;
 }
 
-<span class="cm">// Validar talla contra lista permitida</span>
-<span class="ty">string</span>[] tallasOk = { <span class="st">"XS"</span>, <span class="st">"S"</span>, <span class="st">"M"</span>, <span class="st">"L"</span>, <span class="st">"XL"</span> };
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"Talla ({string.Join("/", tallasOk)}): "</span>);
-<span class="ty">string</span> talla = (<span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>).<span class="fn">ToUpper</span>(); <span class="cm">// ToUpper(): mayúscula</span>
+<span class="cm">// ─── LEER TALLA CON VALIDACIÓN POR LISTA ─────────────────
+// No usamos TryParse aquí porque la talla es texto
+// Validamos comparando con los valores permitidos</span>
+<span class="ty">string</span>[] tallasPermitidas = { <span class="st">"XS"</span>, <span class="st">"S"</span>, <span class="st">"M"</span>, <span class="st">"L"</span>, <span class="st">"XL"</span> };
+<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"Talla ({string.Join("/", tallasPermitidas)}): "</span>);
 
-<span class="kw">if</span> (<span class="ty">Array</span>.<span class="fn">IndexOf</span>(tallasOk, talla) == -<span class="nm">1</span>)
+<span class="cm">// .ToUpper() convierte a mayúsculas → así "m", "M", "M " son todas "M"</span>
+<span class="ty">string</span> talla = (<span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>).<span class="fn">ToUpper</span>().<span class="fn">Trim</span>();
+
+<span class="cm">// Array.IndexOf() busca el valor en el array — retorna -1 si no lo encuentra</span>
+<span class="kw">if</span> (<span class="ty">Array</span>.<span class="fn">IndexOf</span>(tallasPermitidas, talla) == -<span class="nm">1</span>)
 {
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: talla inválida."</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"❌ Error: la talla '{talla}' no es válida."</span>);
     <span class="kw">return</span>;
 }
 
-<span class="cm">// Crear el producto con inicializador de objeto { } (alternativa al constructor)</span>
-<span class="ty">Producto</span> nuevo = <span class="kw">new</span> <span class="ty">Producto</span>
-{
-    Id     = <span class="nm">1</span>,
-    Nombre = nombre,
-    Precio = precio,
-    Stock  = stock,
-    Talla  = talla
-};
+<span class="cm">// ─── CREAR EL PRODUCTO CON LOS DATOS VALIDADOS ───────────
+// Solo llegamos aquí si TODOS los datos pasaron la validación</span>
+<span class="ty">Producto</span> nuevo = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, nombre, precio, stock);
+nuevo.Talla = talla;
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\n✅ Producto creado: {nuevo}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\n✅ Producto creado exitosamente:"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(nuevo); <span class="cm">// llama a ToString()</span>
 <span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>

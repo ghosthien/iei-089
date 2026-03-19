@@ -992,80 +992,299 @@ pos.<span class="fn">ResumenDia</span>();</pre>
 <section id="sec-queue" class="scroll-sec">
 <div class="scroll-inner">
   <h2 class="s-title">🔁 Queue&lt;T&gt; y Stack&lt;T&gt;</h2>
-  <p class="s-sub">Colecciones especializadas para casos de uso específicos. Namespace: <code>System.Collections.Generic</code>.</p>
+  <p class="s-sub">Dos colecciones con comportamientos opuestos. Namespace: <code>System.Collections.Generic</code>. Contextos: 🍕 Pizzería Don Corleone · 🍎 Frutería La Cosecha · 🎮 GameZone.</p>
 
-  <div class="grid2" style="margin-bottom:24px">
-    <div class="concepto">
-      <div class="concepto-header">
-        <span class="concepto-icon">🟡</span>
-        <span class="concepto-title">Queue&lt;T&gt; — FIFO</span>
-        <span class="concepto-chip bcl">BCL</span>
-      </div>
-      <div class="concepto-body">
-        <div class="box tl" style="margin-bottom:14px">
-          <div class="box-lbl">📐 Técnica</div>
-          <div class="box-body">First In, First Out. <code>Enqueue()</code> agrega al final, <code>Dequeue()</code> extrae del frente. Ideal para colas de espera, procesamiento de pedidos, mensajes.</div>
+  <!-- ════ QUEUE ════ -->
+  <div class="concepto" style="margin-bottom:28px">
+    <div class="concepto-header">
+      <span class="concepto-icon">🟡</span>
+      <span class="concepto-title">Queue&lt;T&gt; — Cola (FIFO)</span>
+      <span class="concepto-chip bcl">BCL · System.Collections.Generic</span>
+    </div>
+    <div class="concepto-body">
+
+      <div class="grid2" style="margin-bottom:16px">
+        <div class="box tl">
+          <div class="box-lbl">📐 Definición técnica</div>
+          <div class="box-body">First In, First Out (FIFO). Implementa <code>ICollection&lt;T&gt;</code>. <code>Enqueue()</code> agrega al final en O(1). <code>Dequeue()</code> extrae del frente en O(1). <code>Peek()</code> consulta sin extraer. <code>Count</code> retorna el tamaño.</div>
         </div>
+        <div class="box sg">
+          <div class="box-lbl">💡 Explicación sin jerga</div>
+          <div class="box-body">Es la <strong>fila del banco</strong>. El primero que llegó es el primero que atienden. Si llegas último, esperas hasta que pasen todos los anteriores. <code>Enqueue()</code> = ponerse al final de la fila. <code>Dequeue()</code> = el cajero llama al siguiente. <code>Peek()</code> = mirar quién es el próximo sin atenderlo.</div>
+        </div>
+      </div>
+
+      <div class="nivel-tabs">
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'queue','b')">🟢 Básico — 🍕 Pizzería</button>
+        <button class="nivel-tab mid"       onclick="switchNivel(this,'queue','m')">🟡 Intermedio — 🍎 Frutería</button>
+        <button class="nivel-tab pro"       onclick="switchNivel(this,'queue','p')">🟣 Profesional — 🎮 GameZone</button>
+      </div>
+
+      <div class="nivel-pane on" id="queue-b">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Pizzería Don Corleone</strong> — Los pedidos llegan por teléfono. La cocina los prepara en estricto orden de llegada.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Cola de pedidos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Cola de pedidos — el primero que llega, primero que se atiende</span>
+          <div class="code-hdr"><span class="code-lang">C# — Queue básico: cola de pedidos</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Queue&lt;T&gt; — Pizzería Don Corleone</span>
+<span class="cm">// El primero que llamó = primero que recibe su pizza (FIFO)</span>
 <span class="kw">var</span> colaPedidos = <span class="kw">new</span> <span class="ty">Queue</span>&lt;<span class="ty">string</span>&gt;();
 
-<span class="cm">// Enqueue: agregar al FINAL de la cola</span>
-colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Pedido #001 — Ana"</span>);
-colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Pedido #002 — Juan"</span>);
-colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Pedido #003 — María"</span>);
+<span class="cm">// Enqueue(): agregar al FINAL de la cola (el cliente se pone a esperar)</span>
+colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Mesa 3 — Pizza Margarita"</span>);   <span class="cm">// llegó primero</span>
+colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Delivery — Pizza 4 Quesos"</span>);  <span class="cm">// llegó segundo</span>
+colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Mesa 1 — Pizza Napolitana"</span>);  <span class="cm">// llegó tercero</span>
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Pedidos en espera: {colaPedidos.Count}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Pedidos en espera: {colaPedidos.Count}"</span>); <span class="cm">// 3</span>
 
-<span class="cm">// Peek: ver el próximo sin extraerlo</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Próximo: {colaPedidos.Peek()}"</span>);
+<span class="cm">// Peek(): ¿cuál es el próximo? Lo vemos SIN sacarlo de la cola</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Preparando ahora: {colaPedidos.Peek()}"</span>); <span class="cm">// Mesa 3</span>
 
-<span class="cm">// Dequeue: extraer el PRIMERO (FIFO)</span>
+<span class="cm">// Dequeue(): la cocina atiende y entrega — SACA el primero de la cola</span>
 <span class="kw">while</span> (colaPedidos.Count > <span class="nm">0</span>)
 {
-    <span class="ty">string</span> pedido = colaPedidos.<span class="fn">Dequeue</span>();
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Procesando: {pedido}"</span>);
-}</pre>
+    <span class="ty">string</span> pedido = colaPedidos.<span class="fn">Dequeue</span>(); <span class="cm">// siempre extrae el más antiguo</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"✅ Entregado: {pedido}"</span>);
+}
+<span class="cm">// Salida (en orden de llegada, no de último):
+// ✅ Entregado: Mesa 3 — Pizza Margarita   ← llegó primero, sale primero
+// ✅ Entregado: Delivery — Pizza 4 Quesos
+// ✅ Entregado: Mesa 1 — Pizza Napolitana  ← llegó último, sale último</span></pre>
         </div>
       </div>
-    </div>
 
-    <div class="concepto">
-      <div class="concepto-header">
-        <span class="concepto-icon">🔵</span>
-        <span class="concepto-title">Stack&lt;T&gt; — LIFO</span>
-        <span class="concepto-chip bcl">BCL</span>
-      </div>
-      <div class="concepto-body">
-        <div class="box sg" style="margin-bottom:14px">
-          <div class="box-lbl">📐 Técnica</div>
-          <div class="box-body">Last In, First Out. <code>Push()</code> agrega encima, <code>Pop()</code> extrae desde arriba. Ideal para historial de acciones, deshacer cambios, navegación.</div>
-        </div>
+      <div class="nivel-pane" id="queue-m">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Frutería La Cosecha</strong> — Sistema de tickets. Cada cliente toma un número y espera su turno en pantalla.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Historial de acciones</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Stack: historial de acciones — Ctrl+Z deshacer</span>
-<span class="kw">var</span> historial = <span class="kw">new</span> <span class="ty">Stack</span>&lt;<span class="ty">string</span>&gt;();
+          <div class="code-hdr"><span class="code-lang">C# — Queue intermedio: sistema de tickets</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Frutería La Cosecha — sistema de atención con ticket numérico</span>
+<span class="cm">// Cada cliente recibe un número y espera ser llamado</span>
 
-<span class="cm">// Push: agregar encima de la pila</span>
-historial.<span class="fn">Push</span>(<span class="st">"Agregó Polera × 2"</span>);
-historial.<span class="fn">Push</span>(<span class="st">"Aplicó descuento 15%"</span>);
-historial.<span class="fn">Push</span>(<span class="st">"Cambió método de pago"</span>);
+<span class="cm">// Queue de tuplas: (número ticket, nombre, sección que visita)</span>
+<span class="kw">var</span> cola = <span class="kw">new</span> <span class="ty">Queue</span>&lt;(<span class="ty">int</span> Ticket, <span class="ty">string</span> Nombre, <span class="ty">string</span> Seccion)&gt;();
+<span class="ty">int</span> proximoTicket = <span class="nm">1</span>; <span class="cm">// contador de tickets emitidos</span>
 
-<span class="cm">// Peek: ver la última acción sin quitarla</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Última acción: {historial.Peek()}"</span>);
+<span class="cm">// Simular llegada de 4 clientes</span>
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Ana López"</span>,   <span class="st">"Frutas"</span>));
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Juan Torres"</span>,  <span class="st">"Verduras"</span>));
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"María Silva"</span>,  <span class="st">"Frutas"</span>));
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Pedro Ruiz"</span>,   <span class="st">"Jugos"</span>));
 
-<span class="cm">// Pop: deshacer la última acción (LIFO)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\nDeshaciendo:"</span>);
-<span class="kw">while</span> (historial.Count > <span class="nm">0</span>)
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"=== FRUTERÍA LA COSECHA — SISTEMA DE ATENCIÓN ==="</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Clientes en espera: {cola.Count}\n"</span>);
+
+<span class="cm">// Atender uno a uno. Dequeue() siempre saca al que llegó antes (FIFO)</span>
+<span class="kw">while</span> (cola.Count > <span class="nm">0</span>)
 {
-    <span class="ty">string</span> accion = historial.<span class="fn">Pop</span>();
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"↩ Deshecho: {accion}"</span>);
-}</pre>
+    <span class="cm">// Deconstrucción de la tupla: asignamos cada campo a una variable</span>
+    <span class="kw">var</span> (ticket, nombre, seccion) = cola.<span class="fn">Dequeue</span>();
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"🔔 Ticket #{ticket:D3} — {nombre,-15} [{seccion}]"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   Clientes restantes en cola: {cola.Count}"</span>);
+}
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n✅ Todos los clientes fueron atendidos."</span>);</pre>
         </div>
+      </div>
+
+      <div class="nivel-pane" id="queue-p">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>GameZone</strong> — Matchmaking de torneos. Cuando hay 2 jugadores esperando, se forma una partida automáticamente.</p>
+        <div class="code-block">
+          <div class="code-hdr"><span class="code-lang">C# — Queue profesional: matchmaking de torneos</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// GameZone — Sistema de matchmaking para torneos
+// Los jugadores se inscriben en la cola y se emparejan de a 2 (FIFO)</span>
+
+<span class="kw">public class</span> <span class="ty">Matchmaking</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Queue</span>&lt;<span class="ty">Jugador</span>&gt; _colaEspera = <span class="kw">new</span>();
+    <span class="kw">private int</span> _numeroPartida = <span class="nm">1</span>;
+
+    <span class="cm">// Inscribir jugador: se pone al final de la cola de espera</span>
+    <span class="kw">public void</span> <span class="fn">Inscribir</span>(<span class="ty">Jugador</span> jugador)
+    {
+        _colaEspera.<span class="fn">Enqueue</span>(jugador);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"[+] {jugador.Alias,-15} en espera. Cola: {_colaEspera.Count}"</span>);
+        <span class="fn">IntentarFormarPartida</span>();
+    }
+
+    <span class="cm">// Si hay 2 o más jugadores, formarlos en partidas de a pares</span>
+    <span class="kw">private void</span> <span class="fn">IntentarFormarPartida</span>()
+    {
+        <span class="kw">while</span> (_colaEspera.Count >= <span class="nm">2</span>)
+        {
+            <span class="cm">// Dequeue extrae siempre el que lleva MÁS tiempo esperando (FIFO)</span>
+            <span class="kw">var</span> j1 = _colaEspera.<span class="fn">Dequeue</span>(); <span class="cm">// el más antiguo en espera</span>
+            <span class="kw">var</span> j2 = _colaEspera.<span class="fn">Dequeue</span>(); <span class="cm">// el siguiente en espera</span>
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\n🎮 PARTIDA #{_numeroPartida++:D3} FORMADA"</span>);
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   {j1.Alias} (ELO:{j1.Elo}) vs {j2.Alias} (ELO:{j2.Elo})"</span>);
+        }
+    }
+}
+
+<span class="kw">record</span> <span class="ty">Jugador</span>(<span class="ty">string</span> Alias, <span class="ty">int</span> Elo);
+
+<span class="cm">// USO del sistema de matchmaking</span>
+<span class="kw">var</span> mm = <span class="kw">new</span> <span class="ty">Matchmaking</span>();
+mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"ProGamer99"</span>, <span class="nm">1850</span>));
+mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"NightWolf"</span>,  <span class="nm">1720</span>)); <span class="cm">// ← 2 jugadores → partida #001</span>
+mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"QuickShot"</span>,  <span class="nm">1900</span>));
+mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"ShadowX"</span>,    <span class="nm">1810</span>)); <span class="cm">// ← 2 jugadores → partida #002</span></pre>
+        </div>
+      </div>
+
+      <div class="challenge">
+        <div class="ch-header"><span class="ch-icon">⚡</span><span class="ch-title">Desafío — Queue</span><span class="ch-badge">+20 XP</span></div>
+        <div class="ch-desc">Frutería La Cosecha atiende 8 clientes seguidos. Simula la llegada de todos, luego atiente de a uno mostrando cuántos quedan en cola. Al final muestra cuántos atendiste.</div>
+        <div class="ch-req"><ul><li>Usar <code>Queue&lt;string&gt;</code> con nombres ficticios</li><li>Usar <code>Enqueue()</code>, <code>Dequeue()</code>, <code>Count</code></li><li>Toda salida con interpolación <code>$"..."</code></li></ul></div>
       </div>
     </div>
   </div>
+
+  <!-- ════ STACK ════ -->
+  <div class="concepto">
+    <div class="concepto-header">
+      <span class="concepto-icon">🔵</span>
+      <span class="concepto-title">Stack&lt;T&gt; — Pila (LIFO)</span>
+      <span class="concepto-chip bcl">BCL · System.Collections.Generic</span>
+    </div>
+    <div class="concepto-body">
+
+      <div class="grid2" style="margin-bottom:16px">
+        <div class="box tl">
+          <div class="box-lbl">📐 Definición técnica</div>
+          <div class="box-body">Last In, First Out (LIFO). <code>Push()</code> agrega encima en O(1). <code>Pop()</code> extrae el tope en O(1). <code>Peek()</code> consulta sin extraer. El botón Ctrl+Z de cualquier programa usa un Stack internamente.</div>
+        </div>
+        <div class="box sg">
+          <div class="box-lbl">💡 Explicación sin jerga</div>
+          <div class="box-body">Es una <strong>pila de platos sucios</strong>. El último plato que pusiste encima es el primero que lavas. <code>Push()</code> = poner un plato encima. <code>Pop()</code> = sacar el plato de arriba para lavarlo. <code>Peek()</code> = mirar cuál es el plato de arriba sin sacarlo todavía. En resumen: <strong>lo último que metiste es lo primero que sacas.</strong></div>
+        </div>
+      </div>
+
+      <div class="nivel-tabs">
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'stack','b')">🟢 Básico — 🍕 Pizzería</button>
+        <button class="nivel-tab mid"       onclick="switchNivel(this,'stack','m')">🟡 Intermedio — 🍎 Frutería</button>
+        <button class="nivel-tab pro"       onclick="switchNivel(this,'stack','p')">🟣 Profesional — 🎮 GameZone</button>
+      </div>
+
+      <div class="nivel-pane on" id="stack-b">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Pizzería Don Corleone</strong> — El cocinero apila las pizzas terminadas en la bandeja de despacho. El repartidor siempre lleva la que quedó encima.</p>
+        <div class="code-block">
+          <div class="code-hdr"><span class="code-lang">C# — Stack básico: pila de pizzas listas</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Stack&lt;T&gt; — Pizzería Don Corleone
+// Las pizzas se apilan conforme se terminan. El repartidor lleva la de arriba (LIFO).</span>
+
+<span class="kw">var</span> pilaEntregas = <span class="kw">new</span> <span class="ty">Stack</span>&lt;<span class="ty">string</span>&gt;();
+
+<span class="cm">// Push(): el cocinero pone cada pizza ENCIMA de la pila</span>
+pilaEntregas.<span class="fn">Push</span>(<span class="st">"Pizza Margarita"</span>);   <span class="cm">// puesta primera → queda abajo</span>
+pilaEntregas.<span class="fn">Push</span>(<span class="st">"Pizza 4 Quesos"</span>);    <span class="cm">// puesta segunda → en el medio</span>
+pilaEntregas.<span class="fn">Push</span>(<span class="st">"Pizza Napolitana"</span>);  <span class="cm">// puesta última  → queda ARRIBA</span>
+
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Pizzas listas: {pilaEntregas.Count}"</span>); <span class="cm">// 3</span>
+
+<span class="cm">// Peek(): ¿cuál es la pizza de arriba? La vemos SIN sacarla</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Próxima entrega: {pilaEntregas.Peek()}"</span>); <span class="cm">// Napolitana</span>
+
+<span class="cm">// Pop(): el repartidor lleva la de arriba (la última en terminar)</span>
+<span class="kw">while</span> (pilaEntregas.Count > <span class="nm">0</span>)
+{
+    <span class="ty">string</span> pizza = pilaEntregas.<span class="fn">Pop</span>(); <span class="cm">// saca SIEMPRE la que está arriba</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"🍕 Entregando: {pizza}"</span>);
+}
+<span class="cm">// Salida (orden INVERSO al de entrada — LIFO):
+// 🍕 Entregando: Pizza Napolitana  ← entró última, sale PRIMERA
+// 🍕 Entregando: Pizza 4 Quesos
+// 🍕 Entregando: Pizza Margarita   ← entró primera, sale ÚLTIMA</span></pre>
+        </div>
+      </div>
+
+      <div class="nivel-pane" id="stack-m">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Frutería La Cosecha</strong> — Historial de cambios de precio. El cajero puede deshacer el último cambio (Ctrl+Z) para volver al precio anterior.</p>
+        <div class="code-block">
+          <div class="code-hdr"><span class="code-lang">C# — Stack intermedio: deshacer cambios de precio</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Frutería La Cosecha — historial de precios con Ctrl+Z
+// Cada cambio de precio se apila. Deshacer saca el último cambio (LIFO).</span>
+
+<span class="kw">var</span> historialPrecios = <span class="kw">new</span> <span class="ty">Stack</span>&lt;(<span class="ty">string</span> Producto, <span class="ty">decimal</span> PrecioAnterior)&gt;();
+<span class="ty">decimal</span> precioActual = <span class="nm">990m</span>; <span class="cm">// precio inicial del kilo de manzana</span>
+
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio inicial: ${precioActual:N0}/kg"</span>);
+
+<span class="cm">// Método que cambia el precio y GUARDA el anterior en el Stack</span>
+<span class="kw">void</span> <span class="fn">CambiarPrecio</span>(<span class="ty">decimal</span> nuevoPrecio)
+{
+    historialPrecios.<span class="fn">Push</span>((<span class="st">"Manzana Fuji"</span>, precioActual)); <span class="cm">// guarda el anterior</span>
+    precioActual = nuevoPrecio;
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"→ Precio cambiado a ${precioActual:N0}/kg"</span>);
+}
+
+<span class="cm">// Método que deshace el ÚLTIMO cambio (el que está en el tope del Stack)</span>
+<span class="kw">void</span> <span class="fn">Deshacer</span>()
+{
+    <span class="kw">if</span> (historialPrecios.Count == <span class="nm">0</span>)
+    { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠ Sin cambios para deshacer."</span>); <span class="kw">return</span>; }
+
+    <span class="kw">var</span> (prod, anterior) = historialPrecios.<span class="fn">Pop</span>(); <span class="cm">// saca el último push</span>
+    precioActual = anterior;
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"↩ Deshecho — {prod} volvió a ${precioActual:N0}/kg"</span>);
+}
+
+<span class="fn">CambiarPrecio</span>(<span class="nm">1090m</span>); <span class="cm">// sube → Stack: [(Manzana,990)]</span>
+<span class="fn">CambiarPrecio</span>(<span class="nm">890m</span>);  <span class="cm">// baja → Stack: [(Manzana,990),(Manzana,1090)]</span>
+<span class="fn">CambiarPrecio</span>(<span class="nm">1200m</span>); <span class="cm">// sube → Stack: [(Manzana,990),(Manzana,1090),(Manzana,890)]</span>
+<span class="fn">Deshacer</span>();            <span class="cm">// vuelve a 890  ← saca el último (1200 era precio)</span>
+<span class="fn">Deshacer</span>();            <span class="cm">// vuelve a 1090 ← saca el siguiente</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio final: ${precioActual:N0}/kg"</span>); <span class="cm">// 1090</span></pre>
+        </div>
+      </div>
+
+      <div class="nivel-pane" id="stack-p">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>GameZone</strong> — Navegación entre pantallas de la app. El botón "Atrás" regresa a la pantalla anterior, igual que un navegador web.</p>
+        <div class="code-block">
+          <div class="code-hdr"><span class="code-lang">C# — Stack profesional: historial de navegación</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// GameZone — Navegación entre pantallas con Stack&lt;T&gt;
+// Cada pantalla visitada se apila. "Atrás" desapila (LIFO).
+// Exactamente como funciona el botón ← de Chrome o Firefox.</span>
+
+<span class="kw">public class</span> <span class="ty">Navegador</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">Stack</span>&lt;<span class="ty">string</span>&gt; _historial = <span class="kw">new</span>();
+    <span class="kw">public string</span> PantallaActual { <span class="kw">get</span>; <span class="kw">private set</span>; } = <span class="st">"Inicio"</span>;
+
+    <span class="cm">// Navegar: guardar la pantalla actual y moverse a la nueva</span>
+    <span class="kw">public void</span> <span class="fn">Ir</span>(<span class="ty">string</span> destino)
+    {
+        _historial.<span class="fn">Push</span>(PantallaActual); <span class="cm">// apilar la pantalla actual antes de salir</span>
+        PantallaActual = destino;
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"→ [{PantallaActual}]   (historial: {_historial.Count} pasos)"</span>);
+    }
+
+    <span class="cm">// Atrás: sacar la pantalla anterior del tope del Stack</span>
+    <span class="kw">public void</span> <span class="fn">Atras</span>()
+    {
+        <span class="kw">if</span> (_historial.Count == <span class="nm">0</span>)
+        { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠ Ya estás en el inicio — no hay atrás."</span>); <span class="kw">return</span>; }
+        PantallaActual = _historial.<span class="fn">Pop</span>(); <span class="cm">// recupera la última guardada</span>
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"← [{PantallaActual}]   (historial: {_historial.Count} pasos)"</span>);
+    }
+}
+
+<span class="cm">// USO</span>
+<span class="kw">var</span> nav = <span class="kw">new</span> <span class="ty">Navegador</span>();
+nav.<span class="fn">Ir</span>(<span class="st">"Catálogo"</span>);          <span class="cm">// → [Catálogo]</span>
+nav.<span class="fn">Ir</span>(<span class="st">"Detalle: FIFA 25"</span>); <span class="cm">// → [Detalle: FIFA 25]</span>
+nav.<span class="fn">Ir</span>(<span class="st">"Carrito"</span>);          <span class="cm">// → [Carrito]</span>
+nav.<span class="fn">Atras</span>();               <span class="cm">// ← [Detalle: FIFA 25]</span>
+nav.<span class="fn">Atras</span>();               <span class="cm">// ← [Catálogo]</span>
+nav.<span class="fn">Atras</span>();               <span class="cm">// ← [Inicio]</span>
+nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya estás en el inicio</span></pre>
+        </div>
+      </div>
+
+      <div class="challenge">
+        <div class="ch-header"><span class="ch-icon">⚡</span><span class="ch-title">Desafío — Stack</span><span class="ch-badge">+20 XP</span></div>
+        <div class="ch-desc">Implementa un historial de acciones para la caja de la Pizzería Don Corleone. El cajero puede registrar acciones (agregar ítem, quitar ítem, aplicar descuento) y deshacerlas con Ctrl+Z.</div>
+        <div class="ch-req"><ul><li>Usar <code>Stack&lt;string&gt;</code></li><li>Métodos <code>RegistrarAccion(string)</code> y <code>Deshacer()</code></li><li>Mostrar el contenido actual del Stack después de cada operación</li></ul></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 </section>
 
@@ -1413,11 +1632,13 @@ function toggleObj(el){
 }
 
 function switchNivel(btn,group,level){
-  // deactivate all tabs in this group
-  btn.closest('.concepto-body').querySelectorAll('.nivel-tab').forEach(t=>t.classList.remove('on'));
-  btn.closest('.concepto-body').querySelectorAll('.nivel-pane').forEach(p=>p.classList.remove('on'));
+  // deactivate all tabs and panes in this concepto-body
+  const body=btn.closest('.concepto-body');
+  body.querySelectorAll('.nivel-tab').forEach(t=>t.classList.remove('on'));
+  body.querySelectorAll('.nivel-pane').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
-  document.getElementById(group+'-'+level).classList.add('on');
+  const pane=document.getElementById(group+'-'+level);
+  if(pane)pane.classList.add('on');
   addXP(3);
 }
 
