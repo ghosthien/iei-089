@@ -21,7 +21,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.75;color:var(--text);background:var(--bg);min-height:100vh}
+body{font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.8;color:var(--text);background:var(--bg);min-height:100vh}
 ::selection{background:var(--teal);color:#fff}
 
 /* ─── TOP BAR ────────────────────────────────────────────────── */
@@ -51,10 +51,10 @@ body{font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.75;color:var(
 
 /* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
 .s-title{font-family:'Lora',serif;font-size:clamp(24px,3.5vw,38px);font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2}
-.s-sub{font-size:16px;color:var(--text2);margin-bottom:28px;line-height:1.6}
-.sec-title{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--text);margin:30px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:9px}
-p{margin-bottom:10px;color:var(--text2);font-size:15px;line-height:1.7}
+.s-sub{font-size:18px;color:var(--text2);margin-bottom:28px;line-height:1.65}
+.sec-title{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--text);margin:30px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:9px}
+p{margin-bottom:10px;color:var(--text2);font-size:17px;line-height:1.75}
 
 /* ─── GRID BOXES ─────────────────────────────────────────────── */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
@@ -65,7 +65,7 @@ p{margin-bottom:10px;color:var(--text2);font-size:15px;line-height:1.7}
 .box-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 .box.tl .box-lbl{color:var(--teal)}.box.sg .box-lbl{color:var(--sage)}
 .box.am .box-lbl{color:var(--amber)}.box.ro .box-lbl{color:var(--rose)}.box.pl .box-lbl{color:var(--plum)}
-.box-body{font-size:14px;color:var(--text2);line-height:1.65}
+.box-body{font-size:15.5px;color:var(--text2);line-height:1.65}
 
 /* ─── OBJECTIVES ─────────────────────────────────────────────── */
 .obj-list{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
@@ -74,15 +74,15 @@ p{margin-bottom:10px;color:var(--text2);font-size:15px;line-height:1.7}
 .obj.done{border-color:rgba(106,170,138,.32);background:var(--sage-bg)}
 .obj-chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:all .18s;background:var(--bg3)}
 .obj.done .obj-chk{background:var(--sage);border-color:var(--sage);color:#fff}
-.obj-txt{font-size:15px;color:var(--text2);flex:1}
+.obj-txt{font-size:16.5px;color:var(--text2);flex:1}
 .obj.done .obj-txt{color:var(--text)}
 .obj-xp{font-size:12px;font-weight:700;color:var(--sage)}
 .four-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px}
 .fc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px}
 .fc .fci{font-size:22px;margin-bottom:8px}
 .fc .fct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
-.fc .fch{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:6px}
-.fc .fcb{font-size:13px;color:var(--text2);line-height:1.5}
+.fc .fch{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.fc .fcb{font-size:14.5px;color:var(--text2);line-height:1.5}
 .fc.k{border-top:3px solid var(--teal)}.fc.k .fct{color:var(--teal)}
 .fc.s{border-top:3px solid var(--sage)}.fc.s .fct{color:var(--sage)}
 .fc.a{border-top:3px solid var(--amber)}.fc.a .fct{color:var(--amber)}
@@ -92,8 +92,8 @@ p{margin-bottom:10px;color:var(--text2);font-size:15px;line-height:1.7}
 .steps{display:flex;flex-direction:column;gap:13px;margin-bottom:24px}
 .step{display:flex;gap:14px;align-items:flex-start}
 .step-n{width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
-.step-b .step-t{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:3px}
-.step-b .step-d{font-size:14px;color:var(--text2)}
+.step-b .step-t{font-size:16.5px;font-weight:700;color:var(--text);margin-bottom:3px}
+.step-b .step-d{font-size:16px;color:var(--text2)}
 
 /* ─── CODE ───────────────────────────────────────────────────── */
 .code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);margin:13px 0;overflow:hidden}
@@ -101,8 +101,8 @@ p{margin-bottom:10px;color:var(--text2);font-size:15px;line-height:1.7}
 .code-lang{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--text3)}
 .copy-btn{font-size:12px;font-weight:600;color:var(--teal);background:none;border:none;cursor:pointer;padding:3px 8px;border-radius:4px;transition:background .18s}
 .copy-btn:hover{background:var(--teal-bg)}
-pre{padding:18px 22px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.85}
-code{font-family:'JetBrains Mono',monospace;font-size:13px}
+pre{padding:18px 22px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.85}
+code{font-family:'JetBrains Mono',monospace;font-size:14px}
 .cm{color:#3d5040;font-style:italic}.kw{color:#5badbe}.ty{color:#d4944a}.st{color:#6aaa8a}.nm{color:#c47b7b}.fn{color:#9b7ec8}
 
 /* ─── ARCH LAYERS ────────────────────────────────────────────── */
@@ -175,24 +175,24 @@ code{font-family:'JetBrains Mono',monospace;font-size:13px}
 .quiz-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
 .qc-head{padding:18px 22px;background:var(--bg3);border-bottom:1px solid var(--border)}
 .qc-num{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px}
-.qc-q{font-size:16px;font-weight:600;color:var(--text)}
+.qc-q{font-size:17px;font-weight:600;color:var(--text)}
 .qc-opts{padding:16px 22px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.qc-opt{padding:11px 15px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:14px;color:var(--text2);transition:all .18s;text-align:left;background:none}
+.qc-opt{padding:11px 15px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:15.5px;color:var(--text2);transition:all .18s;text-align:left;background:none}
 .qc-opt:hover{border-color:var(--border2);background:var(--bg3);color:var(--text)}
 .qc-opt.correct{background:var(--sage-bg);border-color:var(--sage);color:var(--sage)}
 .qc-opt.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
 .qc-fb{padding:0 22px 16px;font-size:13.5px;display:none}
 
 /* ─── GLOSSARY ───────────────────────────────────────────────── */
-.gl-search{width:100%;padding:11px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:15px;font-family:'DM Sans',sans-serif;margin-bottom:16px;outline:none;transition:border-color .18s}
+.gl-search{width:100%;padding:11px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;margin-bottom:16px;outline:none;transition:border-color .18s}
 .gl-search:focus{border-color:var(--teal)}
 .gl-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.gf{padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;color:var(--text2);background:none}
+.gf{padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;color:var(--text2);background:none}
 .gf.on{background:var(--teal);border-color:var(--teal);color:#fff}
 .gl-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:9px;overflow:hidden}
 .gi-head{padding:13px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .18s}
 .gi-head:hover{background:var(--bg3)}
-.gi-term{font-size:14.5px;font-weight:700;color:var(--text)}
+.gi-term{font-size:16px;font-weight:700;color:var(--text)}
 .gi-cat{font-size:11px;font-weight:600;padding:2px 9px;border-radius:12px}
 .gi-cat.cs{background:var(--teal-bg);color:var(--teal)}.gi-cat.net{background:var(--plum-bg);color:var(--plum)}
 .gi-cat.arch{background:var(--amber-bg);color:var(--amber)}.gi-cat.vs{background:var(--sage-bg);color:var(--sage)}
@@ -208,10 +208,10 @@ code{font-family:'JetBrains Mono',monospace;font-size:13px}
 .chip.ro{background:var(--rose-bg);color:var(--rose)}
 ul.lst{padding-left:18px;margin-bottom:10px}
 ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
-.plen-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:12px;font-size:16px;font-weight:500;color:var(--text);font-family:'Lora',serif;border-left:4px solid var(--amber)}
-.plen-n{font-size:11px;font-weight:700;color:var(--amber);margin-bottom:5px}
+.plen-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:12px;font-size:18px;font-weight:500;color:var(--text);font-family:'Lora',serif;border-left:4px solid var(--amber)}
+.plen-n{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:5px}
 .sem{display:flex;gap:12px;margin-top:16px}
-.sem-btn{flex:1;padding:15px;border-radius:var(--r);border:2px solid transparent;cursor:pointer;font-weight:700;font-size:14px;transition:all .18s;background:var(--bg3);color:var(--text)}
+.sem-btn{flex:1;padding:15px;border-radius:var(--r);border:2px solid transparent;cursor:pointer;font-weight:700;font-size:15.5px;transition:all .18s;background:var(--bg3);color:var(--text)}
 .sem-btn.ve{border-color:var(--sage)}.sem-btn.ve:hover,.sem-btn.ve.on{background:var(--sage-bg);color:var(--sage)}
 .sem-btn.am{border-color:var(--amber)}.sem-btn.am:hover,.sem-btn.am.on{background:var(--amber-bg);color:var(--amber)}
 .sem-btn.ro{border-color:var(--rose)}.sem-btn.ro:hover,.sem-btn.ro.on{background:var(--rose-bg);color:var(--rose)}
@@ -219,7 +219,7 @@ ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
 .os-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;background:var(--sage);color:#fff}
 .os-obj{font-size:14.5px;font-weight:600;color:var(--text);margin-bottom:3px}
 .os-how{font-size:13px;color:var(--text2)}
-.tree{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:20px;line-height:2.1}
+.tree{font-family:'JetBrains Mono',monospace;font-size:14px;background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;line-height:2;white-space:pre;overflow-x:auto;display:block}
 .tf{color:var(--amber)}.tc-f{color:var(--text2)}.tc-cs{color:var(--teal)}.tc-x{color:var(--plum)}.tc-c{color:var(--text3);font-style:italic}
 .cite{background:var(--bg3);border-left:3px solid var(--amber);padding:10px 16px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px;color:var(--text3);font-style:italic}
 
@@ -1414,7 +1414,7 @@ p2.Precio = <span class="nm">12990m</span>;
   <p class="s-sub">Cómo organizar correctamente el código de Almacenes Por Ahí en Visual Studio.</p>
 
   <div class="sec-title" style="margin-top:0"><span>🌲</span>Árbol del proyecto en el disco</div>
-  <div class="tree">
+  <pre class="tree">
 <span class="tf">📁 AlmacenesPA/</span>                        <span class="tc-c">← Carpeta raíz de la SOLUCIÓN</span>
   <span class="tc-x">📄 AlmacenesPA.sln</span>                    <span class="tc-c">← Archivo de solución (abre todo en VS)</span>
   │
@@ -1437,18 +1437,18 @@ p2.Precio = <span class="nm">12990m</span>;
   │   <span class="tf">📁 Datos/</span>                          <span class="tc-c">← Acceso a datos (semanas 4-5)</span>
   │       <span class="tc-cs">📄 AlmacenesContext.cs</span>
   │
-  <span class="tf">📁 AlmacenesWPF/</span>                      <span class="tc-c">← Proyecto WPF (Encargo 2)</span>
+  <span class="tf">📁 AlmacenesWPF/</span>                      <span class="tc-c">← Proyecto WPF (Encargo 2, semana 6)</span>
   │   <span class="tc-x">📄 AlmacenesWPF.csproj</span>
   │   <span class="tc-cs">📄 App.xaml.cs</span>
   │   <span class="tf">📁 Vistas/</span>
   │   <span class="tf">📁 ViewModels/</span>
   │
-  <span class="tf">📁 AlmacenesWeb/</span>                      <span class="tc-c">← Proyecto ASP.NET MVC (Encargo 3)</span>
+  <span class="tf">📁 AlmacenesWeb/</span>                      <span class="tc-c">← Proyecto ASP.NET MVC (Encargo 3, semana 12)</span>
       <span class="tc-x">📄 AlmacenesWeb.csproj</span>
       <span class="tf">📁 Controllers/</span>
       <span class="tf">📁 Models/</span>
       <span class="tf">📁 Views/</span>
-  </div>
+  </pre>
 
   <div class="sec-title"><span>📋</span>El archivo .csproj — configuración del proyecto</div>
   <div class="code-block">
