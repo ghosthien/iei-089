@@ -3,2190 +3,397 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IEI-089 | Semana 1 — Arquitectura y Componentes de .NET</title>
+<title>IEI-089 · Programación .NET — Santo Tomás</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#1a1c1e;--bg2:#22252a;--bg3:#2a2d33;--bg4:#31353d;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --text:#e8e4dc;--text2:#b0ab9e;--text3:#6a6560;
-  --sage:#6aaa8a;--sage-bg:rgba(106,170,138,0.11);
-  --teal:#5badbe;--teal-bg:rgba(91,173,190,0.11);
-  --amber:#d4944a;--amber-bg:rgba(212,148,74,0.11);
-  --rose:#c47b7b;--rose-bg:rgba(196,123,123,0.11);
-  --plum:#9b7ec8;--plum-bg:rgba(155,126,200,0.11);
-  --code-bg:#0f1117;--nav-w:268px;--r:10px;
+  --bg:#1a1c1e; --bg2:#22252a; --bg3:#2a2d33; --bg4:#31353d;
+  --border:rgba(255,255,255,.07); --border2:rgba(255,255,255,.14);
+  --text:#e8e4dc; --text2:#b0ab9e; --text3:#6a6560;
+  --teal:#5badbe; --teal-bg:rgba(91,173,190,.12);
+  --sage:#6aaa8a; --sage-bg:rgba(106,170,138,.12);
+  --amber:#d4944a; --amber-bg:rgba(212,148,74,.12);
+  --plum:#9b7ec8; --plum-bg:rgba(155,126,200,.12);
+  --rose:#c47b7b; --rose-bg:rgba(196,123,123,.12);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;color:var(--text);background:var(--bg);display:flex;min-height:100vh}
-::selection{background:var(--teal);color:#fff}
+body{font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;color:var(--text);background:var(--bg);min-height:100vh}
 
-/* XP BAR */
-#xp-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--bg3);z-index:1000}
-#xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sage),var(--teal),var(--plum));transition:width .6s ease}
-#xp-badge{position:fixed;top:8px;right:14px;z-index:1001;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:5px;box-shadow:0 2px 12px rgba(0,0,0,.5)}
-#xp-badge::before{content:'⚡';font-size:11px}
-
-/* SIDEBAR */
-.sb{width:var(--nav-w);min-height:100vh;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;transition:transform .25s ease;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
-.sb-header{padding:18px 15px 13px;border-bottom:1px solid var(--border);background:var(--bg3)}
-.sb-logo{font-family:'Lora',serif;font-size:13px;font-weight:700;color:var(--teal);margin-bottom:2px}
-.sb-course{font-size:11px;color:var(--text3)}
-.sb-week{margin-top:8px;background:var(--teal-bg);border:1px solid rgba(91,173,190,.22);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--teal)}
-.nav-list{list-style:none;padding:7px 0;flex:1}
-.nav-sep{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:10px 15px 3px}
-.nl{display:flex;align-items:center;gap:9px;padding:8px 15px;color:var(--text2);text-decoration:none;font-size:13px;font-weight:500;border-left:2px solid transparent;transition:all .18s;cursor:pointer}
-.nl:hover{background:rgba(255,255,255,.04);color:var(--text);border-left-color:var(--border2)}
-.nl.on{background:var(--teal-bg);color:var(--teal);border-left-color:var(--teal)}
-.ni{font-size:14px;width:17px;text-align:center;opacity:.85}
-.sb-prog{padding:13px 15px;border-top:1px solid var(--border)}
-.prog-lbl{font-size:11px;color:var(--text3);margin-bottom:5px;display:flex;justify-content:space-between}
-.prog-track{background:var(--bg4);border-radius:3px;height:5px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--teal));width:5.5%;transition:width .5s;border-radius:3px}
-
-/* HAMBURGER */
-.hbg{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px;cursor:pointer;flex-direction:column;gap:4px}
-.hbg span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99;backdrop-filter:blur(2px)}
-.overlay.open{display:block}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;padding:0 32px;gap:20px}
+.nav-brand{font-family:'Lora',serif;font-size:15px;font-weight:700;color:var(--teal);text-decoration:none;white-space:nowrap}
+.nav-sub{font-size:13px;color:var(--text3)}
+.nav-sep{flex:1}
 
 /* MAIN */
-.main{margin-left:var(--nav-w);flex:1;min-height:100vh;padding-top:3px}
-.sec{display:none;padding:38px 46px 80px;max-width:1060px;animation:fi .25s ease}
-.sec.on{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-
-/* TYPOGRAPHY */
-.pg-title{font-family:'Lora',serif;font-size:clamp(20px,3vw,32px);font-weight:700;color:var(--text);margin-bottom:5px;line-height:1.25}
-.pg-sub{font-size:14px;color:var(--text2);margin-bottom:26px}
-.sec-title{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--text);margin:26px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
-h3{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:7px}
-p{margin-bottom:9px;color:var(--text2);font-size:14px}
+main{padding-top:56px}
 
 /* HERO */
-.hero{background:linear-gradient(135deg,#1d2c38 0%,#1a2b26 50%,#201b2d 100%);border:1px solid var(--border);border-radius:13px;padding:40px 36px;margin-bottom:28px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(91,173,190,.07) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(106,170,138,.14);border:1px solid rgba(106,170,138,.28);border-radius:20px;padding:4px 13px;font-size:11px;font-weight:600;color:var(--sage);margin-bottom:13px;letter-spacing:.04em}
-.hero h1{font-family:'Lora',serif;font-size:clamp(24px,3.8vw,44px);font-weight:700;color:#f0ece4;line-height:1.2;margin-bottom:7px}
-.hero-desc{font-size:14.5px;color:rgba(232,228,220,.65);margin-bottom:26px;max-width:600px}
-.hero-tags{display:flex;flex-wrap:wrap;gap:9px}
-.htag{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:7px;padding:7px 13px;font-size:12px;font-weight:600;color:var(--text)}
-.htag.tl{background:var(--teal-bg);border-color:rgba(91,173,190,.22);color:var(--teal)}
-.htag.sg{background:var(--sage-bg);border-color:rgba(106,170,138,.22);color:var(--sage)}
-.htag.am{background:var(--amber-bg);border-color:rgba(212,148,74,.22);color:var(--amber)}
-.htag.pl{background:var(--plum-bg);border-color:rgba(155,126,200,.22);color:var(--plum)}
+.hero{background:linear-gradient(135deg,#1d2c38 0%,#1a2b26 50%,#201b2d 100%);border-bottom:1px solid var(--border);padding:72px 48px 64px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(91,173,190,.07) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:860px;margin:0 auto}
+.hero-eyebrow{font-size:13px;font-weight:600;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-family:'Lora',serif;font-size:clamp(32px,5vw,56px);font-weight:700;color:#f0ece4;line-height:1.15;margin-bottom:16px}
+.hero h1 span{color:var(--teal)}
+.hero-desc{font-size:17px;color:rgba(232,228,220,.65);max-width:560px;margin-bottom:36px;line-height:1.65}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px}
+.hmeta{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:8px;padding:8px 16px;font-size:13.5px;font-weight:600}
+.hmeta.tl{background:var(--teal-bg);border-color:rgba(91,173,190,.22);color:var(--teal)}
+.hmeta.sg{background:var(--sage-bg);border-color:rgba(106,170,138,.22);color:var(--sage)}
+.hmeta.am{background:var(--amber-bg);border-color:rgba(212,148,74,.22);color:var(--amber)}
 
-/* GRID BOXES */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;margin-bottom:20px}
-.box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px}
-.box.tl{border-left:4px solid var(--teal)}.box.sg{border-left:4px solid var(--sage)}
-.box.am{border-left:4px solid var(--amber)}.box.ro{border-left:4px solid var(--rose)}.box.pl{border-left:4px solid var(--plum)}
-.box-lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
-.box.tl .box-lbl{color:var(--teal)}.box.sg .box-lbl{color:var(--sage)}
-.box.am .box-lbl{color:var(--amber)}.box.ro .box-lbl{color:var(--rose)}.box.pl .box-lbl{color:var(--plum)}
-.box-body{font-size:13px;color:var(--text2);line-height:1.6}
+/* SEMANAS SECTION */
+.section{max-width:960px;margin:0 auto;padding:64px 32px}
+.section-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.section h2{font-family:'Lora',serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:6px}
+.section-sub{font-size:15px;color:var(--text2);margin-bottom:36px}
 
-/* OBJECTIVES */
-.obj-list{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
-.obj{display:flex;align-items:center;gap:13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:13px 17px;cursor:pointer;transition:all .18s}
-.obj:hover{border-color:var(--border2)}
-.obj.done{border-color:rgba(106,170,138,.32);background:var(--sage-bg)}
-.obj-chk{width:21px;height:21px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;transition:all .18s;background:var(--bg3)}
-.obj.done .obj-chk{background:var(--sage);border-color:var(--sage);color:#fff}
-.obj-txt{font-size:13.5px;color:var(--text2);flex:1}
-.obj.done .obj-txt{color:var(--text)}
-.obj-xp{font-size:11px;font-weight:700;color:var(--sage)}
-.four-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px;margin-bottom:24px}
-.fc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
-.fc .fci{font-size:21px;margin-bottom:7px}
-.fc .fct{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
-.fc .fch{font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:5px}
-.fc .fcb{font-size:12px;color:var(--text2);line-height:1.5}
-.fc.k{border-top:3px solid var(--teal)}.fc.k .fct{color:var(--teal)}
-.fc.s{border-top:3px solid var(--sage)}.fc.s .fct{color:var(--sage)}
-.fc.a{border-top:3px solid var(--amber)}.fc.a .fct{color:var(--amber)}
-.fc.e{border-top:3px solid var(--plum)}.fc.e .fct{color:var(--plum)}
+/* UNIDAD BLOCK */
+.unidad{margin-bottom:52px}
+.unidad-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.unidad-badge{background:var(--teal-bg);border:1px solid rgba(91,173,190,.25);border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--teal);letter-spacing:.05em}
+.unidad-title{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--text)}
+.unidad-hrs{font-size:12.5px;color:var(--text3);margin-left:auto}
 
-/* STEPS */
-.steps{display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
-.step{display:flex;gap:13px;align-items:flex-start}
-.step-n{width:28px;height:28px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.step-b .step-t{font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:3px}
-.step-b .step-d{font-size:12.5px;color:var(--text2)}
+/* SEMANA CARDS GRID */
+.weeks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.week-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 22px 18px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:10px;transition:all .2s ease;position:relative;overflow:hidden}
+.week-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.week-card.tl::before{background:var(--teal)}
+.week-card.sg::before{background:var(--sage)}
+.week-card.am::before{background:var(--amber)}
+.week-card.pl::before{background:var(--plum)}
+.week-card.active:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.week-card.locked{opacity:.45;cursor:not-allowed;pointer-events:none}
+.week-card.upcoming{opacity:.6;cursor:default;pointer-events:none}
+.wc-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.wc-sem{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3)}
+.wc-status{font-size:11px;font-weight:700;padding:2px 9px;border-radius:12px}
+.wc-status.pub{background:var(--sage-bg);color:var(--sage)}
+.wc-status.prox{background:var(--bg4);color:var(--text3)}
+.wc-title{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--text);line-height:1.3}
+.wc-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.wc-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.wc-chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 8px;border-radius:4px;background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
+.wc-arrow{font-size:16px;color:var(--text3);margin-top:auto;align-self:flex-end}
+.week-card.active .wc-arrow{color:var(--teal)}
 
-/* CODE */
-.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);margin:11px 0;overflow:hidden}
-.code-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 15px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border)}
-.code-lang{font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--text3)}
-.copy-btn{font-size:11px;font-weight:600;color:var(--teal);background:none;border:none;cursor:pointer;padding:3px 7px;border-radius:4px;transition:background .18s}
-.copy-btn:hover{background:var(--teal-bg)}
-pre{padding:16px 19px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.85}
-code{font-family:'JetBrains Mono',monospace;font-size:12px}
-.cm{color:#3d5040;font-style:italic}.kw{color:#5badbe}.ty{color:#d4944a}.st{color:#6aaa8a}.nm{color:#c47b7b}.fn{color:#9b7ec8}
+/* PROGRESS BAR */
+.progress-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 32px}
+.progress-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.prog-label{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap}
+.prog-track{flex:1;min-width:200px;background:var(--bg4);border-radius:4px;height:8px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--teal));border-radius:4px;width:5.5%}
+.prog-pct{font-size:13px;color:var(--text2);white-space:nowrap}
+.prog-weeks{font-size:13px;color:var(--teal);font-weight:700;white-space:nowrap}
 
-/* ARCH LAYERS */
-.arch-stack{display:flex;flex-direction:column;gap:4px;margin:14px 0}
-.arch-layer{display:flex;align-items:center;gap:13px;padding:12px 17px;border-radius:8px;cursor:pointer;transition:all .2s;border:1px solid transparent}
-.arch-layer:hover{transform:translateX(3px)}
-.arch-layer.active-l{transform:translateX(5px)}
-.al-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0}
-.al-name{font-size:13.5px;font-weight:700;min-width:128px}
-.al-items{font-size:12px;opacity:.7}
-.al-detail{display:none;background:var(--bg3);border-radius:8px;padding:15px 17px;margin-top:3px;border-left:3px solid var(--teal);animation:fi .2s ease}
-.al-detail.show{display:block}
-.al-detail p{font-size:12.5px;margin-bottom:5px;color:var(--text2)}
+/* ENCARGOS */
+.encargos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:28px}
+.encargo{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.enc-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.enc-title{font-size:14.5px;font-weight:700;color:var(--text)}
+.enc-sem{font-size:12.5px;color:var(--text2)}
+.enc-pond{font-size:22px;font-weight:700}
+.enc-e1{border-top:3px solid var(--teal)}.enc-e1 .enc-label,.enc-e1 .enc-pond{color:var(--teal)}
+.enc-e2{border-top:3px solid var(--sage)}.enc-e2 .enc-label,.enc-e2 .enc-pond{color:var(--sage)}
+.enc-e3{border-top:3px solid var(--amber)}.enc-e3 .enc-label,.enc-e3 .enc-pond{color:var(--amber)}
+.enc-e4{border-top:3px solid var(--plum)}.enc-e4 .enc-label,.enc-e4 .enc-pond{color:var(--plum)}
+.enc-ex{border-top:3px solid var(--rose)}.enc-ex .enc-label,.enc-ex .enc-pond{color:var(--rose)}
 
-/* PILLAR ACCORDION */
-.pillar-list{display:flex;flex-direction:column;gap:7px}
-.pillar{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.pillar-head{display:flex;align-items:center;gap:13px;padding:13px 17px;cursor:pointer;transition:background .18s}
-.pillar-head:hover{background:var(--bg3)}
-.pillar-head.op{background:var(--teal-bg);border-bottom:1px solid var(--border)}
-.ph-ic{font-size:20px;width:25px;text-align:center}
-.ph-ti{font-size:13.5px;font-weight:700;color:var(--text);flex:1}
-.ph-su{font-size:11.5px;color:var(--text2);margin-right:8px}
-.ph-ar{font-size:11px;color:var(--text3);transition:transform .2s}
-.ph-ar.rot{transform:rotate(180deg)}
-.pillar-body{display:none;padding:18px}
-.pillar-body.op{display:block;animation:fi .2s ease}
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:28px 32px;text-align:center;font-size:13px;color:var(--text3)}
 
-/* CLR TYPE CARDS */
-.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:11px;margin-bottom:14px}
-.tc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .2s}
-.tc:hover{border-color:var(--teal);background:var(--bg3);transform:translateY(-2px)}
-.tc.op{border-color:var(--teal);background:var(--teal-bg)}
-.tc-ic{font-size:24px;margin-bottom:7px}
-.tc-ti{font-size:13.5px;font-weight:700;color:var(--text);margin-bottom:3px}
-.tc-su{font-size:11.5px;color:var(--text2)}
-.type-detail{display:none;background:var(--bg3);border:1px solid var(--teal);border-radius:var(--r);padding:18px;margin-bottom:14px}
-.type-detail.op{display:block;animation:fi .2s ease}
-
-/* PIPELINE */
-.pipeline{display:flex;align-items:center;flex-wrap:wrap;gap:3px;margin:14px 0}
-.pipe-step{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:11px 13px;text-align:center;cursor:pointer;transition:all .18s;min-width:100px;flex:1}
-.pipe-step:hover,.pipe-step.ap{background:var(--teal-bg);border-color:var(--teal)}
-.ps-ic{font-size:22px;display:block;margin-bottom:5px}
-.ps-ti{font-size:11.5px;font-weight:700;color:var(--text);display:block}
-.ps-su{font-size:10px;color:var(--text3);display:block;margin-top:1px}
-.pipe-arrow{font-size:16px;color:var(--text3);flex-shrink:0}
-.pipe-detail{background:var(--code-bg);border:1px solid var(--teal);border-radius:var(--r);padding:15px 18px;margin-top:10px;display:none}
-.pipe-detail.show{display:block;animation:fi .2s ease}
-
-/* COMPARISON TABLE */
-.cmp-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:11px 0}
-.cmp-table th{background:var(--bg3);color:var(--text);font-weight:700;padding:9px 13px;border:1px solid var(--border);text-align:left}
-.cmp-table th.jh{background:rgba(212,148,74,.13);color:var(--amber)}
-.cmp-table th.nh{background:var(--teal-bg);color:var(--teal)}
-.cmp-table td{padding:8px 13px;border:1px solid var(--border);color:var(--text2);font-family:'JetBrains Mono',monospace;font-size:11.5px}
-.cmp-table td.con{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--text);background:var(--bg3)}
-.cmp-table td.jv{background:rgba(212,148,74,.05);color:var(--amber)}
-.cmp-table td.nv{background:var(--teal-bg);color:var(--teal)}
-.cmp-table td.rel{background:rgba(255,255,255,.02);font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2)}
-.rs{color:var(--sage)}.rd{color:var(--rose)}
-
-/* EX TABS */
-.ex-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
-.ex-tab{padding:6px 13px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid var(--border);cursor:pointer;transition:all .18s;color:var(--text2);background:none}
-.ex-tab.on{background:var(--amber);border-color:var(--amber);color:#fff}
-.ex-pane{display:none}.ex-pane.on{display:block;animation:fi .2s ease}
-
-/* QUIZ */
-.quiz-card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;margin-bottom:16px;overflow:hidden}
-.qc-head{padding:16px 19px;background:var(--bg3);border-bottom:1px solid var(--border)}
-.qc-num{font-size:10.5px;font-weight:700;color:var(--text3);margin-bottom:3px}
-.qc-q{font-size:14.5px;font-weight:600;color:var(--text)}
-.qc-opts{padding:14px 19px;display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.qc-opt{padding:9px 13px;border:1px solid var(--border);border-radius:7px;cursor:pointer;font-size:12.5px;color:var(--text2);transition:all .18s;text-align:left;background:none}
-.qc-opt:hover{border-color:var(--border2);background:var(--bg3);color:var(--text)}
-.qc-opt.correct{background:var(--sage-bg);border-color:var(--sage);color:var(--sage)}
-.qc-opt.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
-.qc-fb{padding:0 19px 14px;font-size:12.5px;display:none}
-
-/* GLOSSARY */
-.gl-search{width:100%;padding:10px 15px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:13.5px;font-family:'DM Sans',sans-serif;margin-bottom:14px;outline:none;transition:border-color .18s}
-.gl-search:focus{border-color:var(--teal)}
-.gl-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
-.gf{padding:5px 13px;border:1px solid var(--border);border-radius:20px;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .18s;color:var(--text2);background:none}
-.gf.on{background:var(--teal);border-color:var(--teal);color:#fff}
-.gl-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
-.gi-head{padding:12px 17px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .18s}
-.gi-head:hover{background:var(--bg3)}
-.gi-term{font-size:13.5px;font-weight:700;color:var(--text)}
-.gi-cat{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:12px}
-.gi-cat.cs{background:var(--teal-bg);color:var(--teal)}.gi-cat.net{background:var(--plum-bg);color:var(--plum)}
-.gi-cat.arch{background:var(--amber-bg);color:var(--amber)}.gi-cat.vs{background:var(--sage-bg);color:var(--sage)}
-.gi-cat.prev{background:var(--rose-bg);color:var(--rose)}
-.gi-body{display:none;padding:14px 17px;border-top:1px solid var(--border)}
-.gi-body.op{display:block;animation:fi .2s ease}
-
-/* MISC */
-.kb{display:inline-block;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:2px 6px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);border-bottom:2px solid var(--border2)}
-.chip{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11px;font-weight:700;margin:2px}
-.chip.tl{background:var(--teal-bg);color:var(--teal)}.chip.sg{background:var(--sage-bg);color:var(--sage)}
-.chip.am{background:var(--amber-bg);color:var(--amber)}.chip.pl{background:var(--plum-bg);color:var(--plum)}
-.chip.ro{background:var(--rose-bg);color:var(--rose)}
-ul.lst{padding-left:17px;margin-bottom:9px}
-ul.lst li{color:var(--text2);font-size:13px;margin-bottom:4px}
-.cite{background:var(--bg3);border-left:3px solid var(--amber);padding:9px 15px;border-radius:0 7px 7px 0;margin:9px 0;font-size:12px;color:var(--text3);font-style:italic}
-.plen-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:17px 21px;margin-bottom:11px;font-size:15.5px;font-weight:500;color:var(--text);font-family:'Lora',serif;border-left:4px solid var(--amber)}
-.plen-n{font-size:10.5px;font-weight:700;color:var(--amber);margin-bottom:5px}
-.sem{display:flex;gap:11px;margin-top:14px}
-.sem-btn{flex:1;padding:14px;border-radius:var(--r);border:2px solid transparent;cursor:pointer;font-weight:700;font-size:13.5px;transition:all .18s;background:var(--bg3);color:var(--text)}
-.sem-btn.ve{border-color:var(--sage)}.sem-btn.ve:hover,.sem-btn.ve.on{background:var(--sage-bg);color:var(--sage)}
-.sem-btn.am{border-color:var(--amber)}.sem-btn.am:hover,.sem-btn.am.on{background:var(--amber-bg);color:var(--amber)}
-.sem-btn.ro{border-color:var(--rose)}.sem-btn.ro:hover,.sem-btn.ro.on{background:var(--rose-bg);color:var(--rose)}
-.os-item{display:flex;gap:11px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:13px 17px;margin-bottom:9px}
-.os-dot{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:2px;background:var(--sage);color:#fff}
-.os-obj{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:2px}
-.os-how{font-size:12px;color:var(--text2)}
-.tree{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:18px;line-height:2.1}
-.tf{color:var(--amber)}.tc-f{color:var(--text2)}.tc-cs{color:var(--teal)}.tc-x{color:var(--plum)}.tc-c{color:var(--text3);font-style:italic}
-
-@media(max-width:780px){
-  .sb{transform:translateX(-100%)}.sb.open{transform:translateX(0)}
-  .hbg{display:flex}.main{margin-left:0;padding-top:48px}
-  .sec{padding:22px 16px 60px}.grid2,.grid3{grid-template-columns:1fr}
-  .four-cards{grid-template-columns:1fr 1fr}.qc-opts{grid-template-columns:1fr}
-  .hero{padding:26px 20px}.pipeline{flex-direction:column}.sem{flex-direction:column}
-  .ex-tabs{overflow-x:auto}
+@media(max-width:640px){
+  .hero{padding:48px 24px 44px}
+  .section{padding:44px 20px}
+  .progress-section{padding:20px 20px}
+  nav{padding:0 16px}
 }
 </style>
 </head>
 <body>
 
-<div id="xp-bar"><div id="xp-fill"></div></div>
-<div id="xp-badge">0 XP</div>
-<button class="hbg" id="hbgBtn"><span></span><span></span><span></span></button>
-<div class="overlay" id="overlay"></div>
-
-<!-- SIDEBAR -->
-<nav class="sb" id="sidebar">
-  <div class="sb-header">
-    <div class="sb-logo">IEI-089 · Prog. .NET</div>
-    <div class="sb-course">Ingeniería en Informática</div>
-    <div class="sb-week">📅 Semana 1 · Unidad I</div>
-  </div>
-  <ul class="nav-list">
-    <li class="nav-sep">Sesión</li>
-    <li><a class="nl on" onclick="goTo('hero',this)"><span class="ni">🏠</span>Inicio</a></li>
-    <li><a class="nl" onclick="goTo('obj',this)"><span class="ni">🎯</span>Objetivos</a></li>
-    <li><a class="nl" onclick="goTo('herr',this)"><span class="ni">🛠️</span>Visual Studio</a></li>
-    <li><a class="nl" onclick="goTo('caso',this)"><span class="ni">🏬</span>Caso Almacenes</a></li>
-    <li><a class="nl" onclick="goTo('modulos',this)"><span class="ni">📦</span>El Caso del Semestre</a></li>
-    <li><a class="nl" onclick="goTo('act11',this)"><span class="ni">✏️</span>Actividad 1.1</a></li>
-    <li class="nav-sep">Contenido .NET</li>
-    <li><a class="nl" onclick="goTo('arq',this)"><span class="ni">🏗️</span>Arquitectura en Capas</a></li>
-    <li><a class="nl" onclick="goTo('pil',this)"><span class="ni">⚙️</span>7 Pilares de .NET</a></li>
-    <li><a class="nl" onclick="goTo('clr',this)"><span class="ni">🔧</span>CLR en Detalle</a></li>
-    <li><a class="nl" onclick="goTo('cil',this)"><span class="ni">🔄</span>Ciclo del CIL</a></li>
-    <li class="nav-sep">Primer Programa C#</li>
-    <li><a class="nl" onclick="goTo('res',this)"><span class="ni">🔑</span>Palabras Reservadas</a></li>
-    <li><a class="nl" onclick="goTo('cls',this)"><span class="ni">🧱</span>Clases y Constructores</a></li>
-    <li><a class="nl" onclick="goTo('est',this)"><span class="ni">📁</span>Estructura del Proyecto</a></li>
-    <li><a class="nl" onclick="goTo('prac',this)"><span class="ni">💻</span>Primer Programa C#</a></li>
-    <li class="nav-sep">Cierre</li>
-    <li><a class="nl" onclick="goTo('quiz',this)"><span class="ni">🧠</span>Quiz</a></li>
-    <li><a class="nl" onclick="goTo('glos',this)"><span class="ni">📖</span>Glosario</a></li>
-    <li><a class="nl" onclick="goTo('sum',this)"><span class="ni">✅</span>Resumen</a></li>
-    <li><a class="nl" onclick="goTo('plen',this)"><span class="ni">🎙️</span>Plenario</a></li>
-  </ul>
-  <div class="sb-prog">
-    <div class="prog-lbl"><span>Semana 1 / 18</span><span>Unidad I</span></div>
-    <div class="prog-track"><div class="prog-fill"></div></div>
-  </div>
+<nav>
+  <a class="nav-brand" href="index.html">IEI-089</a>
+  <span class="nav-sub">Programación .NET · Ingeniería en Informática</span>
 </nav>
 
-<main class="main">
+<main>
 
-<!-- ═══════════════════ HERO ═══════════════════ -->
-<section class="sec on" id="sec-hero">
-  <div class="hero">
-    <div class="hero-badge">🏫 Semana 1 · Act. 1.0 + 1.1 · Unidad I</div>
-    <h1>Arquitectura y Componentes de .NET</h1>
-    <p class="hero-desc">Descubrimos cómo .NET organiza el ecosistema de ejecución, sus 7 pilares, el ciclo del CIL y escribimos los primeros programas en C#.</p>
-    <div class="hero-tags">
-      <div class="htag">⏱️ 4 horas pedagógicas</div>
-      <div class="htag tl">👥 Individual + Parejas</div>
-      <div class="htag sg">🔬 Diagnóstico + Formativa</div>
-      <div class="htag am">🛠️ Visual Studio Community</div>
-      <div class="htag pl">🎯 PROG-3 · SFIA 8</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Santo Tomás · III Semestre · 2025</div>
+    <h1>Programación <span>.NET</span></h1>
+    <p class="hero-desc">Desarrollo de aplicaciones con C#, WPF, ASP.NET MVC y .NET MAUI. Todas las clases, materiales y actividades del semestre en un solo lugar.</p>
+    <div class="hero-meta">
+      <div class="hmeta">📅 18 Semanas</div>
+      <div class="hmeta tl">🎯 3 Unidades</div>
+      <div class="hmeta sg">🛠️ Visual Studio + SSMS</div>
+      <div class="hmeta am">📋 SFIA 8 · PROG-3</div>
     </div>
   </div>
-  <div class="sec-title"><span>📋</span>¿Qué haremos hoy?</div>
-  <div class="grid2">
-    <div class="box tl"><div class="box-lbl">Actividad 1.0 — Diagnóstico (Individual)</div><div class="box-body">Revisión del programa e hitos evaluativos. Cuestionario diagnóstico sobre programación y bases de datos. Plenario de respuestas.</div></div>
-    <div class="box sg"><div class="box-lbl">Actividad 1.1 — Descubriendo .NET (Parejas)</div><div class="box-body">Análisis del problema de Almacenes Por Ahí para identificar componentes de la arquitectura .NET según requerimientos.</div></div>
-    <div class="box am"><div class="box-lbl">Hilo conductor semestral</div><div class="box-body"><strong>Almacenes Por Ahí</strong> — Cadena de 12 tiendas de ropa. Todas las clases apuntan a construir su sistema de gestión integral.</div></div>
-    <div class="box pl"><div class="box-lbl">Encargos del semestre</div><div class="box-body"><strong>E1</strong> (10%) Sem.3 · <strong>E2</strong> (20%) Sem.6 · <strong>E3</strong> (40%) Sem.12 · <strong>E4</strong> (30%) Sem.17</div></div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-inner">
+    <span class="prog-label">Progreso del semestre</span>
+    <div class="prog-track"><div class="prog-fill"></div></div>
+    <span class="prog-pct">5.5%</span>
+    <span class="prog-weeks">Semana 1 de 18</span>
   </div>
-</section>
+</div>
 
-<!-- ═══════════════════ OBJETIVOS ═══════════════════ -->
-<section class="sec" id="sec-obj">
-  <p class="pg-title">🎯 Objetivos de la Clase</p>
-  <p class="pg-sub">Marca cada objetivo a medida que lo logres. +5 XP por objetivo.</p>
-  <div class="obj-list">
-    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Identificar las capas de la arquitectura .NET y el rol de cada una (Lenguajes, FCL, BCL, CLR, SO).</div><div class="obj-xp">+5 XP</div></div>
-    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Explicar los 7 pilares de .NET: CLR, BCL, compiladores, FCL, herramientas, ASP.NET y servicios.</div><div class="obj-xp">+5 XP</div></div>
-    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Describir el ciclo completo del CIL: C# → Roslyn → CIL → CLR → JIT → CPU.</div><div class="obj-xp">+5 XP</div></div>
-    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Crear un proyecto .NET 8 en Visual Studio y escribir los primeros programas C# comentados.</div><div class="obj-xp">+5 XP</div></div>
-    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Aplicar conceptos de clase, constructor y propiedades en C# para modelar entidades del proyecto.</div><div class="obj-xp">+5 XP</div></div>
-  </div>
-  <div class="four-cards">
-    <div class="fc k"><div class="fci">🧠</div><div class="fct">Conocimiento</div><div class="fch">Arquitectura .NET</div><div class="fcb">CLR, FCL, BCL, CIL, JIT, GC. Pipeline de compilación y ejecución.</div></div>
-    <div class="fc s"><div class="fci">⚙️</div><div class="fct">Habilidad</div><div class="fch">Primer programa C#</div><div class="fcb">Crear proyecto, escribir clases con constructor, usar tipos básicos.</div></div>
-    <div class="fc a"><div class="fci">🤝</div><div class="fct">Actitud</div><div class="fch">Eficacia y colaboración</div><div class="fcb">Eficaz al analizar requerimientos. Colaborar activamente en parejas.</div></div>
-    <div class="fc e"><div class="fci">📊</div><div class="fct">Evaluación</div><div class="fch">Formativa — PROG-3</div><div class="fcb">Delimitar el problema, identificar componentes de consola en C#.</div></div>
-  </div>
-</section>
+<!-- SEMANAS -->
+<div class="section">
+  <div class="section-label">Clases</div>
+  <h2>Semanas del semestre</h2>
+  <p class="section-sub">Haz clic en cualquier semana publicada para acceder a la clase completa con contenidos, práctica, quiz y glosario.</p>
 
-<!-- ═══════════════════ VISUAL STUDIO ═══════════════════ -->
-<section class="sec" id="sec-herr">
-  <p class="pg-title">🛠️ Visual Studio Community 2022</p>
-  <p class="pg-sub">El IDE de referencia para .NET. Gratuito para estudiantes e instituciones educativas.</p>
-  <div class="steps">
-    <div class="step"><div class="step-n">1</div><div class="step-b"><div class="step-t">Abrir Visual Studio Community</div><div class="step-d">Inicio → Visual Studio 2022. Seleccionar "Continuar sin cuenta" o iniciar con cuenta Microsoft.</div></div></div>
-    <div class="step"><div class="step-n">2</div><div class="step-b"><div class="step-t">Crear nuevo proyecto <span class="kb">Ctrl+Shift+N</span></div><div class="step-d">Click en "Crear un nuevo proyecto" → buscar "Aplicación de consola" → seleccionar la opción C# (icono morado).</div></div></div>
-    <div class="step"><div class="step-n">3</div><div class="step-b"><div class="step-t">Configurar la solución</div><div class="step-d">Nombre: <code>AlmacenesConsola</code> · Ubicación: <code>C:\Proyectos\IEI089\</code> · Solución: <code>AlmacenesPA</code></div></div></div>
-    <div class="step"><div class="step-n">4</div><div class="step-b"><div class="step-t">Seleccionar .NET 8 (LTS)</div><div class="step-d">En el selector elegir <strong>.NET 8.0 (compatibilidad a largo plazo)</strong>. Verificar: <code>dotnet --version</code></div></div></div>
-    <div class="step"><div class="step-n">5</div><div class="step-b"><div class="step-t">Ejecutar con <span class="kb">F5</span></div><div class="step-d">La consola mostrará "Hello, World!". Confirmar que el entorno funciona antes de continuar.</div></div></div>
-  </div>
-  <div class="grid2">
-    <div class="box tl"><div class="box-lbl">Compilar y Ejecutar</div><div class="box-body"><span class="kb">F5</span> Ejecutar con depurador<br><span class="kb">Ctrl+F5</span> Ejecutar sin depurador<br><span class="kb">Ctrl+Shift+B</span> Compilar solución</div></div>
-    <div class="box sg"><div class="box-lbl">Depuración</div><div class="box-body"><span class="kb">F9</span> Agregar/quitar breakpoint<br><span class="kb">F10</span> Paso a paso (sobre)<br><span class="kb">F11</span> Paso a paso (entrando)</div></div>
-  </div>
-</section>
+  <!-- UNIDAD I -->
+  <div class="unidad">
+    <div class="unidad-header">
+      <span class="unidad-badge">Unidad I</span>
+      <span class="unidad-title">Desarrollo de Aplicaciones con C#</span>
+      <span class="unidad-hrs">24 hrs · Semanas 1–6</span>
+    </div>
+    <div class="weeks-grid">
 
-<!-- ═══════════════════ CASO ═══════════════════ -->
-<section class="sec" id="sec-caso">
-  <p class="pg-title">🏬 Caso — Almacenes Por Ahí</p>
-  <p class="pg-sub">El escenario empresarial que guía todo el semestre.</p>
-  <div class="box tl" style="margin-bottom:14px"><div class="box-lbl">Contexto empresarial</div><div class="box-body"><strong>Almacenes Por Ahí</strong> es una cadena chilena de 12 tiendas de ropa en Santiago, Valparaíso y Concepción. 80+ empleados, 5.000 productos, 15.000 clientes. Todo funciona con Excel y procesos manuales → errores, lentitud, pérdida de datos.<br><br>El objetivo del semestre: construir un <strong>sistema de gestión integral en C#</strong>.</div></div>
-  <div class="grid2">
-    <div class="box am"><div class="box-lbl">Sector retail en Chile</div><div class="box-body">Falabella, Ripley y Paris usan SAP con integraciones .NET. Mercado Libre procesa millones de transacciones con microservicios .NET. El estándar del retail ya usa esta plataforma.</div></div>
-    <div class="box pl"><div class="box-lbl">Entidades del sistema</div><div class="box-body"><span class="chip tl">Producto</span><span class="chip sg">Cliente</span><span class="chip am">Venta</span><span class="chip pl">DetalleVenta</span><span class="chip ro">Empleado</span><span class="chip tl">Sucursal</span></div></div>
-  </div>
-</section>
-
-<!-- ═══════════════════ MÓDULOS DEL SEMESTRE ═══════════════════ -->
-<section class="sec" id="sec-modulos">
-  <p class="pg-title">📦 El Caso del Semestre: Almacenes Por Ahí</p>
-  <p class="pg-sub">Haz clic en cualquier módulo para ver qué componente .NET lo resuelve y cómo se conecta con lo que aprenderás.</p>
-
-  <style>
-  .mod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
-  .mod-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;transition:all .2s;position:relative}
-  .mod-card:hover{transform:translateY(-2px);border-color:var(--border2)}
-  .mod-card.mc-tl{border-top:3px solid var(--teal)}.mod-card.mc-sg{border-top:3px solid var(--sage)}
-  .mod-card.mc-am{border-top:3px solid var(--amber)}.mod-card.mc-pl{border-top:3px solid var(--plum)}
-  .mod-card.mc-ro{border-top:3px solid var(--rose)}.mod-card.mc-sky{border-top:3px solid #5ba8d4}
-  .mod-n{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px}
-  .mc-tl .mod-n{color:var(--teal)}.mc-sg .mod-n{color:var(--sage)}.mc-am .mod-n{color:var(--amber)}
-  .mc-pl .mod-n{color:var(--plum)}.mc-ro .mod-n{color:var(--rose)}.mc-sky .mod-n{color:#5ba8d4}
-  .mod-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
-  .mod-desc{font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5}
-  .mod-chips{display:flex;flex-wrap:wrap;gap:4px}
-  .mod-chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:4px;background:var(--bg3);color:var(--text3);border:1px solid var(--border)}
-  .mod-detail{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);padding:16px 18px;margin-top:-1px;border-top:none;animation:fi .2s ease}
-  .mod-detail.show{display:block}
-  .mod-note{background:var(--amber-bg);border:1px solid rgba(212,148,74,.3);border-left:4px solid var(--amber);border-radius:var(--r);padding:14px 18px;margin-top:6px;font-size:13px;color:var(--text2)}
-  @media(max-width:780px){.mod-grid{grid-template-columns:1fr 1fr}}
-  @media(max-width:500px){.mod-grid{grid-template-columns:1fr}}
-  </style>
-
-  <div class="mod-grid" id="modGrid">
-
-    <div class="mod-card mc-tl" onclick="toggleMod(this,'m1')">
-      <div class="mod-n">Módulo 1</div>
-      <div class="mod-title">Gestión de Inventarios</div>
-      <div class="mod-desc">Seguimiento de productos, tallas, colores, precios y stock.</div>
-      <div class="mod-chips"><span class="mod-chip">System.Collections.Generic</span><span class="mod-chip">ADO.NET</span></div>
-    </div>
-    <div class="mod-detail" id="m1">
-      <p><strong style="color:var(--teal)">¿Qué resuelve en C#?</strong> La clase <code>Producto</code> con sus propiedades (Nombre, Precio, Stock, Talla) más una <code>List&lt;Producto&gt;</code> para almacenarlos en memoria, y Entity Framework para persistirlos en SQL Server.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> Semana 1 (consola básica) → Semana 4-5 (con SQL Server via Entity Framework) → Semana 6 (Encargo 2).</p>
-    </div>
-
-    <div class="mod-card mc-sg" onclick="toggleMod(this,'m2')">
-      <div class="mod-n">Módulo 2</div>
-      <div class="mod-title">Gestión de Ventas</div>
-      <div class="mod-desc">Procesar transacciones, aplicar descuentos, generar recibos.</div>
-      <div class="mod-chips"><span class="mod-chip">decimal</span><span class="mod-chip">DateTime</span><span class="mod-chip">ADO.NET</span></div>
-    </div>
-    <div class="mod-detail" id="m2">
-      <p><strong style="color:var(--sage)">¿Qué resuelve en C#?</strong> Las clases <code>Venta</code> y <code>DetalleVenta</code>. El tipo <code>decimal</code> garantiza precisión exacta en los precios. <code>DateTime.Now</code> registra la fecha/hora de cada transacción.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> Semana 4-5 con Entity Framework. La lógica de descuentos ya la practicas esta semana.</p>
-    </div>
-
-    <div class="mod-card mc-pl" onclick="toggleMod(this,'m4')">
-      <div class="mod-n">Módulo 4</div>
-      <div class="mod-title">Gestión de Clientes</div>
-      <div class="mod-desc">Registro de clientes, historial de compras, preferencias.</div>
-      <div class="mod-chips"><span class="mod-chip">ADO.NET</span><span class="mod-chip">Entity Framework</span></div>
-    </div>
-    <div class="mod-detail" id="m4">
-      <p><strong style="color:var(--plum)">¿Qué resuelve en C#?</strong> La clase <code>Cliente</code> hereda de <code>PersonaBase</code>. Entity Framework Core permite guardar, buscar, modificar y eliminar registros de clientes en SQL Server con pocas líneas de C#.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> Semana 4-5 (CRUD básico) → Semana 10 (con formularios web ASP.NET).</p>
-    </div>
-
-    <div class="mod-card mc-am" onclick="toggleMod(this,'m5')">
-      <div class="mod-n">Módulo 5</div>
-      <div class="mod-title">Generación de Informes</div>
-      <div class="mod-desc">Reportes de ventas e inventario para la gerencia.</div>
-      <div class="mod-chips"><span class="mod-chip">System.IO</span><span class="mod-chip">LINQ</span><span class="mod-chip">StringBuilder</span></div>
-    </div>
-    <div class="mod-detail" id="m5">
-      <p><strong style="color:var(--amber)">¿Qué resuelve en C#?</strong> LINQ permite consultar colecciones con sintaxis tipo SQL (<code>.Where()</code>, <code>.GroupBy()</code>, <code>.Sum()</code>). <code>StringBuilder</code> construye reportes de texto eficientemente. <code>System.IO</code> los guarda en archivos.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> Semana 9-11 como parte de la app web ASP.NET.</p>
-    </div>
-
-    <div class="mod-card mc-sky" onclick="toggleMod(this,'m6')">
-      <div class="mod-n">Módulo 6</div>
-      <div class="mod-title">Interfaz de Usuario</div>
-      <div class="mod-desc">Aplicación visual fácil de usar para los empleados.</div>
-      <div class="mod-chips"><span class="mod-chip">WPF (Unidad I)</span><span class="mod-chip">ASP.NET (Unidad II)</span></div>
-    </div>
-    <div class="mod-detail" id="m6">
-      <p><strong style="color:#5ba8d4">¿Qué resuelve en C#?</strong> <strong>WPF</strong> (Windows Presentation Foundation) para la app de escritorio del cajero. <strong>ASP.NET MVC</strong> para la app web de gestión que usa la gerencia desde el navegador.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> WPF: Semana 3-6 (Encargos 1 y 2). ASP.NET: Semana 7-12 (Encargo 3).</p>
-    </div>
-
-    <div class="mod-card mc-ro" onclick="toggleMod(this,'m7')">
-      <div class="mod-n">Módulo 7</div>
-      <div class="mod-title">Integración Periféricos</div>
-      <div class="mod-desc">Lectores de código de barras e impresoras de boletas.</div>
-      <div class="mod-chips"><span class="mod-chip">System.IO.Ports</span><span class="mod-chip">System.Drawing</span></div>
-    </div>
-    <div class="mod-detail" id="m7">
-      <p><strong style="color:var(--rose)">¿Qué resuelve en C#?</strong> <code>System.IO.Ports</code> maneja comunicación serial con lectores de código de barras. <code>System.Drawing</code> permite generar documentos PDF para las boletas electrónicas.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo ves?</strong> Contenido avanzado — se menciona como extensión del Encargo 2.</p>
-    </div>
-
-    <div class="mod-card mc-tl" onclick="toggleMod(this,'m8')">
-      <div class="mod-n">Módulo 8</div>
-      <div class="mod-title">Seguimiento de Pedidos</div>
-      <div class="mod-desc">Estado en tiempo real de pedidos entre sucursales.</div>
-      <div class="mod-chips"><span class="mod-chip">ADO.NET</span><span class="mod-chip">SQL Server</span><span class="mod-chip">WPF</span></div>
-    </div>
-    <div class="mod-detail" id="m8">
-      <p><strong style="color:var(--teal)">¿Qué resuelve en C#?</strong> Una tabla <code>Pedido</code> en SQL Server con estados (Pendiente, En camino, Entregado). ADO.NET o Entity Framework para consultar el estado desde la app WPF o web.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> Integrado en el Encargo 2 (WPF + SQL Server) o Encargo 3 (ASP.NET).</p>
-    </div>
-
-    <div class="mod-card mc-sg" onclick="toggleMod(this,'m9')">
-      <div class="mod-n">Módulo 9</div>
-      <div class="mod-title">Notificaciones Automatizadas</div>
-      <div class="mod-desc">Alertas de stock bajo y correos automáticos.</div>
-      <div class="mod-chips"><span class="mod-chip">System.Net.Mail</span><span class="mod-chip">HttpClient</span></div>
-    </div>
-    <div class="mod-detail" id="m9">
-      <p><strong style="color:var(--sage)">¿Qué resuelve en C#?</strong> <code>System.Net.Mail.SmtpClient</code> envía correos automáticamente cuando el stock baja de umbral. <code>HttpClient</code> permite llamar APIs REST externas (WhatsApp, Slack) para notificaciones.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo construyes?</strong> Semana 11 en el contexto de integración de APIs RESTful.</p>
-    </div>
-
-    <div class="mod-card mc-pl" onclick="toggleMod(this,'m10')">
-      <div class="mod-n">Módulo 10</div>
-      <div class="mod-title">Seguridad de Datos</div>
-      <div class="mod-desc">Protección de información sensible del sistema.</div>
-      <div class="mod-chips"><span class="mod-chip">System.Security.Cryptography</span></div>
-    </div>
-    <div class="mod-detail" id="m10">
-      <p><strong style="color:var(--plum)">¿Qué resuelve en C#?</strong> <code>System.Security.Cryptography</code> provee hashing de contraseñas (SHA256, BCrypt), cifrado de datos sensibles y manejo de tokens. Fundamental para el módulo de Control de Acceso.</p>
-      <p><strong style="color:var(--amber)">⏰ ¿Cuándo lo ves?</strong> Unidad II, contexto de seguridad en ASP.NET.</p>
-    </div>
-
-  </div><!-- end mod-grid -->
-
-  <div class="mod-note">
-    <strong>⚠️ Nota sobre el Módulo 3 — Control de Acceso:</strong> Requiere conceptos de seguridad y criptografía de la Unidad II. Tu docente lo presentará en el momento adecuado.
-  </div>
-
-  <script>
-  function toggleMod(card, id){
-    const det = document.getElementById(id);
-    const allDets = document.querySelectorAll('.mod-detail');
-    const allCards = document.querySelectorAll('.mod-card');
-    const isOpen = det.classList.contains('show');
-    allDets.forEach(d=>d.classList.remove('show'));
-    allCards.forEach(c=>c.style.borderRadius='');
-    if(!isOpen){
-      det.classList.add('show');
-      card.style.borderRadius='var(--r) var(--r) 0 0';
-    }
-  }
-  </script>
-</section>
-
-<!-- ═══════════════════ ACTIVIDAD 1.1 ═══════════════════ -->
-<section class="sec" id="sec-act11">
-  <p class="pg-title">✏️ Actividad 1.1 — Descubriendo la Arquitectura de .NET</p>
-  <p class="pg-sub">Pauta oficial de la actividad formativa. Tipo: Parejas · PROG-3.</p>
-
-  <div class="grid2" style="margin-bottom:20px">
-    <div class="box tl">
-      <div class="box-lbl">📋 Antecedentes generales</div>
-      <div class="box-body">
-        <strong>Aprendizaje esperado:</strong> Resolver problemas de baja complejidad utilizando C# en aplicaciones de consola.<br><br>
-        <strong>Recinto:</strong> Laboratorio de informática.<br>
-        <strong>Tipo:</strong> Parejas · Evaluación formativa.
-      </div>
-    </div>
-    <div class="box sg">
-      <div class="box-lbl">✅ Criterios de evaluación</div>
-      <div class="box-body">
-        <ul class="lst">
-          <li>Delimita el problema considerando los tipos de variables y requerimientos dados.</li>
-          <li>Identifica y describe los elementos esenciales de una aplicación de consola en C#.</li>
-          <li>Colabora en revisiones de trabajo con otros según corresponda.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="sec-title" style="margin-top:0"><span>📖</span>Presentación de la actividad</div>
-  <div class="box pl" style="margin-bottom:20px">
-    <div class="box-lbl">Contexto</div>
-    <div class="box-body">En esta actividad, identificarán los componentes básicos de una aplicación de consola utilizando C#, según los requerimientos del cliente (<em>Almacenes Por Ahí</em>). Al finalizar, debatirán sobre la importancia de conocer la arquitectura y los componentes básicos de .NET en el desarrollo de software moderno.</div>
-  </div>
-
-  <div class="sec-title"><span>📌</span>Instrucciones</div>
-  <div class="box am" style="margin-bottom:20px">
-    <div class="box-lbl">Antes de comenzar</div>
-    <div class="box-body">
-      <ul class="lst">
-        <li>Actividad en <strong>parejas</strong>.</li>
-        <li>Analizar el problema según las especificaciones técnicas del documento <strong>IEI-089_U1_01_Problema</strong> (caso Almacenes Por Ahí).</li>
-        <li>Tu docente indicará cuál de los <strong>10 requerimientos</strong> abordará tu pareja (<strong>excepto el N°3</strong> — Control de Acceso, requiere contenidos de Unidad II).</li>
-        <li>Revisar el material de apoyo sobre arquitectura y componentes de .NET.</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="sec-title"><span>🔧</span>Desarrollo de la actividad</div>
-  <div class="steps" style="margin-bottom:22px">
-    <div class="step">
-      <div class="step-n">1</div>
-      <div class="step-b">
-        <div class="step-t">Identificar componentes de la arquitectura .NET</div>
-        <div class="step-d">A partir del requerimiento asignado, identificar qué componentes de la arquitectura .NET participan: ¿qué capa? ¿qué namespace? ¿qué clase de la BCL/FCL? Anotar en la pauta colaborativa en la nube.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-n">2</div>
-      <div class="step-b">
-        <div class="step-t">Primeros pasos de desarrollo en C#</div>
-        <div class="step-d">Comenzar la aplicación de consola en Visual Studio: programar clases, variables, operadores y control de flujo. Seguir la demostración del docente. Usar el caso semestral como contexto.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-n">3</div>
-      <div class="step-b">
-        <div class="step-t">Trabajo colaborativo en la pauta</div>
-        <div class="step-d">Anotar las respuestas y avances en la pauta de actividad disponible en la nube (Google Docs / Teams compartido). Ambos integrantes de la pareja deben contribuir.</div>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-n">4</div>
-      <div class="step-b">
-        <div class="step-t">Plenario de conclusiones</div>
-        <div class="step-d">Compartir las principales conclusiones con el curso para recibir retroalimentación del docente. ¿Qué componentes identificaron? ¿Qué código produjeron?</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sec-title"><span>💬</span>Preguntas de cierre</div>
-  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-    <div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--teal);border-radius:var(--r);padding:14px 18px">
-      <div style="font-size:10.5px;font-weight:700;color:var(--teal);margin-bottom:4px">PREGUNTA 1</div>
-      <div style="font-size:14px;color:var(--text)">¿Qué aprendiste de la actividad realizada?</div>
-    </div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--sage);border-radius:var(--r);padding:14px 18px">
-      <div style="font-size:10.5px;font-weight:700;color:var(--sage);margin-bottom:4px">PREGUNTA 2</div>
-      <div style="font-size:14px;color:var(--text)">¿En qué ámbitos puedes utilizar o aplicar lo realizado en la actividad?</div>
-    </div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:var(--r);padding:14px 18px">
-      <div style="font-size:10.5px;font-weight:700;color:var(--amber);margin-bottom:4px">PREGUNTA 3</div>
-      <div style="font-size:14px;color:var(--text)">¿Hubo algún término, definición o parte del proceso que necesites reforzar? ¿Cuál?</div>
-    </div>
-  </div>
-
-  <div class="box ro">
-    <div class="box-lbl">⏰ Conexión con el semestre</div>
-    <div class="box-body">Esta actividad es la base conceptual de todo lo que viene. Los requerimientos 1 al 10 de Almacenes Por Ahí son exactamente los módulos que construirás en los Encargos 1, 2, 3 y 4 a lo largo del semestre.</div>
-  </div>
-</section>
-
-<!-- ═══════════════════ ARQUITECTURA EN CAPAS ═══════════════════ -->
-<section class="sec" id="sec-arq">
-  <p class="pg-title">🏗️ Arquitectura .NET en Capas</p>
-  <p class="pg-sub">El ecosistema completo de .NET organizado en capas. Haz clic en cada capa para ver su descripción.</p>
-
-  <div class="grid2" style="margin-bottom:22px">
-    <div class="box tl">
-      <div class="box-lbl">📐 Definición técnica</div>
-      <div class="box-body">La arquitectura de software es la estructura fundamental que define los componentes del sistema, las relaciones entre ellos, los principios de diseño y las decisiones que orientan su desarrollo y evolución.</div>
-    </div>
-    <div class="box sg">
-      <div class="box-lbl">💡 Definición simple</div>
-      <div class="box-body">Imagina que Almacenes Por Ahí construye su sede central. El arquitecto diseña los planos antes de poner un ladrillo. La arquitectura de .NET es ese plano: define qué capas existen, cómo se comunican y qué rol cumple cada una.<br><br><strong>Tú trabajas en los pisos superiores. El CLR y la BCL son los cimientos sin los cuales el edificio se derrumba.</strong></div>
-    </div>
-  </div>
-
-  <div class="sec-title" style="margin-top:0"><span>🏛️</span>La Arquitectura en Capas — haz clic en cada capa</div>
-  <p style="font-size:12.5px;color:var(--text3);margin-bottom:12px">Haz clic en cualquier capa para ver su descripción detallada:</p>
-
-  <div class="arch-stack">
-
-    <div class="arch-layer" style="background:rgba(155,126,200,.11);border-color:rgba(155,126,200,.28)" onclick="toggleArch(this,'lay-lang')">
-      <span class="al-icon">🗣️</span>
-      <span class="al-name" style="color:var(--plum)">Lenguajes</span>
-      <span class="al-items">C# / VB.NET / F# / C++.NET</span>
-    </div>
-    <div class="al-detail" id="lay-lang">
-      <p><strong>¿Qué son?</strong> Los lenguajes de programación que compilan a CIL y se ejecutan sobre el CLR.</p>
-      <p><strong>🏬 En Almacenes Por Ahí:</strong> Usamos C# para escribir las clases <code>Producto</code>, <code>Cliente</code>, <code>Venta</code>. Podrías escribirlas en F# y funcionarían igualmente.</p>
-      <p><strong>✅ Ventaja:</strong> Interoperabilidad total. Un módulo VB.NET puede llamar a clases C# sin adaptadores.</p>
-    </div>
-
-    <div class="arch-layer" style="background:rgba(91,173,190,.11);border-color:rgba(91,173,190,.28)" onclick="toggleArch(this,'lay-app')">
-      <span class="al-icon">🖥️</span>
-      <span class="al-name" style="color:var(--teal)">Aplicaciones</span>
-      <span class="al-items">ASP.NET / WPF / MAUI / Windows Forms</span>
-    </div>
-    <div class="al-detail" id="lay-app">
-      <p><strong>¿Qué son?</strong> Frameworks de UI construidos sobre .NET para cada tipo de app.</p>
-      <div class="grid2" style="margin-top:9px">
-        <div class="box tl"><div class="box-lbl">WPF / Windows Forms</div><div class="box-body">App escritorio Windows. Semanas 3-6. Encargo 2.</div></div>
-        <div class="box sg"><div class="box-lbl">ASP.NET MVC</div><div class="box-body">App web con patrón MVC. Semanas 7-12. Encargo 3.</div></div>
-      </div>
-    </div>
-
-    <div class="arch-layer" style="background:rgba(212,148,74,.11);border-color:rgba(212,148,74,.28)" onclick="toggleArch(this,'lay-data')">
-      <span class="al-icon">🗄️</span>
-      <span class="al-name" style="color:var(--amber)">Datos y XML</span>
-      <span class="al-items">ADO.NET / SQL Server / Entity Framework</span>
-    </div>
-    <div class="al-detail" id="lay-data">
-      <p><strong>¿Qué son?</strong> Componentes para acceder y persistir datos en bases de datos relacionales.</p>
-      <p><strong>🏬 En Almacenes Por Ahí:</strong> Entity Framework Core mapea la clase <code>Producto</code> directamente a la tabla SQL Server <code>Productos</code>.</p>
-      <div class="code-block"><div class="code-hdr"><span class="code-lang">C# — Entity Framework (semana 4)</span></div>
-      <pre><span class="cm">// EF Core genera el SQL automáticamente desde la clase C#</span>
-<span class="kw">var</span> productos = context.Productos
-    .<span class="fn">Where</span>(p => p.Stock > <span class="nm">0</span>)    <span class="cm">// WHERE Stock > 0</span>
-    .<span class="fn">OrderBy</span>(p => p.Nombre)        <span class="cm">// ORDER BY Nombre</span>
-    .<span class="fn">ToList</span>();                      <span class="cm">// ejecuta el SELECT</span></pre></div>
-    </div>
-
-    <div class="arch-layer" style="background:rgba(212,148,74,.17);border-color:rgba(212,148,74,.45)" onclick="toggleArch(this,'lay-fcl')">
-      <span class="al-icon">📚</span>
-      <span class="al-name" style="color:var(--amber)">FCL</span>
-      <span class="al-items" style="color:var(--amber)">Framework Class Library</span>
-    </div>
-    <div class="al-detail" id="lay-fcl">
-      <p><strong>¿Qué es?</strong> La colección completa de APIs de .NET. Incluye BCL más todas las APIs específicas de plataforma.</p>
-      <p><strong>Contiene:</strong> <span class="chip tl">System.IO</span> <span class="chip sg">System.Net</span> <span class="chip am">System.Data</span> <span class="chip pl">System.Xml</span> <span class="chip ro">System.Security</span></p>
-    </div>
-
-    <div class="arch-layer" style="background:rgba(212,148,74,.24);border-color:rgba(212,148,74,.55)" onclick="toggleArch(this,'lay-bcl')">
-      <span class="al-icon">📦</span>
-      <span class="al-name" style="color:var(--amber)">BCL</span>
-      <span class="al-items" style="color:var(--amber)">Base Class Library</span>
-    </div>
-    <div class="al-detail" id="lay-bcl">
-      <p><strong>¿Qué es?</strong> El subconjunto fundamental de la FCL. Clases base disponibles en cualquier plataforma .NET.</p>
-      <p><strong>Contiene:</strong> <span class="chip tl">System</span> <span class="chip sg">System.Collections</span> <span class="chip am">System.Text</span> <span class="chip pl">System.Linq</span> <span class="chip ro">System.Threading</span></p>
-      <p><strong>💬 Analogía:</strong> El menú básico que siempre está disponible, sin importar la sucursal donde estés.</p>
-    </div>
-
-    <div class="arch-layer" style="background:rgba(106,170,138,.14);border-color:rgba(106,170,138,.38)" onclick="toggleArch(this,'lay-clr')">
-      <span class="al-icon">⚙️</span>
-      <span class="al-name" style="color:var(--sage)">CLR</span>
-      <span class="al-items" style="color:var(--sage)">Common Language Runtime</span>
-    </div>
-    <div class="al-detail" id="lay-clr">
-      <p><strong>¿Qué es?</strong> El motor de ejecución de .NET. Gestiona: compilación JIT, Garbage Collection, seguridad de tipos y manejo de excepciones.</p>
-      <p><strong>💬 Analogía:</strong> El gerente de operaciones que se asegura que todo se ejecute correctamente.</p>
-      <p><strong>🔗 Java equivalente:</strong> JVM (Java Virtual Machine) — mismo rol, diferente ecosistema.</p>
-    </div>
-
-    <div class="arch-layer" style="background:rgba(255,255,255,.05);border-color:var(--border2);border-width:2px" onclick="toggleArch(this,'lay-os')">
-      <span class="al-icon">🖥️</span>
-      <span class="al-name">Sistema Operativo</span>
-      <span class="al-items">Windows / Linux / macOS</span>
-    </div>
-    <div class="al-detail" id="lay-os">
-      <p><strong>¿Qué hace?</strong> Gestiona el hardware, la memoria física y los procesos del computador.</p>
-      <p><strong>🏬 Analogía Almacenes Por Ahí:</strong> Los cimientos de hormigón. Sin esto, nada existe. El CLR se apoya sobre el SO para acceder al CPU y la memoria real.</p>
-    </div>
-
-  </div><!-- end arch-stack -->
-
-  <div class="sec-title"><span>🔗</span>El CLS — Por qué .NET habla varios lenguajes</div>
-  <div class="grid2">
-    <div class="box tl">
-      <div class="box-lbl">🔗 CLS — Common Language Specification</div>
-      <div class="box-body">Conjunto de reglas que todos los lenguajes .NET deben respetar para garantizar la interoperabilidad. Permite que código en C#, VB.NET y F# conviva y se llame mutuamente dentro del mismo proyecto.</div>
-    </div>
-    <div class="box am">
-      <div class="box-lbl">🏢 Ejemplo profesional</div>
-      <div class="box-body">El equipo antiguo programó contabilidad en VB.NET. El equipo nuevo (tú) programa en C#. Gracias al CLS, tu módulo C# llama directamente a las clases VB.NET sin reescribir nada. Ventaja real en empresas con sistemas legados.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ 7 PILARES ═══════════════════ -->
-<section class="sec" id="sec-pil">
-  <p class="pg-title">⚙️ Los 7 Pilares de .NET</p>
-  <p class="pg-sub">Definición técnica, simple y ejemplo profesional por cada pilar. Haz clic para expandir. +5 XP por pilar.</p>
-
-  <div class="pillar-list">
-
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">⚙️</span><span class="ph-ti">CLR — Common Language Runtime</span>
-        <span class="ph-su">Motor de ejecución administrado</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Entorno de ejecución administrado de .NET. Gestiona el código CIL: lo carga, lo compila JIT, administra la memoria (GC), controla excepciones y aplica seguridad.</div></div>
-          <div class="box sg"><div class="box-lbl">💡 Definición simple</div><div class="box-body">El CLR es el "gerente de operaciones" de tu programa. Tú escribes las instrucciones, el CLR se asegura de que se ejecuten correctamente.<br><br><strong>Ya conoces este concepto: el CLR es exactamente la JVM de Java. Mismo rol, diferente nombre.</strong></div></div>
+      <a href="semana1/index.html" class="week-card tl active">
+        <div class="wc-top">
+          <span class="wc-sem">Semana 1</span>
+          <span class="wc-status pub">✓ Publicada</span>
         </div>
-        <div class="box am"><div class="box-lbl">🏬 Ejemplo profesional — Almacenes Por Ahí</div><div class="box-body">Con 50 empleados simultáneos usando el sistema, el CLR garantiza que cada proceso tenga su memoria aislada y que los errores de uno no afecten a los demás.</div></div>
-      </div>
-    </div>
-
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">📦</span><span class="ph-ti">BCL — Base Class Library</span>
-        <span class="ph-su">Clases base reutilizables</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Conjunto de clases fundamentales disponibles en cualquier implementación de .NET. Provee tipos base (System), colecciones, texto, matemáticas, I/O y threading.</div></div>
-          <div class="box sg"><div class="box-lbl">💡 Definición simple</div><div class="box-body">El "cajón de herramientas básico" siempre disponible. En Java sería java.lang, java.util y java.io combinados.</div></div>
+        <div class="wc-title">Arquitectura y Componentes de .NET</div>
+        <div class="wc-desc">CLR, BCL, CIL, ciclo JIT, primer programa C# y estructura del proyecto semestral.</div>
+        <div class="wc-chips">
+          <span class="wc-chip">CLR</span>
+          <span class="wc-chip">CIL</span>
+          <span class="wc-chip">C# básico</span>
+          <span class="wc-chip">Visual Studio</span>
         </div>
-        <div class="code-block"><div class="code-hdr"><span class="code-lang">C# — BCL en Almacenes Por Ahí</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-        <pre><span class="kw">using</span> System;                     <span class="cm">// Console, DateTime, Math, String</span>
-<span class="kw">using</span> System.Collections.Generic; <span class="cm">// List&lt;T&gt;, Dictionary&lt;K,V&gt;, Queue&lt;T&gt;</span>
-<span class="kw">using</span> System.Linq;               <span class="cm">// Consultas sobre colecciones</span>
+        <span class="wc-arrow">→</span>
+      </a>
 
-<span class="cm">// DateTime: tipo de BCL para fechas de venta</span>
-<span class="ty">DateTime</span> fechaVenta = <span class="ty">DateTime</span>.Now;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Venta: {fechaVenta:dd/MM/yyyy HH:mm}"</span>);</pre></div>
-      </div>
-    </div>
-
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">🔨</span><span class="ph-ti">Compiladores — Roslyn</span>
-        <span class="ph-su">C# y VB.NET Compiler Platform</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Roslyn es el compilador open-source de C# y VB.NET. Transforma el código fuente (.cs) en CIL (.dll / .exe). Provee APIs que permiten analizar y generar código en tiempo real (IntelliSense).</div></div>
-          <div class="box sg"><div class="box-lbl">💡 Definición simple</div><div class="box-body">El "traductor" que convierte tu C# legible en el lenguaje que el CLR entiende (CIL). Es el javac de Java, pero además alimenta el autocompletado de Visual Studio.</div></div>
+      <div class="week-card sg upcoming">
+        <div class="wc-top">
+          <span class="wc-sem">Semana 2</span>
+          <span class="wc-status prox">Próximamente</span>
         </div>
-        <div class="box am"><div class="box-lbl">💡 Dato clave</div><div class="box-body">Al presionar <span class="kb">Ctrl+Shift+B</span> en Visual Studio, Roslyn compila. El subrayado rojo en tiempo real también es Roslyn analizando tu código mientras escribes.</div></div>
-      </div>
-    </div>
-
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">📚</span><span class="ph-ti">FCL — Framework Class Library</span>
-        <span class="ph-su">Biblioteca completa de APIs</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">BCL + todas las APIs específicas de plataforma. Incluye System.Data (ADO.NET), System.Web (ASP.NET), System.Windows (WPF), System.Net, System.IO, System.Security, etc.</div></div>
-          <div class="box sg"><div class="box-lbl">💡 Definición simple</div><div class="box-body">El supermercado de herramientas completo. La BCL es el pasillo básico (siempre disponible), la FCL incluye todos los pasillos especializados según el tipo de app.</div></div>
+        <div class="wc-title">Arreglos y Colecciones en C#</div>
+        <div class="wc-desc">Arrays, List&lt;T&gt;, Dictionary&lt;K,V&gt;, Queue&lt;T&gt; y operaciones sobre colecciones.</div>
+        <div class="wc-chips">
+          <span class="wc-chip">List&lt;T&gt;</span>
+          <span class="wc-chip">Dictionary</span>
+          <span class="wc-chip">foreach</span>
         </div>
       </div>
-    </div>
 
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">🔧</span><span class="ph-ti">Herramientas — Visual Studio</span>
-        <span class="ph-su">IDE, CLI, NuGet, dotnet</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Ecosistema de herramientas: Visual Studio (IDE completo), VS Code (editor ligero), dotnet CLI (línea de comandos), NuGet (gestor de paquetes) y MSBuild (sistema de compilación).</div></div>
-          <div class="box sg"><div class="box-lbl">💡 Definición simple</div><div class="box-body">Visual Studio = el taller completo. NuGet = la ferretería de librerías. dotnet CLI = las instrucciones escritas paso a paso.</div></div>
+      <div class="week-card am upcoming">
+        <div class="wc-top">
+          <span class="wc-sem">Semana 3</span>
+          <span class="wc-status prox">Próximamente</span>
         </div>
-        <div class="box am"><div class="box-lbl">🔧 Comandos dotnet CLI</div><div class="box-body"><code>dotnet new console</code> — Crear proyecto · <code>dotnet build</code> — Compilar · <code>dotnet run</code> — Ejecutar · <code>dotnet add package X</code> — Agregar librería NuGet</div></div>
-      </div>
-    </div>
-
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">🌐</span><span class="ph-ti">ASP.NET / ASP.NET Core</span>
-        <span class="ph-su">Framework para aplicaciones web</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Framework web multiplataforma open-source. ASP.NET Core soporta MVC, Razor Pages, Web API y Blazor. Se estudiará en la Unidad II (Semanas 7–12).</div></div>
-          <div class="box sg"><div class="box-lbl">💡 Definición simple</div><div class="box-body">El "piso web" de .NET. Así como WPF hace apps de escritorio, ASP.NET hace apps que corren en el navegador. Lo usarás en el Encargo 3.</div></div>
+        <div class="wc-title">Interfaces de Usuario con WPF</div>
+        <div class="wc-desc">Windows Presentation Foundation, XAML básico, controles y eventos. Encargo 1.</div>
+        <div class="wc-chips">
+          <span class="wc-chip">WPF</span>
+          <span class="wc-chip">XAML</span>
+          <span class="wc-chip">Encargo 1 📋</span>
         </div>
       </div>
-    </div>
 
-    <div class="pillar">
-      <div class="pillar-head" onclick="togglePillar(this)">
-        <span class="ph-ic">🔁</span><span class="ph-ti">Servicios de Windows</span>
-        <span class="ph-su">Background workers y servicios</span><span class="ph-ar">▼</span>
-      </div>
-      <div class="pillar-body">
-        <div class="grid2">
-          <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Aplicaciones .NET que corren en segundo plano como servicios del sistema operativo. Útiles para tareas programadas, procesamiento asíncrono y monitoreo continuo sin interfaz.</div></div>
-          <div class="box sg"><div class="box-lbl">💡 En Almacenes Por Ahí</div><div class="box-body">Un servicio de Windows podría enviar alertas de stock bajo cada hora, o sincronizar inventario entre sucursales durante la noche sin intervención manual.</div></div>
+      <div class="week-card tl upcoming">
+        <div class="wc-top">
+          <span class="wc-sem">Semana 4</span>
+          <span class="wc-status prox">Próximamente</span>
+        </div>
+        <div class="wc-title">Entity Framework — Guardar y Eliminar</div>
+        <div class="wc-desc">ORM con Entity Framework Core. CRUD básico: guardar y eliminar con SQL Server.</div>
+        <div class="wc-chips">
+          <span class="wc-chip">EF Core</span>
+          <span class="wc-chip">SQL Server</span>
+          <span class="wc-chip">SSMS</span>
         </div>
       </div>
-    </div>
 
-  </div>
-</section>
-
-<!-- ═══════════════════ CLR EN DETALLE ═══════════════════ -->
-<section class="sec" id="sec-clr">
-  <p class="pg-title">🔧 El CLR en Detalle</p>
-  <p class="pg-sub">Desglose de cada subsistema del Common Language Runtime. Haz clic en cada tarjeta para ver el detalle.</p>
-
-  <div class="grid2" style="margin-bottom:22px">
-    <div class="box tl"><div class="box-lbl">📐 Definición técnica completa</div><div class="box-body">El CLR implementa la especificación CLI. Gestiona: Class Loader, JIT Compiler, GC generacional, Exception Manager, Security Manager y Thread Manager.</div></div>
-    <div class="box sg"><div class="box-lbl">💡 Equivalencia Java completa</div><div class="box-body"><strong>CLR = JVM</strong> en rol y concepto. Ambos ejecutan bytecode/CIL, tienen JIT y GC generacional. La diferencia: el CLR fue diseñado desde origen para múltiples lenguajes.</div></div>
-  </div>
-
-  <div class="sec-title" style="margin-top:0"><span>🔩</span>Subsistemas del CLR — clic para ver detalle</div>
-  <div class="type-grid">
-    <div class="tc" onclick="toggleClr('jit')"><div class="tc-ic">⚡</div><div class="tc-ti">JIT Compiler</div><div class="tc-su">CIL → código nativo CPU</div></div>
-    <div class="tc" onclick="toggleClr('gc')"><div class="tc-ic">🗑️</div><div class="tc-ti">Garbage Collector</div><div class="tc-su">Gestión automática de memoria</div></div>
-    <div class="tc" onclick="toggleClr('cl')"><div class="tc-ic">📥</div><div class="tc-ti">Class Loader</div><div class="tc-su">Carga y verifica ensamblados</div></div>
-    <div class="tc" onclick="toggleClr('ex')"><div class="tc-ic">⚠️</div><div class="tc-ti">Exception Handler</div><div class="tc-su">try/catch/finally</div></div>
-    <div class="tc" onclick="toggleClr('ts')"><div class="tc-ic">🔒</div><div class="tc-ti">Type System (CTS)</div><div class="tc-su">Tipos verificados en runtime</div></div>
-    <div class="tc" onclick="toggleClr('th')"><div class="tc-ic">🧵</div><div class="tc-ti">Thread Manager</div><div class="tc-su">Hilos y concurrencia</div></div>
-  </div>
-
-  <div class="type-detail" id="det-jit">
-    <h3 style="color:var(--teal);margin-bottom:10px">⚡ JIT — Just-In-Time Compiler</h3>
-    <p>Compila cada método de CIL a código nativo la <strong>primera vez que se invoca</strong>. El resultado se cachea — llamadas posteriores usan el código ya compilado (más rápido).</p>
-    <div class="code-block"><div class="code-hdr"><span class="code-lang">C# — El JIT compila este método al primer uso</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-    <pre><span class="cm">// Primera llamada → JIT compila → ejecuta → cachea código nativo</span>
-<span class="cm">// Llamadas siguientes → usa código nativo cacheado (ultrarrápido)</span>
-<span class="kw">static</span> <span class="ty">decimal</span> <span class="fn">CalcularDescuento</span>(<span class="ty">decimal</span> precio, <span class="ty">int</span> pct)
-{
-    <span class="kw">return</span> precio * (<span class="nm">1</span> - pct / <span class="nm">100m</span>);
-}
-<span class="ty">decimal</span> p1 = <span class="fn">CalcularDescuento</span>(<span class="nm">24990m</span>, <span class="nm">20</span>); <span class="cm">// JIT compila aquí</span>
-<span class="ty">decimal</span> p2 = <span class="fn">CalcularDescuento</span>(<span class="nm">9990m</span>,  <span class="nm">10</span>);  <span class="cm">// usa caché nativo</span></pre></div>
-  </div>
-
-  <div class="type-detail" id="det-gc">
-    <h3 style="color:var(--sage);margin-bottom:10px">🗑️ Garbage Collector Generacional</h3>
-    <p>Opera en 3 generaciones. Los objetos nuevos (corta vida) van a <strong>Gen 0</strong> y se recolectan frecuentemente. Los que sobreviven ascienden a <strong>Gen 1</strong> y luego <strong>Gen 2</strong>.</p>
-    <div class="grid3" style="margin-top:10px">
-      <div class="box tl"><div class="box-lbl">Gen 0 — Nuevos</div><div class="box-body">Recolección frecuente. Ej: objeto <code>Venta</code> creado para procesar una transacción.</div></div>
-      <div class="box sg"><div class="box-lbl">Gen 1 — Intermedios</div><div class="box-body">Sobrevivieron Gen 0. Ej: lista de productos en pantalla.</div></div>
-      <div class="box am"><div class="box-lbl">Gen 2 — Larga vida</div><div class="box-body">Persistentes. Ej: contexto de base de datos de la sesión.</div></div>
-    </div>
-  </div>
-
-  <div class="type-detail" id="det-cl">
-    <h3 style="color:var(--plum);margin-bottom:10px">📥 Class Loader</h3>
-    <p>Carga los ensamblados (.dll) desde disco a memoria, verifica su integridad, resuelve dependencias y los hace disponibles para el JIT.</p>
-    <p><strong>🏬 En práctica:</strong> Cuando tu programa arranca, el Class Loader carga <code>AlmacenesConsola.dll</code> y todas sus dependencias automáticamente.</p>
-  </div>
-
-  <div class="type-detail" id="det-ex">
-    <h3 style="color:var(--rose);margin-bottom:10px">⚠️ Exception Handler</h3>
-    <div class="code-block"><div class="code-hdr"><span class="code-lang">C# — Manejo de excepciones estructurado</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-    <pre><span class="kw">try</span>
-{
-    <span class="cm">// Código que podría fallar</span>
-    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Ingrese precio: "</span>);
-    <span class="ty">decimal</span> precio = <span class="ty">decimal</span>.<span class="fn">Parse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>()); <span class="cm">// puede fallar</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio: ${precio:N0}"</span>);
-}
-<span class="kw">catch</span> (<span class="ty">FormatException</span>)
-{
-    <span class="cm">// El usuario escribió texto en vez de número</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠️ Ingrese un número válido"</span>);
-}
-<span class="kw">finally</span>
-{
-    <span class="cm">// Siempre se ejecuta — ideal para cerrar recursos</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Proceso finalizado."</span>);
-}</pre></div>
-  </div>
-
-  <div class="type-detail" id="det-ts">
-    <h3 style="color:var(--plum);margin-bottom:10px">🔒 Common Type System (CTS)</h3>
-    <p>Define cómo se declaran y usan los tipos en .NET. Garantiza que <code>int</code> en C# y <code>Integer</code> en VB.NET sean el mismo tipo subyacente.</p>
-    <div class="code-block"><div class="code-hdr"><span class="code-lang">C# — Tipos de valor vs referencia</span></div>
-    <pre><span class="cm">// TIPO DE VALOR: almacenado en el STACK — se COPIA al asignar</span>
-<span class="ty">int</span> stockOriginal = <span class="nm">50</span>;
-<span class="ty">int</span> stockCopia = stockOriginal; <span class="cm">// copia independiente</span>
-stockCopia = <span class="nm">30</span>;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(stockOriginal); <span class="cm">// 50 — no cambió</span>
-
-<span class="cm">// TIPO DE REFERENCIA: almacenado en el HEAP — comparte dirección</span>
-<span class="ty">Producto</span> p1 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="st">"Polera"</span>, <span class="nm">9990m</span>);
-<span class="ty">Producto</span> p2 = p1; <span class="cm">// ambos apuntan al mismo objeto</span>
-p2.Precio = <span class="nm">12990m</span>;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p1.Precio); <span class="cm">// 12990 — sí cambió</span></pre></div>
-  </div>
-
-  <div class="type-detail" id="det-th">
-    <h3 style="color:var(--amber);margin-bottom:10px">🧵 Thread Manager</h3>
-    <p>Gestiona los hilos de ejecución. El CLR provee el <strong>Thread Pool</strong> — conjunto de hilos reutilizables para operaciones paralelas.</p>
-    <p><strong>🏬 En Almacenes Por Ahí:</strong> Cuando la app web atiende 50 cajeros simultáneamente, el Thread Manager asigna un hilo a cada petición sin crear uno nuevo para cada cliente.</p>
-  </div>
-</section>
-
-<!-- ═══════════════════ CICLO DEL CIL ═══════════════════ -->
-<section class="sec" id="sec-cil">
-  <p class="pg-title">🔄 El Ciclo del CIL</p>
-  <p class="pg-sub">El viaje completo de tu código C# desde que lo escribes hasta que el CPU lo ejecuta. Haz clic en cada paso.</p>
-
-  <div class="sec-title" style="margin-top:0"><span>🚀</span>El Viaje de tu Código — haz clic en cada paso</div>
-
-  <div class="pipeline">
-    <div class="pipe-step" onclick="showPipe(this,'p1')">
-      <span class="ps-ic">✍️</span>
-      <span class="ps-ti">Código C#</span>
-      <span class="ps-su">.cs en Visual Studio</span>
-    </div>
-    <span class="pipe-arrow">→</span>
-    <div class="pipe-step" onclick="showPipe(this,'p2')">
-      <span class="ps-ic">🔨</span>
-      <span class="ps-ti">Roslyn</span>
-      <span class="ps-su">Ctrl+Shift+B compila a CIL</span>
-    </div>
-    <span class="pipe-arrow">→</span>
-    <div class="pipe-step" onclick="showPipe(this,'p3')">
-      <span class="ps-ic">📦</span>
-      <span class="ps-ti">CIL</span>
-      <span class="ps-su">.dll / .exe (independiente del SO)</span>
-    </div>
-    <span class="pipe-arrow">→</span>
-    <div class="pipe-step" onclick="showPipe(this,'p4')">
-      <span class="ps-ic">📥</span>
-      <span class="ps-ti">Class Loader</span>
-      <span class="ps-su">F5 carga al CLR</span>
-    </div>
-    <span class="pipe-arrow">→</span>
-    <div class="pipe-step" onclick="showPipe(this,'p5')">
-      <span class="ps-ic">⚡</span>
-      <span class="ps-ti">JIT</span>
-      <span class="ps-su">Traduce CIL a código nativo</span>
-    </div>
-    <span class="pipe-arrow">→</span>
-    <div class="pipe-step" onclick="showPipe(this,'p6')">
-      <span class="ps-ic">🖥️</span>
-      <span class="ps-ti">Procesador</span>
-      <span class="ps-su">¡Tu programa corre!</span>
-    </div>
-  </div>
-
-  <div class="pipe-detail" id="pipe-p1">
-    <strong style="color:var(--teal)">✍️ Paso 1: Código fuente C# (.cs)</strong>
-    <div class="code-block" style="margin-top:9px"><div class="code-hdr"><span class="code-lang">Tu archivo Program.cs</span></div>
-    <pre><span class="cm">// Esto es lo que tú escribes en Visual Studio</span>
-<span class="kw">public class</span> <span class="ty">Producto</span>
-{
-    <span class="kw">public string</span> Nombre { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public decimal</span> Precio { <span class="kw">get</span>; <span class="kw">set</span>; }
-}
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Almacenes Por Ahí"</span>);</pre></div>
-    <p style="font-size:12px;color:var(--text2);margin-top:5px">Roslyn tomará este archivo y lo transformará en CIL.</p>
-  </div>
-  <div class="pipe-detail" id="pipe-p2">
-    <strong style="color:var(--teal)">🔨 Paso 2: Roslyn — El Compilador C#</strong>
-    <p style="font-size:12.5px;margin-top:7px">Al presionar <span class="kb">Ctrl+Shift+B</span>, Roslyn: analiza la sintaxis, verifica tipos, resuelve referencias a namespaces y produce el archivo <code>AlmacenesConsola.dll</code> con código CIL.</p>
-  </div>
-  <div class="pipe-detail" id="pipe-p3">
-    <strong style="color:var(--teal)">📦 Paso 3: CIL — Common Intermediate Language</strong>
-    <div class="grid2" style="margin-top:9px">
-      <div class="box tl"><div class="box-lbl">📐 Definición técnica</div><div class="box-body">Lenguaje de bajo nivel e independiente de la plataforma al que se compilan TODOS los lenguajes .NET. Requiere que el CLR lo convierta mediante JIT para ejecutarse.</div></div>
-      <div class="box sg"><div class="box-lbl">🎵 Analogía de la partitura musical</div><div class="box-body">Tu código C# = la canción que compones. El CIL = la partitura. Es independiente del instrumento. El JIT es el músico que la toca en el procesador específico. <strong>La misma partitura (CIL) corre en Windows, Linux y macOS.</strong></div></div>
-    </div>
-  </div>
-  <div class="pipe-detail" id="pipe-p4">
-    <strong style="color:var(--teal)">📥 Paso 4: Class Loader del CLR</strong>
-    <p style="font-size:12.5px;margin-top:7px">Al presionar <span class="kb">F5</span>: carga el .dll desde disco a RAM, verifica la integridad del ensamblado, carga dependencias (System.dll, etc.) y prepara los metadatos para el JIT.</p>
-  </div>
-  <div class="pipe-detail" id="pipe-p5">
-    <strong style="color:var(--teal)">⚡ Paso 5: JIT — Just-In-Time Compiler</strong>
-    <p style="font-size:12.5px;margin-top:7px">Primera vez que se llama un método → lo compila a código nativo del CPU actual → cachea en memoria. Llamadas siguientes usan el código nativo sin recompilar.</p>
-  </div>
-  <div class="pipe-detail" id="pipe-p6">
-    <strong style="color:var(--sage)">🖥️ Paso 6: ¡El procesador ejecuta tu código!</strong>
-    <div class="code-block" style="margin-top:9px"><div class="code-hdr"><span class="code-lang">Resultado en consola</span></div>
-    <pre><span class="st">╔══════════════════════════════════╗
-║  ALMACENES POR AHÍ — Sistema v1  ║
-║  [001] Polera básica   $  9.990  ║
-║  [002] Jeans skinny    $ 24.990  ║
-╚══════════════════════════════════╝</span></pre></div>
-    <p style="color:var(--sage);font-size:12.5px;margin-top:5px">🎉 Ciclo completo: C# → Roslyn → CIL → Class Loader → JIT → CPU → Pantalla</p>
-  </div>
-
-  <!-- Java vs .NET table -->
-  <div class="sec-title"><span>⚖️</span>Java vs .NET — La Comparación que Destraba Todo</div>
-  <p style="font-size:13px;color:var(--text2);margin-bottom:13px">Si vienes de Java, esta tabla muestra exactamente qué cambió y qué es idéntico:</p>
-  <div style="overflow-x:auto">
-  <table class="cmp-table">
-    <thead>
-      <tr><th>Concepto</th><th class="jh">Java (lo que conocen)</th><th class="nh">C# .NET (lo nuevo)</th><th>Relación</th></tr>
-    </thead>
-    <tbody>
-      <tr><td class="con">Código fuente</td><td class="jv">.java</td><td class="nv">.cs</td><td class="rel"><span class="rs">✅ Idéntico concepto</span></td></tr>
-      <tr><td class="con">Compilador</td><td class="jv">javac</td><td class="nv">Roslyn (csc)</td><td class="rel"><span class="rs">✅ Mismo rol</span></td></tr>
-      <tr><td class="con">Código intermedio</td><td class="jv">Bytecode (.class)</td><td class="nv">CIL (.dll, .exe)</td><td class="rel"><span class="rs">✅ Mismo concepto</span></td></tr>
-      <tr><td class="con">Motor de ejecución</td><td class="jv">JVM</td><td class="nv">CLR</td><td class="rel"><span class="rs">✅ Equivalentes</span></td></tr>
-      <tr><td class="con">Compilación JIT</td><td class="jv">JIT HotSpot</td><td class="nv">JIT del CLR</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Gestión de memoria</td><td class="jv">GC de JVM</td><td class="nv">GC del CLR</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Múltiples lenguajes</td><td class="jv">Kotlin, Scala</td><td class="nv">C#, VB.NET, F#</td><td class="rel"><span class="rs">✅ Mismo concepto</span></td></tr>
-      <tr><td class="con">Agrupación de clases</td><td class="jv">package com.empresa;</td><td class="nv">namespace Empresa;</td><td class="rel"><span class="rd">⚠️ Diferente</span></td></tr>
-      <tr><td class="con">Importar</td><td class="jv">import java.util.List;</td><td class="nv">using System.Collections.Generic;</td><td class="rel"><span class="rd">⚠️ 'using'</span></td></tr>
-      <tr><td class="con">Imprimir en consola</td><td class="jv">System.out.println()</td><td class="nv">Console.WriteLine()</td><td class="rel"><span class="rd">⚠️ Diferente clase</span></td></tr>
-      <tr><td class="con">UI nativa Windows</td><td class="jv">Swing / JavaFX</td><td class="nv">WPF / Windows Forms</td><td class="rel"><span class="rd">⚠️ Tecnología diferente</span></td></tr>
-      <tr><td class="con">Gestor de paquetes</td><td class="jv">Maven / Gradle</td><td class="nv">NuGet</td><td class="rel"><span class="rd">⚠️ Herramienta diferente</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-</section>
-
-<!-- ═══════════════════ PALABRAS RESERVADAS ═══════════════════ -->
-<section class="sec" id="sec-res">
-  <p class="pg-title">🔑 Palabras Reservadas C# vs Java</p>
-  <p class="pg-sub">Tabla comparativa de tipos de datos, modificadores de acceso y estructuras OOP.</p>
-
-  <div class="sec-title" style="margin-top:0"><span>🔢</span>Tipos de Datos Primitivos</div>
-  <div style="overflow-x:auto;margin-bottom:22px">
-  <table class="cmp-table">
-    <thead><tr><th>Concepto</th><th class="jh">Java</th><th class="nh">C#</th><th>Tamaño</th><th>Notas</th></tr></thead>
-    <tbody>
-      <tr><td class="con">Entero 32 bits</td><td class="jv">int</td><td class="nv">int</td><td class="rel">32 bits</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Entero largo</td><td class="jv">long</td><td class="nv">long</td><td class="rel">64 bits</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Entero sin signo</td><td class="jv">— (no existe)</td><td class="nv">uint, ulong, ushort</td><td class="rel">32/64/16</td><td class="rel"><span class="rd">⚠️ Solo en C#</span></td></tr>
-      <tr><td class="con">Booleano</td><td class="jv">boolean</td><td class="nv">bool</td><td class="rel">1 bit</td><td class="rel"><span class="rd">⚠️ Nombre diferente</span></td></tr>
-      <tr><td class="con">Carácter</td><td class="jv">char</td><td class="nv">char</td><td class="rel">16 bits</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Texto</td><td class="jv">String (objeto)</td><td class="nv">string (alias)</td><td class="rel">Variable</td><td class="rel"><span class="rd">⚠️ Minúscula en C#</span></td></tr>
-      <tr><td class="con">Punto flotante</td><td class="jv">float (32 bits)</td><td class="nv">float (32 bits)</td><td class="rel">32 bits</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Doble precisión</td><td class="jv">double (64 bits)</td><td class="nv">double (64 bits)</td><td class="rel">64 bits</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Decimal exacto 💰</td><td class="jv">BigDecimal (objeto)</td><td class="nv">decimal</td><td class="rel">128 bits</td><td class="rel"><span class="rd">⚠️ Nativo C# — usar para dinero</span></td></tr>
-      <tr><td class="con">Byte</td><td class="jv">byte (con signo)</td><td class="nv">byte (sin signo)</td><td class="rel">8 bits</td><td class="rel"><span class="rd">⚠️ Java: -128..127 / C#: 0..255</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <div class="sec-title"><span>🛡️</span>Modificadores de Acceso</div>
-  <div style="overflow-x:auto;margin-bottom:22px">
-  <table class="cmp-table">
-    <thead><tr><th>Concepto</th><th class="jh">Java</th><th class="nh">C#</th><th>Alcance</th></tr></thead>
-    <tbody>
-      <tr><td class="con">Público</td><td class="jv">public</td><td class="nv">public</td><td class="rel">Accesible desde cualquier lugar</td></tr>
-      <tr><td class="con">Privado</td><td class="jv">private</td><td class="nv">private</td><td class="rel">Solo dentro de la clase</td></tr>
-      <tr><td class="con">Protegido</td><td class="jv">protected</td><td class="nv">protected</td><td class="rel">Clase y subclases</td></tr>
-      <tr><td class="con">Paquete/interno</td><td class="jv">package (default)</td><td class="nv">internal</td><td class="rel"><span class="rd">⚠️ Mismo concepto, nombre diferente</span></td></tr>
-      <tr><td class="con">Protegido interno</td><td class="jv">— (no existe)</td><td class="nv">protected internal</td><td class="rel"><span class="rd">⚠️ Solo en C#</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <div class="sec-title"><span>🔄</span>Estructuras OOP y Control</div>
-  <div style="overflow-x:auto;margin-bottom:22px">
-  <table class="cmp-table">
-    <thead><tr><th>Concepto</th><th class="jh">Java</th><th class="nh">C#</th><th>Relación</th></tr></thead>
-    <tbody>
-      <tr><td class="con">Herencia</td><td class="jv">extends</td><td class="nv">: NombreClase</td><td class="rel"><span class="rd">⚠️ Sintaxis diferente</span></td></tr>
-      <tr><td class="con">Implementar interfaz</td><td class="jv">implements</td><td class="nv">: INombreInterfaz</td><td class="rel"><span class="rd">⚠️ Mismo : que herencia</span></td></tr>
-      <tr><td class="con">Clase abstracta</td><td class="jv">abstract class</td><td class="nv">abstract class</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Clase sellada</td><td class="jv">final class</td><td class="nv">sealed class</td><td class="rel"><span class="rd">⚠️ Mismo concepto, palabra diferente</span></td></tr>
-      <tr><td class="con">Método sobreescribible</td><td class="jv">método (por defecto)</td><td class="nv">virtual</td><td class="rel"><span class="rd">⚠️ En C# se declara explícito</span></td></tr>
-      <tr><td class="con">Sobreescribir</td><td class="jv">@Override</td><td class="nv">override</td><td class="rel"><span class="rs">✅ Mismo concepto</span></td></tr>
-      <tr><td class="con">Estático</td><td class="jv">static</td><td class="nv">static</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Constante</td><td class="jv">final</td><td class="nv">const / readonly</td><td class="rel"><span class="rd">⚠️ C# tiene dos variantes</span></td></tr>
-      <tr><td class="con">Inferencia de tipo</td><td class="jv">var (Java 10+)</td><td class="nv">var</td><td class="rel"><span class="rs">✅ Idéntico</span></td></tr>
-      <tr><td class="con">Nullable</td><td class="jv">@Nullable / Optional</td><td class="nv">string? / int?</td><td class="rel"><span class="rd">⚠️ C# usa ? nativo</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <div class="code-block">
-    <div class="code-hdr"><span class="code-lang">C# — Palabras reservadas en contexto real</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-    <pre><span class="cm">// TIPOS básicos con literales correctos</span>
-<span class="ty">int</span>     stock     = <span class="nm">120</span>;         <span class="cm">// entero (igual que Java)</span>
-<span class="ty">decimal</span> precio    = <span class="nm">9990.50m</span>;   <span class="cm">// 'm' obligatorio — tipo monetario</span>
-<span class="ty">double</span>  pct       = <span class="nm">0.15d</span>;       <span class="cm">// 'd' opcional (es double por defecto)</span>
-<span class="ty">float</span>   temp      = <span class="nm">22.5f</span>;       <span class="cm">// 'f' obligatorio para float</span>
-<span class="ty">bool</span>    activo    = <span class="kw">true</span>;         <span class="cm">// boolean en Java → bool en C#</span>
-<span class="ty">string</span>  nombre    = <span class="st">"Polera"</span>;    <span class="cm">// String en Java → string en C# (minúscula)</span>
-<span class="ty">char</span>    talla     = <span class="st">'M'</span>;          <span class="cm">// comillas simples para char (igual Java)</span>
-
-<span class="cm">// CONST vs READONLY</span>
-<span class="kw">const</span> <span class="ty">int</span> MAX_SUCURSALES = <span class="nm">12</span>;    <span class="cm">// const: valor fijo en compilación</span>
-<span class="kw">readonly</span> <span class="ty">string</span> Empresa = <span class="st">"APA"</span>; <span class="cm">// readonly: asignable solo en constructor</span>
-
-<span class="cm">// NULLABLE types — el ? permite null</span>
-<span class="ty">string</span>? email = <span class="kw">null</span>;             <span class="cm">// ✅ puede ser null</span>
-<span class="ty">int</span>?    desc  = <span class="kw">null</span>;             <span class="cm">// ✅ descuento opcional</span></pre>
-  </div>
-</section>
-
-<!-- ═══════════════════ CLASES Y CONSTRUCTORES ═══════════════════ -->
-<section class="sec" id="sec-cls">
-  <p class="pg-title">🧱 Clases, Constructores y Propiedades</p>
-  <p class="pg-sub">La unidad fundamental de la POO en C#. Todo gira en torno a las clases.</p>
-
-  <div class="sec-title" style="margin-top:0"><span>📐</span>Anatomía de una Clase C#</div>
-
-  <!-- EXPLICACIÓN DEL CONVENIO _campo -->
-  <div style="background:var(--bg2);border:1px solid rgba(212,148,74,.4);border-left:4px solid var(--amber);border-radius:var(--r);padding:18px;margin-bottom:18px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--amber);margin-bottom:8px">❓ ¿Por qué usamos <code style="font-size:13px">_nombre</code> con guion bajo?</div>
-    <p style="margin-bottom:10px">En C# existe una convención ampliamente adoptada en la industria: los <strong>campos privados</strong> (las variables internas de la clase) se escriben con un <strong>guion bajo como prefijo</strong> (<code>_nombre</code>, <code>_precio</code>, <code>_stock</code>).</p>
-    <div class="grid2" style="margin-bottom:10px">
-      <div class="box sg">
-        <div class="box-lbl">✅ El motivo técnico</div>
-        <div class="box-body">Cuando tienes un campo <code>_nombre</code> y una propiedad pública <code>Nombre</code>, el compilador y tú saben exactamente cuál es cuál. Sin el guion bajo, podrías confundir el campo privado con la propiedad:<br><br><code>nombre = nombre</code> — ¿cuál es el campo y cuál el parámetro?<br><code>_nombre = nombre</code> — ¡sin ambigüedad!</div>
+      <div class="week-card sg upcoming">
+        <div class="wc-top">
+          <span class="wc-sem">Semana 5</span>
+          <span class="wc-status prox">Próximamente</span>
+        </div>
+        <div class="wc-title">Entity Framework — Buscar y Modificar</div>
+        <div class="wc-desc">CRUD completo: buscar y modificar datos. Integración WPF + Entity Framework.</div>
+        <div class="wc-chips">
+          <span class="wc-chip">EF Core</span>
+          <span class="wc-chip">LINQ</span>
+          <span class="wc-chip">WPF</span>
+        </div>
       </div>
-      <div class="box tl">
-        <div class="box-lbl">💡 La analogía</div>
-        <div class="box-body">Imagina el cajero de Almacenes Por Ahí. El <strong>campo privado</strong> <code>_caja</code> es la caja fuerte detrás del mesón (nadie la toca directamente). La <strong>propiedad pública</strong> <code>Caja</code> es la ventanilla de cobro (acceso controlado). El <code>_</code> es la señal visual de "esto es interno — no tocar desde afuera".</div>
+
+      <div class="week-card am upcoming">
+        <div class="wc-top">
+          <span class="wc-sem">Semana 6</span>
+          <span class="wc-status prox">Próximamente</span>
+        </div>
+        <div class="wc-title">Evaluación Final Unidad I</div>
+        <div class="wc-desc">App WPF con interfaz gráfica e integración de base de datos SQL Server. Encargo 2.</div>
+        <div class="wc-chips">
+          <span class="wc-chip">Encargo 2 📋</span>
+          <span class="wc-chip">WPF + EF</span>
+        </div>
       </div>
-    </div>
-    <div class="code-block" style="margin:0">
-      <div class="code-hdr"><span class="code-lang">C# — Por qué el _ evita errores reales</span></div>
-      <pre><span class="cm">// ❌ SIN convenio — el compilador se confunde</span>
-<span class="kw">public class</span> <span class="ty">Producto</span>
-{
-    <span class="kw">private string</span> nombre;      <span class="cm">// campo privado</span>
 
-    <span class="kw">public</span> <span class="ty">Producto</span>(<span class="ty">string</span> nombre)  <span class="cm">// parámetro del constructor</span>
-    {
-        nombre = nombre;            <span class="cm">// ⚠️ ERROR LÓGICO: asigna el parámetro a sí mismo</span>
-                                    <span class="cm">// el campo 'nombre' NUNCA se inicializa</span>
-    }
-}
-
-<span class="cm">// ✅ CON convenio _ — cero ambigüedad</span>
-<span class="kw">public class</span> <span class="ty">Producto</span>
-{
-    <span class="kw">private string</span> _nombre;     <span class="cm">// campo privado — prefijo _ lo identifica</span>
-
-    <span class="kw">public</span> <span class="ty">Producto</span>(<span class="ty">string</span> nombre) <span class="cm">// parámetro sin _</span>
-    {
-        _nombre = nombre;           <span class="cm">// ✅ CORRECTO: campo recibe el valor del parámetro</span>
-    }
-}
-
-<span class="cm">// ✅ ALTERNATIVA MÁS USADA HOY: propiedades auto-implementadas</span>
-<span class="cm">// Cuando usas get; set; NO necesitas campo privado ni _</span>
-<span class="kw">public class</span> <span class="ty">Producto</span>
-{
-    <span class="cm">// Sin campo explícito, sin _ — el compilador genera el campo interno</span>
-    <span class="kw">public string</span>  Nombre { <span class="kw">get</span>; <span class="kw">set</span>; }  <span class="cm">// ← preferida en la práctica diaria</span>
-    <span class="kw">public decimal</span> Precio { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public int</span>     Stock  { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-    <span class="kw">public</span> <span class="ty">Producto</span>(<span class="ty">string</span> nombre, <span class="ty">decimal</span> precio)
-    {
-        Nombre = nombre;  <span class="cm">// propiedad (con mayúscula) — no hay confusión</span>
-        Precio = precio;
-    }
-}
-
-<span class="cm">// RESUMEN del convenio (Microsoft C# Coding Conventions):</span>
-<span class="cm">// _campoPrivado  → campo privado de la clase</span>
-<span class="cm">// NombrePropiedad → propiedad pública (PascalCase)</span>
-<span class="cm">// nombreParametro → parámetro de método (camelCase)</span>
-<span class="cm">// variableLocal   → variable local en un método (camelCase)</span></pre>
-    </div>
-  </div>
-  <div class="code-block">
-    <div class="code-hdr"><span class="code-lang">C# — Anatomía completa de la clase Producto</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-    <pre><span class="cm">// NAMESPACE: agrupa clases relacionadas (equivale a package en Java)</span>
-<span class="kw">namespace</span> AlmacenesPA.Modelos
-{
-    <span class="cm">// CLASE: plantilla para crear objetos
-    // public = accesible desde cualquier namespace</span>
-    <span class="kw">public class</span> <span class="ty">Producto</span>
-    {
-        <span class="cm">// =============================================
-        // 1. CAMPOS (fields) — almacenan el estado
-        //    Convención C#: privados con _ prefijo
-        // =============================================</span>
-        <span class="kw">private</span> <span class="ty">int</span>     _id;
-        <span class="kw">private</span> <span class="ty">string</span>  _nombre;
-        <span class="kw">private</span> <span class="ty">decimal</span> _precio;
-        <span class="kw">private</span> <span class="ty">int</span>     _stock;
-
-        <span class="cm">// =============================================
-        // 2. PROPIEDADES — acceso controlado a campos
-        //    C# usa get/set (diferencia clave con Java)
-        // =============================================</span>
-        <span class="kw">public</span> <span class="ty">int</span> Id
-        {
-            <span class="kw">get</span> { <span class="kw">return</span> _id; }       <span class="cm">// leer el campo privado</span>
-            <span class="kw">set</span> { _id = <span class="kw">value</span>; }     <span class="cm">// escribir (value = dato asignado)</span>
-        }
-
-        <span class="cm">// Propiedad auto-implementada (versión corta más usada)</span>
-        <span class="kw">public</span> <span class="ty">string</span>  Nombre { <span class="kw">get</span>; <span class="kw">set</span>; }
-        <span class="kw">public</span> <span class="ty">decimal</span> Precio { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-        <span class="cm">// Propiedad con validación en el setter</span>
-        <span class="kw">public</span> <span class="ty">int</span> Stock
-        {
-            <span class="kw">get</span> => _stock;                <span class="cm">// expresión lambda (forma corta)</span>
-            <span class="kw">set</span>
-            {
-                <span class="cm">// Validar que el stock no sea negativo</span>
-                <span class="kw">if</span> (<span class="kw">value</span> < <span class="nm">0</span>)
-                    <span class="kw">throw new</span> <span class="ty">ArgumentException</span>(<span class="st">"Stock no puede ser negativo"</span>);
-                _stock = <span class="kw">value</span>;
-            }
-        }
-
-        <span class="cm">// Propiedad de solo lectura (calculada, sin setter)</span>
-        <span class="kw">public</span> <span class="ty">bool</span> HayStock => _stock > <span class="nm">0</span>;
-
-        <span class="cm">// =============================================
-        // 3. CONSTRUCTORES — inicializan el objeto
-        //    Mismo nombre que la clase, sin tipo retorno
-        // =============================================</span>
-
-        <span class="cm">// Constructor por defecto (sin parámetros)</span>
-        <span class="kw">public</span> <span class="ty">Producto</span>()
-        {
-            Nombre = <span class="st">"Sin nombre"</span>;
-            Precio = <span class="nm">0m</span>;
-            _stock = <span class="nm">0</span>;
-        }
-
-        <span class="cm">// Constructor con parámetros (el más usado)</span>
-        <span class="kw">public</span> <span class="ty">Producto</span>(<span class="ty">string</span> nombre, <span class="ty">decimal</span> precio, <span class="ty">int</span> stock)
-        {
-            <span class="cm">// Usamos las propiedades (no campos) para activar validaciones</span>
-            Nombre = nombre;
-            Precio = precio;
-            Stock  = stock; <span class="cm">// activa el setter con validación</span>
-        }
-
-        <span class="cm">// =============================================
-        // 4. MÉTODOS — comportamiento del objeto
-        // =============================================</span>
-
-        <span class="cm">// Método de instancia: actúa sobre los datos del objeto</span>
-        <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">PrecioConDescuento</span>(<span class="ty">int</span> porcentaje)
-        {
-            <span class="kw">if</span> (porcentaje < <span class="nm">0</span> || porcentaje > <span class="nm">100</span>)
-                <span class="kw">throw new</span> <span class="ty">ArgumentException</span>(<span class="st">"Porcentaje entre 0 y 100"</span>);
-
-            <span class="kw">return</span> Precio * (<span class="nm">1</span> - porcentaje / <span class="nm">100m</span>);
-        }
-
-        <span class="cm">// Método estático: pertenece a la CLASE, no a un objeto</span>
-        <span class="kw">public static</span> <span class="ty">Producto</span> <span class="fn">CrearVacio</span>()
-        {
-            <span class="kw">return new</span> <span class="ty">Producto</span>(); <span class="cm">// usa el constructor por defecto</span>
-        }
-
-        <span class="cm">// Override de ToString() — representación textual del objeto</span>
-        <span class="kw">public override</span> <span class="ty">string</span> <span class="fn">ToString</span>()
-        {
-            <span class="kw">return</span> <span class="st">$"[{Id:D3}] {Nombre,-20} ${Precio,8:N0}  Stock:{Stock}"</span>;
-        }
-    }
-}</pre>
-  </div>
-
-  <div class="sec-title"><span>🏗️</span>Herencia e Interfaces</div>
-  <div class="code-block">
-    <div class="code-hdr"><span class="code-lang">C# — Herencia e interfaces en Almacenes Por Ahí</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-    <pre><span class="cm">// CLASE BASE abstracta — no se puede instanciar directamente</span>
-<span class="kw">public abstract class</span> <span class="ty">PersonaBase</span>
-{
-    <span class="kw">public</span> <span class="ty">string</span> Nombre { <span class="kw">get</span>; <span class="kw">set</span>; }
-    <span class="kw">public</span> <span class="ty">string</span> RUT    { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-    <span class="cm">// Método abstracto: OBLIGA a las subclases a implementarlo</span>
-    <span class="kw">public abstract</span> <span class="ty">string</span> <span class="fn">ObtenerRol</span>();
-
-    <span class="cm">// Método virtual: las subclases PUEDEN sobreescribirlo</span>
-    <span class="kw">public virtual</span> <span class="ty">string</span> <span class="fn">Presentarse</span>()
-        => <span class="st">$"Hola, soy {Nombre} ({RUT})"</span>;
-}
-
-<span class="cm">// SUBCLASE Cliente: hereda de PersonaBase
-// En Java: class Cliente extends PersonaBase
-// En C#:   class Cliente : PersonaBase   ← dos puntos</span>
-<span class="kw">public class</span> <span class="ty">Cliente</span> : <span class="ty">PersonaBase</span>
-{
-    <span class="kw">public</span> <span class="ty">DateTime</span> FechaRegistro { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-    <span class="kw">public</span> <span class="ty">Cliente</span>(<span class="ty">string</span> nombre, <span class="ty">string</span> rut)
-    {
-        Nombre = nombre;        <span class="cm">// hereda de PersonaBase</span>
-        RUT    = rut;
-        FechaRegistro = <span class="ty">DateTime</span>.Now;
-    }
-
-    <span class="cm">// Implementación obligatoria del método abstracto</span>
-    <span class="kw">public override</span> <span class="ty">string</span> <span class="fn">ObtenerRol</span>() => <span class="st">"Cliente"</span>;
-
-    <span class="cm">// Sobreescritura del método virtual</span>
-    <span class="kw">public override</span> <span class="ty">string</span> <span class="fn">Presentarse</span>()
-        => <span class="st">$"Cliente: {Nombre}"</span>;
-}
-
-<span class="cm">// INTERFAZ — contrato que la clase debe cumplir
-// En Java: interface ICalculable
-// En C#:   interface ICalculable  ← convención: 'I' al inicio</span>
-<span class="kw">public interface</span> <span class="ty">ICalculable</span>
-{
-    <span class="ty">decimal</span> <span class="fn">CalcularTotal</span>();        <span class="cm">// solo firma, sin cuerpo</span>
-    <span class="ty">decimal</span> <span class="fn">AplicarDescuento</span>(<span class="ty">int</span> pct);
-}
-
-<span class="cm">// Clase implementa la interfaz</span>
-<span class="kw">public class</span> <span class="ty">Venta</span> : <span class="ty">ICalculable</span>
-{
-    <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">DetalleVenta</span>&gt; Detalles { <span class="kw">get</span>; <span class="kw">set</span>; } = <span class="kw">new</span>();
-
-    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">CalcularTotal</span>()
-    {
-        <span class="ty">decimal</span> total = <span class="nm">0</span>;
-        <span class="kw">foreach</span> (<span class="kw">var</span> d <span class="kw">in</span> Detalles)
-            total += d.Cantidad * d.PrecioUnitario; <span class="cm">// acumular</span>
-        <span class="kw">return</span> total;
-    }
-
-    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">AplicarDescuento</span>(<span class="ty">int</span> pct)
-        => <span class="fn">CalcularTotal</span>() * (<span class="nm">1</span> - pct / <span class="nm">100m</span>);
-}</pre>
-  </div>
-</section>
-
-<!-- ═══════════════════ ESTRUCTURA DEL PROYECTO ═══════════════════ -->
-<section class="sec" id="sec-est">
-  <p class="pg-title">📁 Estructura de un Proyecto .NET</p>
-  <p class="pg-sub">Cómo organizar correctamente el código de Almacenes Por Ahí en Visual Studio.</p>
-
-  <div class="sec-title" style="margin-top:0"><span>🌲</span>Árbol del proyecto en el disco</div>
-  <div class="tree">
-<span class="tf">📁 AlmacenesPA/</span>                        <span class="tc-c">← Carpeta raíz de la SOLUCIÓN</span>
-  <span class="tc-x">📄 AlmacenesPA.sln</span>                    <span class="tc-c">← Archivo de solución (abre todo en VS)</span>
-  │
-  <span class="tf">📁 AlmacenesConsola/</span>                  <span class="tc-c">← Proyecto de consola (Encargo 1)</span>
-  │   <span class="tc-x">📄 AlmacenesConsola.csproj</span>         <span class="tc-c">← Config del proyecto (.NET 8)</span>
-  │   <span class="tc-cs">📄 Program.cs</span>                      <span class="tc-c">← Punto de entrada (top-level)</span>
-  │   │
-  │   <span class="tf">📁 Modelos/</span>                        <span class="tc-c">← Clases del dominio</span>
-  │   │   <span class="tc-cs">📄 Producto.cs</span>
-  │   │   <span class="tc-cs">📄 Cliente.cs</span>
-  │   │   <span class="tc-cs">📄 Venta.cs</span>
-  │   │   <span class="tc-cs">📄 DetalleVenta.cs</span>
-  │   │   <span class="tc-cs">📄 Empleado.cs</span>
-  │   │   <span class="tc-cs">📄 Sucursal.cs</span>
-  │   │
-  │   <span class="tf">📁 Servicios/</span>                      <span class="tc-c">← Lógica de negocio</span>
-  │   │   <span class="tc-cs">📄 InventarioService.cs</span>
-  │   │   <span class="tc-cs">📄 VentaService.cs</span>
-  │   │
-  │   <span class="tf">📁 Datos/</span>                          <span class="tc-c">← Acceso a datos (semanas 4-5)</span>
-  │       <span class="tc-cs">📄 AlmacenesContext.cs</span>
-  │
-  <span class="tf">📁 AlmacenesWPF/</span>                      <span class="tc-c">← Proyecto WPF (Encargo 2)</span>
-  │   <span class="tc-x">📄 AlmacenesWPF.csproj</span>
-  │   <span class="tc-cs">📄 App.xaml.cs</span>
-  │   <span class="tf">📁 Vistas/</span>
-  │   <span class="tf">📁 ViewModels/</span>
-  │
-  <span class="tf">📁 AlmacenesWeb/</span>                      <span class="tc-c">← Proyecto ASP.NET MVC (Encargo 3)</span>
-      <span class="tc-x">📄 AlmacenesWeb.csproj</span>
-      <span class="tf">📁 Controllers/</span>
-      <span class="tf">📁 Models/</span>
-      <span class="tf">📁 Views/</span>
-  </div>
-
-  <div class="sec-title"><span>📋</span>El archivo .csproj — configuración del proyecto</div>
-  <div class="code-block">
-    <div class="code-hdr"><span class="code-lang">XML — AlmacenesConsola.csproj</span></div>
-    <pre><span class="cm">&lt;!-- El archivo .csproj configura el proyecto .NET --&gt;</span>
-&lt;Project Sdk="Microsoft.NET.Sdk"&gt;
-
-  &lt;PropertyGroup&gt;
-    <span class="cm">&lt;!-- Tipo de app: Exe (consola) o Library --&gt;</span>
-    &lt;OutputType&gt;Exe&lt;/OutputType&gt;
-
-    <span class="cm">&lt;!-- Versión del framework .NET a usar --&gt;</span>
-    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
-
-    <span class="cm">&lt;!-- Advertencias para null (mayor seguridad) --&gt;</span>
-    &lt;Nullable&gt;enable&lt;/Nullable&gt;
-
-    <span class="cm">&lt;!-- Agrega using implícitos comunes --&gt;</span>
-    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
-  &lt;/PropertyGroup&gt;
-
-  <span class="cm">&lt;!-- Dependencias NuGet (semanas 4-5) --&gt;</span>
-  &lt;ItemGroup&gt;
-    &lt;PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer"
-                      Version="8.0.0" /&gt;
-  &lt;/ItemGroup&gt;
-
-&lt;/Project&gt;</pre>
-  </div>
-
-  <div class="sec-title"><span>💡</span>Namespaces — cómo organizarlos</div>
-  <div class="code-block">
-    <div class="code-hdr"><span class="code-lang">C# — Convención de namespaces del proyecto</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-    <pre><span class="cm">// CONVENCIÓN: NombreEmpresa.NombreProyecto.Módulo</span>
-
-<span class="cm">// En Modelos/Producto.cs</span>
-<span class="kw">namespace</span> AlmacenesPA.Modelos;    <span class="cm">// sintaxis moderna (.NET 6+)</span>
-<span class="kw">public class</span> <span class="ty">Producto</span> { ... }
-
-<span class="cm">// En Servicios/InventarioService.cs</span>
-<span class="kw">namespace</span> AlmacenesPA.Servicios;
-<span class="kw">using</span> AlmacenesPA.Modelos;        <span class="cm">// importar el namespace de modelos</span>
-
-<span class="kw">public class</span> <span class="ty">InventarioService</span>
-{
-    <span class="cm">// List&lt;Producto&gt; viene del namespace importado</span>
-    <span class="kw">private</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; _productos = <span class="kw">new</span>();
-
-    <span class="kw">public void</span> <span class="fn">Agregar</span>(<span class="ty">Producto</span> p) => _productos.<span class="fn">Add</span>(p);
-    <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; <span class="fn">Todos</span>() => _productos;
-}
-
-<span class="cm">// En Program.cs (top-level)</span>
-<span class="kw">using</span> AlmacenesPA.Modelos;
-<span class="kw">using</span> AlmacenesPA.Servicios;
-
-<span class="kw">var</span> srv = <span class="kw">new</span> <span class="ty">InventarioService</span>();
-srv.<span class="fn">Agregar</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="st">"Polera"</span>, <span class="nm">9990m</span>, <span class="nm">120</span>));</pre>
-  </div>
-</section>
-
-<!-- ═══════════════════ PRÁCTICA — PRIMER PROGRAMA ═══════════════════ -->
-<section class="sec" id="sec-prac">
-  <p class="pg-title">💻 Primer Programa C# — Paso a Paso</p>
-  <p class="pg-sub">Desde Hello World hasta clase completa con validación. Cada línea comentada.</p>
-
-  <div class="ex-tabs">
-    <button class="ex-tab on"  onclick="switchEx(this,'ex1')">Ej.1: Hello World</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex2')">Ej.2: Variables</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex3')">Ej.3: Control de flujo</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex4')">Ej.4: class + Main</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex5')">Ej.5: Menú while</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex6')">Ej.6: Clase Producto</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex7')">Ej.7: List colección</button>
-    <button class="ex-tab"     onclick="switchEx(this,'ex8')">Ej.8: Validación</button>
-  </div>
-
-  <!-- EJ 1 -->
-  <div class="ex-pane on" id="ex1">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear el primer programa y entender la estructura mínima de C# en .NET 8 (top-level statements).</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET 8 — Hello World (Program.cs)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// En .NET 8 (top-level statements): NO necesitas class Program ni Main()
-// El compilador Roslyn los genera automáticamente — el código va directo</span>
-
-<span class="cm">// Console.WriteLine() imprime texto y salta de línea
-// Equivalente a System.out.println() en Java</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"¡Hola, Almacenes Por Ahí!"</span>);
-
-<span class="cm">// Console.Write() imprime SIN saltar de línea</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Semana 1"</span>);
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">" — "</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"IEI-089"</span>); <span class="cm">// ahora sí salta de línea</span>
-
-<span class="cm">// Cambiar color de la consola</span>
-<span class="ty">Console</span>.ForegroundColor = <span class="ty">ConsoleColor</span>.Cyan;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Texto en color cyan"</span>);
-<span class="ty">Console</span>.ResetColor(); <span class="cm">// restaurar color por defecto</span>
-
-<span class="cm">// Interpolación de strings con $ — más limpio que concatenar con +</span>
-<span class="ty">string</span> curso  = <span class="st">"Programación .NET"</span>;
-<span class="ty">int</span>    semana = <span class="nm">1</span>;
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Curso: {curso} | Semana: {semana}"</span>);
-<span class="cm">// Salida: Curso: Programación .NET | Semana: 1</span>
-
-<span class="cm">// ReadKey(): espera que el usuario presione una tecla</span>
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
     </div>
   </div>
 
-  <!-- EJ 2 -->
-  <div class="ex-pane" id="ex2">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Declarar variables con los tipos más usados del proyecto. Notar diferencias con Java.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Variables y tipos básicos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// ===== TIPOS ENTEROS =====</span>
-<span class="ty">int</span>  stock    = <span class="nm">120</span>;      <span class="cm">// 32 bits — stocks, cantidades, IDs</span>
-<span class="ty">long</span> ventas   = <span class="nm">150000L</span>; <span class="cm">// 64 bits — números grandes (L al final)</span>
-<span class="ty">byte</span> talla    = <span class="nm">36</span>;       <span class="cm">// 0..255 — útil para tallas numéricas</span>
-
-<span class="cm">// ===== TIPOS DECIMALES =====</span>
-<span class="ty">decimal</span> precio = <span class="nm">9990.50m</span>; <span class="cm">// 'm' obligatorio — SIEMPRE para dinero</span>
-<span class="ty">double</span>  pct    = <span class="nm">0.15</span>;     <span class="cm">// sin sufijo (double es el tipo por defecto)</span>
-<span class="ty">float</span>   temp   = <span class="nm">22.5f</span>;   <span class="cm">// 'f' obligatorio para float</span>
-
-<span class="cm">// ===== TEXTO =====</span>
-<span class="ty">string</span> nombre = <span class="st">"Polera básica"</span>; <span class="cm">// string (minúscula) — alias de String</span>
-<span class="ty">char</span>   inicial = <span class="st">'P'</span>;            <span class="cm">// char usa comillas SIMPLES</span>
-
-<span class="cm">// ===== BOOLEANO =====</span>
-<span class="ty">bool</span> activo   = <span class="kw">true</span>;     <span class="cm">// boolean en Java → bool en C#</span>
-<span class="ty">bool</span> hayStock = stock > <span class="nm">0</span>; <span class="cm">// expresión booleana</span>
-
-<span class="cm">// ===== INFERENCIA con 'var' (igual que Java 10+) =====</span>
-<span class="kw">var</span> categoria = <span class="st">"Ropa"</span>;     <span class="cm">// inferido como string</span>
-<span class="kw">var</span> ahora     = <span class="ty">DateTime</span>.Now; <span class="cm">// inferido como DateTime</span>
-
-<span class="cm">// ===== NULLABLE — puede ser null =====</span>
-<span class="ty">string</span>? email = <span class="kw">null</span>;  <span class="cm">// ? permite null</span>
-<span class="ty">int</span>?   desc   = <span class="kw">null</span>;  <span class="cm">// descuento opcional</span>
-
-<span class="cm">// ===== MOSTRAR RESULTADOS =====</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Producto: {nombre}"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio:   ${precio:N0}"</span>); <span class="cm">// :N0 = formato numérico</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Stock:    {stock} unidades"</span>);
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
+  <!-- UNIDAD II -->
+  <div class="unidad">
+    <div class="unidad-header">
+      <span class="unidad-badge" style="background:var(--amber-bg);border-color:rgba(212,148,74,.25);color:var(--amber)">Unidad II</span>
+      <span class="unidad-title">Desarrollo de Aplicaciones Web con ASP.NET</span>
+      <span class="unidad-hrs">24 hrs · Semanas 7–12</span>
     </div>
-  </div>
+    <div class="weeks-grid">
 
-  <!-- EJ 3 -->
-  <div class="ex-pane" id="ex3">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Estructuras de control: if/else, switch, for, foreach y while aplicadas al inventario.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Control de flujo</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="ty">int</span>    stock  = <span class="nm">15</span>;
-<span class="ty">string</span> estado = <span class="st">"activo"</span>;
-
-<span class="cm">// ===== IF / ELSE IF / ELSE =====</span>
-<span class="kw">if</span> (stock == <span class="nm">0</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⛔ Sin stock"</span>);
-<span class="kw">else if</span> (stock < <span class="nm">10</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠️ Stock crítico"</span>);
-<span class="kw">else</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"✅ Stock normal"</span>);
-
-<span class="cm">// Operador ternario — versión corta del if/else</span>
-<span class="ty">string</span> disp = stock > <span class="nm">0</span> ? <span class="st">"Disponible"</span> : <span class="st">"Agotado"</span>;
-
-<span class="cm">// ===== SWITCH — múltiples casos =====</span>
-<span class="kw">switch</span> (estado)
-{
-    <span class="kw">case</span> <span class="st">"activo"</span>:
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"✅ Visible en catálogo"</span>);
-        <span class="kw">break</span>;
-    <span class="kw">case</span> <span class="st">"inactivo"</span>:
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"🔒 Producto oculto"</span>);
-        <span class="kw">break</span>;
-    <span class="kw">default</span>:
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Estado desconocido"</span>);
-        <span class="kw">break</span>;
-}
-
-<span class="cm">// ===== FOR — número fijo de iteraciones =====</span>
-<span class="kw">for</span> (<span class="ty">int</span> i = <span class="nm">1</span>; i <= <span class="nm">5</span>; i++) <span class="cm">// i desde 1 hasta 5 inclusive</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Sucursal #{i}"</span>);
-
-<span class="cm">// ===== FOREACH — recorrer colecciones =====</span>
-<span class="ty">string</span>[] categorias = { <span class="st">"Poleras"</span>, <span class="st">"Jeans"</span>, <span class="st">"Chaquetas"</span> };
-<span class="kw">foreach</span> (<span class="ty">string</span> cat <span class="kw">in</span> categorias)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  • {cat}"</span>);
-
-<span class="cm">// ===== WHILE — mientras se cumpla condición =====</span>
-<span class="ty">int</span> intentos = <span class="nm">0</span>;
-<span class="kw">while</span> (intentos < <span class="nm">3</span>)
-{
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Intento {intentos + 1}/3"</span>);
-    intentos++; <span class="cm">// incrementar (igual que Java)</span>
-}
-
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
-    </div>
-  </div>
-
-  <!-- EJ 4 -->
-  <div class="ex-pane" id="ex4">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear una clase con método Main estático (estilo Java clásico) y entender diferencia con top-level statements.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Clase Program con Main (estilo clásico Java)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="kw">namespace</span> AlmacenesPA;  <span class="cm">// en Java: package almacenespa;</span>
-
-<span class="cm">// En Java:  public class Program { ... }
-// En C#:    public class Program { ... } ← ¡Idéntico!</span>
-<span class="kw">public class</span> <span class="ty">Program</span>
-{
-    <span class="cm">// En Java: public static void main(String[] args)
-    // En C#:  public static void Main(string[] args)
-    //         ↑ DIFERENCIA: Main con MAYÚSCULA en C#</span>
-    <span class="kw">public static void</span> <span class="fn">Main</span>(<span class="ty">string</span>[] args)
-    {
-        <span class="cm">// args = argumentos de línea de comandos (igual que Java)</span>
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Sistema de gestión iniciado"</span>);
-
-        <span class="cm">// Llamar a método estático de la misma clase</span>
-        <span class="fn">MostrarBienvenida</span>(<span class="st">"Almacenes Por Ahí"</span>);
-
-        <span class="cm">// Crear objeto e invocar método de instancia</span>
-        <span class="ty">GestorInventario</span> gestor = <span class="kw">new</span> <span class="ty">GestorInventario</span>();
-        gestor.<span class="fn">Inicializar</span>();
-
-        <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
-    }
-
-    <span class="cm">// Método estático — se llama desde la clase, sin objeto</span>
-    <span class="kw">private static void</span> <span class="fn">MostrarBienvenida</span>(<span class="ty">string</span> empresa)
-    {
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"=== {empresa} ==="</span>);
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Fecha: {DateTime.Now:dd/MM/yyyy}"</span>);
-    }
-}
-
-<span class="cm">// Clase auxiliar en el mismo archivo (o en archivo separado)</span>
-<span class="kw">public class</span> <span class="ty">GestorInventario</span>
-{
-    <span class="kw">private</span> <span class="ty">int</span> _cantidadProductos = <span class="nm">0</span>; <span class="cm">// estado privado</span>
-
-    <span class="kw">public void</span> <span class="fn">Inicializar</span>()
-    {
-        _cantidadProductos = <span class="nm">5000</span>; <span class="cm">// total del catálogo</span>
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Inventario: {_cantidadProductos} productos"</span>);
-    }
-}</pre>
-    </div>
-  </div>
-
-  <!-- EJ 5 -->
-  <div class="ex-pane" id="ex5">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear menú interactivo con while — base del Encargo 1.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Menú interactivo con while</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// Bandera de control del bucle principal</span>
-<span class="ty">bool</span> salir = <span class="kw">false</span>;
-
-<span class="kw">while</span> (!salir) <span class="cm">// equivale a: while (salir == false)</span>
-{
-    <span class="ty">Console</span>.<span class="fn">Clear</span>(); <span class="cm">// limpiar la consola en cada iteración</span>
-
-    <span class="cm">// Mostrar el menú con cuadro de líneas</span>
-    <span class="ty">Console</span>.ForegroundColor = <span class="ty">ConsoleColor</span>.Cyan;
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔══════════════════════════════╗"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  ALMACENES POR AHÍ v1.0     ║"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╠══════════════════════════════╣"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  1. Ver inventario           ║"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  2. Agregar producto         ║"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  3. Buscar producto          ║"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  4. Salir                    ║"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚══════════════════════════════╝"</span>);
-    <span class="ty">Console</span>.ResetColor();
-
-    <span class="cm">// Leer la opción del usuario</span>
-    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Seleccione: "</span>);
-    <span class="ty">string</span> opcion = <span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>; <span class="cm">// ?? = null-coalescing</span>
-
-    <span class="cm">// Procesar la opción elegida</span>
-    <span class="kw">switch</span> (opcion)
-    {
-        <span class="kw">case</span> <span class="st">"1"</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n📦 Lista de productos..."</span>);
-            <span class="ty">Console</span>.<span class="fn">ReadKey</span>(); <span class="cm">// pausa para ver el resultado</span>
-            <span class="kw">break</span>;
-        <span class="kw">case</span> <span class="st">"2"</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n➕ Agregar producto..."</span>);
-            <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
-            <span class="kw">break</span>;
-        <span class="kw">case</span> <span class="st">"3"</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n🔍 Buscando..."</span>);
-            <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
-            <span class="kw">break</span>;
-        <span class="kw">case</span> <span class="st">"4"</span>:
-            salir = <span class="kw">true</span>; <span class="cm">// activa bandera → sale del while</span>
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"¡Hasta pronto!"</span>);
-            <span class="kw">break</span>;
-        <span class="kw">default</span>:
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠️ Opción inválida."</span>);
-            <span class="ty">Console</span>.<span class="fn">ReadKey</span>();
-            <span class="kw">break</span>;
-    }
-}</pre>
-    </div>
-  </div>
-
-  <!-- EJ 6 -->
-  <div class="ex-pane" id="ex6">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Crear la clase Producto completa con constructor, propiedades y métodos.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Clase Producto (entidad base del semestre)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="kw">namespace</span> AlmacenesPA.Modelos;
-
-<span class="kw">public class</span> <span class="ty">Producto</span>
-{
-    <span class="cm">// PROPIEDADES auto-implementadas — versión más usada en la práctica</span>
-    <span class="kw">public</span> <span class="ty">int</span>     Id        { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// identificador único</span>
-    <span class="kw">public</span> <span class="ty">string</span>  Nombre    { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// nombre del artículo</span>
-    <span class="kw">public</span> <span class="ty">decimal</span> Precio    { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// precio de venta</span>
-    <span class="kw">public</span> <span class="ty">int</span>     Stock     { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// unidades disponibles</span>
-    <span class="kw">public</span> <span class="ty">string</span>  Talla     { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// XS/S/M/L/XL</span>
-    <span class="kw">public</span> <span class="ty">string</span>  Categoria { <span class="kw">get</span>; <span class="kw">set</span>; } <span class="cm">// Poleras, Jeans, etc.</span>
-
-    <span class="cm">// CONSTRUCTOR sin parámetros — crea producto con valores por defecto</span>
-    <span class="kw">public</span> <span class="ty">Producto</span>()
-    {
-        Nombre    = <span class="st">"Sin nombre"</span>;
-        Precio    = <span class="nm">0m</span>;
-        Stock     = <span class="nm">0</span>;
-        Talla     = <span class="st">"U"</span>;
-        Categoria = <span class="st">"General"</span>;
-    }
-
-    <span class="cm">// CONSTRUCTOR con parámetros — el más usado</span>
-    <span class="kw">public</span> <span class="ty">Producto</span>(<span class="ty">int</span> id, <span class="ty">string</span> nombre, <span class="ty">decimal</span> precio, <span class="ty">int</span> stock)
-    {
-        Id       = id;
-        Nombre   = nombre;
-        Precio   = precio;
-        Stock    = stock;
-        Talla    = <span class="st">"M"</span>;
-        Categoria = <span class="st">"General"</span>;
-    }
-
-    <span class="cm">// MÉTODOS de instancia</span>
-    <span class="kw">public</span> <span class="ty">bool</span>    <span class="fn">TieneStock</span>() => Stock > <span class="nm">0</span>;
-
-    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">PrecioConDescuento</span>(<span class="ty">int</span> pct)
-    {
-        <span class="kw">if</span> (pct < <span class="nm">0</span> || pct > <span class="nm">100</span>)
-            <span class="kw">throw new</span> <span class="ty">ArgumentException</span>(<span class="st">"Porcentaje entre 0 y 100"</span>);
-        <span class="kw">return</span> Precio * (<span class="nm">1</span> - pct / <span class="nm">100m</span>); <span class="cm">// precio reducido</span>
-    }
-
-    <span class="kw">public void</span> <span class="fn">ReducirStock</span>(<span class="ty">int</span> cant)
-    {
-        <span class="kw">if</span> (cant > Stock)
-            <span class="kw">throw new</span> <span class="ty">InvalidOperationException</span>(<span class="st">$"Stock insuf. Disp: {Stock}"</span>);
-        Stock -= cant; <span class="cm">// equivale a: Stock = Stock - cant</span>
-    }
-
-    <span class="cm">// Override de ToString() — representación del objeto como texto</span>
-    <span class="kw">public override</span> <span class="ty">string</span> <span class="fn">ToString</span>()
-    {
-        <span class="ty">string</span> st = <span class="fn">TieneStock</span>() ? <span class="st">"✅"</span> : <span class="st">"⛔"</span>;
-        <span class="kw">return</span> <span class="st">$"[{Id:D3}] {Nombre,-22} ${Precio,8:N0}  {st}"</span>;
-    }
-}
-
-<span class="cm">// ===== PROGRAMA PRINCIPAL =====</span>
-<span class="ty">Producto</span> p1 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Polera básica"</span>, <span class="nm">9990m</span>,  <span class="nm">120</span>);
-<span class="ty">Producto</span> p2 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Jeans skinny"</span>,  <span class="nm">24990m</span>, <span class="nm">45</span>);
-<span class="ty">Producto</span> p3 = <span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Chaqueta"</span>,      <span class="nm">49990m</span>, <span class="nm">0</span>);
-
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p1); <span class="cm">// llama a ToString() automáticamente</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p2);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(p3);
-
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Polera 20% off: ${p1.PrecioConDescuento(20):N0}"</span>);
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
-    </div>
-  </div>
-
-  <!-- EJ 7 -->
-  <div class="ex-pane" id="ex7">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Usar List&lt;T&gt; de la BCL para gestionar una colección dinámica de productos.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — List&lt;T&gt; colección de productos</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="kw">using</span> System.Collections.Generic; <span class="cm">// necesario para List&lt;T&gt;</span>
-
-<span class="cm">// CREAR lista tipada — equivale a ArrayList de Java pero tipada</span>
-<span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; inventario = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt;();
-
-<span class="cm">// ADD: agregar elementos</span>
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Polera básica"</span>,   <span class="nm">9990m</span>,  <span class="nm">120</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Jeans skinny"</span>,     <span class="nm">24990m</span>, <span class="nm">45</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Chaqueta invierno"</span>, <span class="nm">49990m</span>, <span class="nm">0</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">4</span>, <span class="st">"Calcetines x3"</span>,    <span class="nm">4990m</span>,  <span class="nm">200</span>));
-
-<span class="cm">// COUNT: número de elementos (.size() en Java)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Productos: {inventario.Count}"</span>);
-
-<span class="cm">// FOREACH: recorrer todos</span>
-<span class="kw">foreach</span> (<span class="ty">Producto</span> p <span class="kw">in</span> inventario)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(p); <span class="cm">// llama a ToString()</span>
-
-<span class="cm">// FIND: buscar el primero que cumpla condición (lambda)</span>
-<span class="ty">Producto</span>? encontrado = inventario.<span class="fn">Find</span>(p => p.Id == <span class="nm">2</span>);
-<span class="kw">if</span> (encontrado != <span class="kw">null</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Encontrado: {encontrado.Nombre}"</span>);
-
-<span class="cm">// FINDALL: todos los que cumplen la condición</span>
-<span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; conStock = inventario.<span class="fn">FindAll</span>(p => p.<span class="fn">TieneStock</span>());
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Con stock: {conStock.Count}"</span>);
-
-<span class="cm">// SORT: ordenar por precio de menor a mayor</span>
-inventario.<span class="fn">Sort</span>((a, b) => a.Precio.<span class="fn">CompareTo</span>(b.Precio));
-
-<span class="cm">// REMOVE: eliminar un elemento</span>
-<span class="ty">Producto</span>? aElim = inventario.<span class="fn">Find</span>(p => p.Id == <span class="nm">3</span>);
-<span class="kw">if</span> (aElim != <span class="kw">null</span>) inventario.<span class="fn">Remove</span>(aElim);
-
-<span class="cm">// CALCULAR valor total del inventario</span>
-<span class="ty">decimal</span> total = <span class="nm">0</span>;
-<span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> inventario)
-    total += p.Precio * p.Stock; <span class="cm">// precio × unidades</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Valor inventario: ${total:N0}"</span>);
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
-    </div>
-  </div>
-
-  <!-- EJ 8 -->
-  <div class="ex-pane" id="ex8">
-    <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">Objetivo</div><div class="box-body">Leer datos del usuario y validar con TryParse. Flujo base del módulo de ingreso de inventario.</div></div>
-    <div class="code-block">
-      <div class="code-hdr"><span class="code-lang">C# .NET — Ingreso y validación con TryParse</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-      <pre><span class="cm">// Console.Write sin salto de línea — espera en la misma línea</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Nombre del producto: "</span>);
-<span class="ty">string</span> nombre = (<span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>).<span class="fn">Trim</span>(); <span class="cm">// Trim() elimina espacios</span>
-
-<span class="kw">if</span> (nombre == <span class="st">""</span>)
-{
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: el nombre no puede estar vacío."</span>);
-    <span class="kw">return</span>; <span class="cm">// salir del programa</span>
-}
-
-<span class="cm">// TryParse: intenta convertir sin lanzar excepción
-// Si tiene éxito: retorna true y guarda el valor en 'out precio'
-// Si falla (ej: usuario escribe "abc"): retorna false
-// Mucho más seguro que decimal.Parse() que lanza excepción</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Precio ($): "</span>);
-<span class="ty">decimal</span> precio;
-<span class="kw">if</span> (!<span class="ty">decimal</span>.<span class="fn">TryParse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> precio) || precio <= <span class="nm">0</span>)
-{
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: precio inválido."</span>);
-    <span class="kw">return</span>;
-}
-
-<span class="cm">// Lo mismo para el stock (int)</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">"Stock: "</span>);
-<span class="ty">int</span> stock;
-<span class="kw">if</span> (!<span class="ty">int</span>.<span class="fn">TryParse</span>(<span class="ty">Console</span>.<span class="fn">ReadLine</span>(), <span class="kw">out</span> stock) || stock < <span class="nm">0</span>)
-{
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: stock inválido."</span>);
-    <span class="kw">return</span>;
-}
-
-<span class="cm">// Validar talla contra lista permitida</span>
-<span class="ty">string</span>[] tallasOk = { <span class="st">"XS"</span>, <span class="st">"S"</span>, <span class="st">"M"</span>, <span class="st">"L"</span>, <span class="st">"XL"</span> };
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"Talla ({string.Join("/", tallasOk)}): "</span>);
-<span class="ty">string</span> talla = (<span class="ty">Console</span>.<span class="fn">ReadLine</span>() ?? <span class="st">""</span>).<span class="fn">ToUpper</span>(); <span class="cm">// ToUpper(): mayúscula</span>
-
-<span class="kw">if</span> (<span class="ty">Array</span>.<span class="fn">IndexOf</span>(tallasOk, talla) == -<span class="nm">1</span>)
-{
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Error: talla inválida."</span>);
-    <span class="kw">return</span>;
-}
-
-<span class="cm">// Crear el producto con inicializador de objeto { } (alternativa al constructor)</span>
-<span class="ty">Producto</span> nuevo = <span class="kw">new</span> <span class="ty">Producto</span>
-{
-    Id     = <span class="nm">1</span>,
-    Nombre = nombre,
-    Precio = precio,
-    Stock  = stock,
-    Talla  = talla
-};
-
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\n✅ Producto creado: {nuevo}"</span>);
-<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════ QUIZ ═══════════════════ -->
-<section class="sec" id="sec-quiz">
-  <p class="pg-title">🧠 Quiz — Arquitectura .NET</p>
-  <p class="pg-sub">4 preguntas · +25 XP por acierto · +50 XP si aciertas todas</p>
-  <div id="quiz-container">
-    <div class="quiz-card" id="q1">
-      <div class="qc-head"><div class="qc-num">PREGUNTA 1 de 4</div><div class="qc-q">¿Cuál es la función principal del CLR en .NET?</div></div>
-      <div class="qc-opts">
-        <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ Visual Studio es el IDE — el CLR es el motor de ejecución.')">A) Proveer el entorno de edición de código</button>
-        <button class="qc-opt" onclick="answer(this,'q1','correct','✅ Correcto — el CLR gestiona JIT, GC, seguridad de tipos y manejo de excepciones.')">B) Gestionar ejecución, memoria y compilación JIT</button>
-        <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ La FCL provee las bibliotecas; el CLR es el motor de ejecución.')">C) Almacenar las bibliotecas de clases</button>
-        <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ SQL Server gestiona la BD; el CLR gestiona la ejecución del código.')">D) Conectar la app a la base de datos</button>
+      <div class="week-card am upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 7</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Estructura de un Proyecto ASP.NET</div>
+        <div class="wc-desc">Fundamentos de ASP.NET, estructura del proyecto, IIS y primera página.</div>
+        <div class="wc-chips"><span class="wc-chip">ASP.NET</span><span class="wc-chip">IIS</span></div>
       </div>
-      <div class="qc-fb" id="fb-q1"></div>
-    </div>
-    <div class="quiz-card" id="q2">
-      <div class="qc-head"><div class="qc-num">PREGUNTA 2 de 4</div><div class="qc-q">¿Qué diferencia existe entre <code>boolean</code> en Java y <code>bool</code> en C#?</div></div>
-      <div class="qc-opts">
-        <button class="qc-opt" onclick="answer(this,'q2','wrong','❌ Ambos representan true/false. La diferencia es solo el nombre.')">A) bool puede ser null; boolean no</button>
-        <button class="qc-opt" onclick="answer(this,'q2','wrong','❌ Son el mismo concepto — representan valores de verdad.')">B) bool es para objetos; boolean para primitivos</button>
-        <button class="qc-opt" onclick="answer(this,'q2','correct','✅ Correcto — mismo concepto (true/false), diferente nombre. bool es el alias en C#.')">C) Son el mismo concepto, solo cambia el nombre</button>
-        <button class="qc-opt" onclick="answer(this,'q2','wrong','❌ Ambos son tipos lógicos con valores true/false.')">D) bool ocupa 32 bits; boolean ocupa 1 bit</button>
-      </div>
-      <div class="qc-fb" id="fb-q2"></div>
-    </div>
-    <div class="quiz-card" id="q3">
-      <div class="qc-head"><div class="qc-num">PREGUNTA 3 de 4</div><div class="qc-q">¿Qué tipo de dato debes usar para el precio de un producto en Almacenes Por Ahí?</div></div>
-      <div class="qc-opts">
-        <button class="qc-opt" onclick="answer(this,'q3','wrong','❌ double tiene errores de punto flotante — no apto para dinero.')">A) double</button>
-        <button class="qc-opt" onclick="answer(this,'q3','wrong','❌ int es entero — no representa centavos.')">B) int</button>
-        <button class="qc-opt" onclick="answer(this,'q3','correct','✅ Correcto — decimal ofrece precisión exacta para valores monetarios.')">C) decimal</button>
-        <button class="qc-opt" onclick="answer(this,'q3','wrong','❌ string es texto — no se puede operar directamente.')">D) string</button>
-      </div>
-      <div class="qc-fb" id="fb-q3"></div>
-    </div>
-    <div class="quiz-card" id="q4">
-      <div class="qc-head"><div class="qc-num">PREGUNTA 4 de 4</div><div class="qc-q">¿Qué paso sigue INMEDIATAMENTE después de que Roslyn compila el código C#?</div></div>
-      <div class="qc-opts">
-        <button class="qc-opt" onclick="answer(this,'q4','wrong','❌ El JIT actúa después del Class Loader, no directamente tras Roslyn.')">A) El JIT traduce el código a CPU</button>
-        <button class="qc-opt" onclick="answer(this,'q4','correct','✅ Correcto — Roslyn produce el .dll con CIL independiente de plataforma.')">B) Se genera el .dll con CIL independiente de plataforma</button>
-        <button class="qc-opt" onclick="answer(this,'q4','wrong','❌ El GC actúa durante la ejecución, después del JIT.')">C) El Garbage Collector libera memoria</button>
-        <button class="qc-opt" onclick="answer(this,'q4','wrong','❌ Visual Studio muestra resultados pero no es un paso del ciclo CIL.')">D) Visual Studio muestra el resultado</button>
-      </div>
-      <div class="qc-fb" id="fb-q4"></div>
-    </div>
-  </div>
-  <div id="quiz-result" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:22px;text-align:center">
-    <div style="font-size:34px;margin-bottom:9px" id="quiz-emoji">🎉</div>
-    <div style="font-family:'Lora',serif;font-size:20px;color:var(--text);margin-bottom:5px" id="quiz-msg"></div>
-    <div style="font-size:13px;color:var(--text2)" id="quiz-detail"></div>
-  </div>
-</section>
 
-<!-- ═══════════════════ GLOSARIO ═══════════════════ -->
-<section class="sec" id="sec-glos">
-  <p class="pg-title">📖 Glosario Técnico</p>
-  <p class="pg-sub">Busca cualquier término. +2 XP por cada término explorado.</p>
-  <input type="text" class="gl-search" placeholder="🔍 CLR, JIT, namespace, Garbage Collector, bool..." oninput="filterGloss(this.value)" id="glSearch">
-  <div class="gl-filters">
-    <button class="gf on" onclick="filterCat('all',this)">Todos</button>
-    <button class="gf" onclick="filterCat('cs',this)">C#</button>
-    <button class="gf" onclick="filterCat('net',this)">.NET</button>
-    <button class="gf" onclick="filterCat('arch',this)">Arquitectura</button>
-    <button class="gf" onclick="filterCat('vs',this)">Visual Studio</button>
-    <button class="gf" onclick="filterCat('prev',this)">Previo (Java)</button>
-  </div>
-  <div id="glos-list">
-    <div class="gl-item" data-cat="net" data-terms="clr common language runtime motor ejecucion jvm">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">CLR — Common Language Runtime</span><span class="gi-cat net">.NET</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Motor de ejecución de .NET. Provee JIT, GC, seguridad de tipos y manejo de excepciones.</p><p><strong style="color:var(--sage)">💬 Simple:</strong> El gerente de operaciones de tu programa. Equivale a la JVM de Java.</p><p><strong style="color:var(--amber)">🏬 Almacenes:</strong> Con 50 cajeros simultáneos, el CLR garantiza memoria aislada para cada proceso.</p></div>
-    </div>
-    <div class="gl-item" data-cat="arch" data-terms="cil il intermediate language bytecode msil">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">CIL — Common Intermediate Language</span><span class="gi-cat arch">Arquitectura</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Bytecode independiente de plataforma al que compilan todos los lenguajes .NET. El CLR lo convierte a nativo via JIT.</p><p><strong style="color:var(--sage)">💬 Simple:</strong> La partitura musical: independiente del instrumento. El mismo .dll corre en Windows, Linux y macOS.</p></div>
-    </div>
-    <div class="gl-item" data-cat="arch" data-terms="jit just in time compilador nativo cache">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">JIT — Just-In-Time Compiler</span><span class="gi-cat arch">Arquitectura</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Compila CIL a código nativo del CPU en la primera invocación. Cachea para llamadas posteriores.</p><p><strong style="color:var(--sage)">💬 Simple:</strong> Intérprete simultáneo: traduce al idioma del CPU mientras el programa corre.</p></div>
-    </div>
-    <div class="gl-item" data-cat="net" data-terms="fcl bcl framework base class library biblioteca">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">FCL / BCL — Framework & Base Class Library</span><span class="gi-cat net">.NET</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> BCL = clases base en cualquier .NET. FCL = BCL + APIs específicas de plataforma.</p><p><strong style="color:var(--sage)">💬 Simple:</strong> La BCL es el pasillo básico del supermercado, la FCL es el supermercado completo.</p></div>
-    </div>
-    <div class="gl-item" data-cat="cs" data-terms="decimal int string bool tipo dato variable monetario">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">decimal vs double — Tipos numéricos</span><span class="gi-cat cs">C#</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> <strong>decimal</strong>: 128 bits, exacto, sufijo <code>m</code>. <strong>double</strong>: 64 bits IEEE, puede tener errores de precisión en operaciones financieras.</p><p><strong style="color:var(--amber)">⚠️ Regla:</strong> Siempre usa <code>decimal</code> para precios. <code>9990.50m</code> es exacto. <code>9990.50</code> (double) puede dar <code>9990.499999...</code></p></div>
-    </div>
-    <div class="gl-item" data-cat="cs" data-terms="namespace espacio nombres using package java importar">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">namespace — Espacio de nombres</span><span class="gi-cat cs">C#</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Contenedor lógico que agrupa tipos relacionados. Equivale al <code>package</code> de Java.</p><p><strong style="color:var(--plum)">🏬 Ejemplo:</strong> <code>namespace AlmacenesPA.Modelos</code> agrupa <code>Producto</code>, <code>Cliente</code>, <code>Venta</code>.</p></div>
-    </div>
-    <div class="gl-item" data-cat="cs" data-terms="propiedad property get set encapsulacion getter setter">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Property — Propiedades (get/set)</span><span class="gi-cat cs">C#</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Miembro de clase que encapsula acceso a un campo con lógica opcional.</p><p><strong style="color:var(--amber)">⚖️ Java:</strong> Java: <code>getNombre()</code> / <code>setNombre()</code>. C#: propiedad <code>Nombre</code> con <code>get; set;</code> integrado.</p></div>
-    </div>
-    <div class="gl-item" data-cat="vs" data-terms="breakpoint punto interrupcion f9 depurar debug debugger">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Breakpoint — Punto de interrupción</span><span class="gi-cat vs">Visual Studio</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Marca en línea de código que pausa la ejecución para inspeccionar variables.</p><p><strong style="color:var(--sage)">💬 Simple:</strong> Un "STOP" en la carretera del programa. Se pone con <span class="kb">F9</span>, se avanza con <span class="kb">F10</span>.</p></div>
-    </div>
-    <div class="gl-item" data-cat="prev" data-terms="jvm java virtual machine comparacion equivalencia">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">JVM vs CLR — Equivalencia</span><span class="gi-cat prev">Previo</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> JVM y CLR son máquinas virtuales que ejecutan bytecode/CIL, tienen JIT y GC generacional.</p><p><strong style="color:var(--amber)">Diferencia clave:</strong> CLR fue diseñado para múltiples lenguajes desde el origen. JVM nació para Java y adoptó otros (Kotlin, Scala) después.</p></div>
-    </div>
-    <div class="gl-item" data-cat="net" data-terms="gc garbage collector memoria generacional heap gen0 gen1 gen2">
-      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">GC — Garbage Collector</span><span class="gi-cat net">.NET</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Subsistema del CLR con algoritmo generacional (Gen 0/1/2). Libera automáticamente objetos sin referencias activas.</p><p><strong style="color:var(--sage)">💬 Simple:</strong> El equipo de aseo nocturno: limpia lo que ya no sirve sin interrumpir el trabajo del día.</p></div>
-    </div>
-  </div>
-</section>
+      <div class="week-card am upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 8</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Páginas Web Estáticas</div>
+        <div class="wc-desc">HTML, CSS y herramientas de ASP.NET para mejorar usabilidad y estética.</div>
+        <div class="wc-chips"><span class="wc-chip">HTML/CSS</span><span class="wc-chip">Razor</span></div>
+      </div>
 
-<!-- ═══════════════════ RESUMEN ═══════════════════ -->
-<section class="sec" id="sec-sum">
-  <p class="pg-title">✅ Resumen de Objetivos</p>
-  <p class="pg-sub">Verificación de lo trabajado en la clase de hoy.</p>
-  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">1. Arquitectura .NET en capas</div><div class="os-how">Trabajado con el diagrama interactivo. 7 capas: Lenguajes → Aplicaciones → Datos → FCL → BCL → CLR → SO.</div></div></div>
-  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">2. Los 7 Pilares de .NET</div><div class="os-how">Acordeón expandible: CLR, BCL, Roslyn, FCL, Herramientas, ASP.NET, Servicios.</div></div></div>
-  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">3. Ciclo completo del CIL</div><div class="os-how">Pipeline clickeable: C# → Roslyn → CIL → Class Loader → JIT → CPU + tabla Java vs .NET.</div></div></div>
-  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">4. Primer programa C# — 8 ejercicios</div><div class="os-how">Hello World, variables, control de flujo, class+Main, menú while, Clase Producto, List&lt;T&gt;, validación TryParse.</div></div></div>
-  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">5. Clases, constructores, propiedades y estructura de proyecto</div><div class="os-how">Anatomía completa de clase C#, herencia, interfaces, árbol de carpetas y namespaces del proyecto.</div></div></div>
-  <div class="box am" style="margin-top:16px"><div class="box-lbl">📅 Próxima clase — Semana 2</div><div class="box-body"><strong>Actividad 1.2: Arreglos y Colecciones en C#</strong> — Arrays, List&lt;T&gt;, Dictionary&lt;K,V&gt;, Queue&lt;T&gt;. Revisa System.Collections.Generic antes de llegar.</div></div>
-</section>
+      <div class="week-card am upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 9</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Patrón MVC — Páginas Dinámicas</div>
+        <div class="wc-desc">Modelo-Vista-Controlador en ASP.NET. Páginas dinámicas de nivel básico.</div>
+        <div class="wc-chips"><span class="wc-chip">MVC</span><span class="wc-chip">Controller</span></div>
+      </div>
 
-<!-- ═══════════════════ PLENARIO ═══════════════════ -->
-<section class="sec" id="sec-plen">
-  <p class="pg-title">🎙️ Plenario Metacognitivo</p>
-  <p class="pg-sub">Reflexión colectiva de cierre. Solo preguntas — el debate es oral.</p>
-  <div class="plen-q"><div class="plen-n">PREGUNTA 1</div>¿En qué parte del sistema de Almacenes Por Ahí creen que el Garbage Collector del CLR tendría más trabajo? ¿Por qué?</div>
-  <div class="plen-q"><div class="plen-n">PREGUNTA 2</div>Si migramos la planilla Excel de inventario a la clase <code>Producto</code> en C#, ¿qué columna mapearía a cada propiedad? ¿Por qué <code>decimal</code> y no <code>double</code> para el precio?</div>
-  <div class="plen-q"><div class="plen-n">PREGUNTA 3</div>¿Qué ventaja concreta le da a .NET el CIL como lenguaje intermedio, versus compilar directamente a código nativo?</div>
-  <div class="plen-q"><div class="plen-n">PREGUNTA 4</div>¿Cómo se relaciona lo que vieron del CLR con la JVM de Java? ¿Qué aprendiste de Java que aplica directamente aquí?</div>
-  <div class="sec-title" style="margin-top:22px"><span>🚦</span>Semáforo Colectivo</div>
-  <p style="font-size:12.5px;color:var(--text2);margin-bottom:12px">¿Cómo se sienten con los conceptos de hoy?</p>
-  <div class="sem">
-    <button class="sem-btn ve" onclick="semSel(this,'ve')">🟢 Lo entendí bien</button>
-    <button class="sem-btn am" onclick="semSel(this,'am')">🟡 Entendí lo básico</button>
-    <button class="sem-btn ro" onclick="semSel(this,'ro')">🔴 Necesito refuerzo</button>
+      <div class="week-card am upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 10</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Acceso a Bases de Datos en Web</div>
+        <div class="wc-desc">Conexiones seguras a SQL Server desde ASP.NET MVC. Entity Framework en web.</div>
+        <div class="wc-chips"><span class="wc-chip">EF Core</span><span class="wc-chip">Connection String</span></div>
+      </div>
+
+      <div class="week-card am upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 11</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Formularios y APIs RESTful</div>
+        <div class="wc-desc">Validación de formularios web y consumo de APIs REST con HttpClient.</div>
+        <div class="wc-chips"><span class="wc-chip">Forms</span><span class="wc-chip">REST API</span></div>
+      </div>
+
+      <div class="week-card am upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 12</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Evaluación Final Unidad II</div>
+        <div class="wc-desc">App web ASP.NET MVC con acceso a BD. Problema de mediana complejidad. Encargo 3.</div>
+        <div class="wc-chips"><span class="wc-chip">Encargo 3 📋</span><span class="wc-chip">ASP.NET MVC</span></div>
+      </div>
+
+    </div>
   </div>
-  <div id="sem-res" style="margin-top:12px;display:none"></div>
-  <div style="margin-top:30px;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--border);border-radius:13px">
-    <div style="font-size:28px;margin-bottom:8px">🚀</div>
-    <div style="font-family:'Lora',serif;font-size:17px;color:var(--text);margin-bottom:5px">¡Semana 1 completada!</div>
-    <div style="font-size:12.5px;color:var(--text2);max-width:460px;margin:0 auto">Tienen los cimientos: arquitectura, CLR, CIL, primer C# y el modelo de Almacenes Por Ahí. Las próximas 17 semanas construiremos sobre todo esto.</div>
+
+  <!-- UNIDAD III -->
+  <div class="unidad">
+    <div class="unidad-header">
+      <span class="unidad-badge" style="background:var(--plum-bg);border-color:rgba(155,126,200,.25);color:var(--plum)">Unidad III</span>
+      <span class="unidad-title">Desarrollo de Aplicaciones Móviles</span>
+      <span class="unidad-hrs">24 hrs · Semanas 13–18</span>
+    </div>
+    <div class="weeks-grid">
+
+      <div class="week-card pl upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 13</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Creando tu Primera App en .NET MAUI</div>
+        <div class="wc-desc">Introducción a .NET MAUI, XAML, controles y layouts básicos para móvil.</div>
+        <div class="wc-chips"><span class="wc-chip">.NET MAUI</span><span class="wc-chip">XAML</span></div>
+      </div>
+
+      <div class="week-card pl upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 14</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Eventos en App Móvil</div>
+        <div class="wc-desc">Páginas, vistas, manejo de eventos y navegación entre pantallas en MAUI.</div>
+        <div class="wc-chips"><span class="wc-chip">Navigation</span><span class="wc-chip">Events</span></div>
+      </div>
+
+      <div class="week-card pl upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 15–16</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">MVVM en .NET MAUI</div>
+        <div class="wc-desc">Patrón Model-View-ViewModel. Separar lógica de UI con binding y commands.</div>
+        <div class="wc-chips"><span class="wc-chip">MVVM</span><span class="wc-chip">Binding</span></div>
+      </div>
+
+      <div class="week-card pl upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 17</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Evaluación Final Unidad III</div>
+        <div class="wc-desc">App móvil .NET MAUI que resuelva un problema específico. Encargo 4.</div>
+        <div class="wc-chips"><span class="wc-chip">Encargo 4 📋</span><span class="wc-chip">.NET MAUI</span></div>
+      </div>
+
+      <div class="week-card pl upcoming">
+        <div class="wc-top"><span class="wc-sem">Semana 18</span><span class="wc-status prox">Próximamente</span></div>
+        <div class="wc-title">Examen Final de Asignatura</div>
+        <div class="wc-desc">App web o móvil con documentación. Cubre todos los aprendizajes del semestre.</div>
+        <div class="wc-chips"><span class="wc-chip">Examen 📋</span><span class="wc-chip">Documentación</span></div>
+      </div>
+
+    </div>
   </div>
-</section>
+
+  <!-- ENCARGOS -->
+  <div class="section-label" style="margin-top:8px">Evaluaciones</div>
+  <h2 style="margin-bottom:6px">Encargos del semestre</h2>
+  <p class="section-sub">Ponderación de la nota de prácticas (70% de la nota final). El examen final representa el 30% restante.</p>
+  <div class="encargos-grid">
+    <div class="encargo enc-e1">
+      <div class="enc-label">Encargo 1</div>
+      <div class="enc-title">App de consola C#</div>
+      <div class="enc-sem">Semana 3 · Unidad I</div>
+      <div class="enc-pond">10%</div>
+    </div>
+    <div class="encargo enc-e2">
+      <div class="enc-label">Encargo 2</div>
+      <div class="enc-title">App WPF + SQL Server</div>
+      <div class="enc-sem">Semana 6 · Unidad I</div>
+      <div class="enc-pond">20%</div>
+    </div>
+    <div class="encargo enc-e3">
+      <div class="enc-label">Encargo 3</div>
+      <div class="enc-title">App web ASP.NET MVC</div>
+      <div class="enc-sem">Semana 12 · Unidad II</div>
+      <div class="enc-pond">40%</div>
+    </div>
+    <div class="encargo enc-e4">
+      <div class="enc-label">Encargo 4</div>
+      <div class="enc-title">App móvil .NET MAUI</div>
+      <div class="enc-sem">Semana 17 · Unidad III</div>
+      <div class="enc-pond">30%</div>
+    </div>
+    <div class="encargo enc-ex">
+      <div class="enc-label">Examen Final</div>
+      <div class="enc-title">App web o móvil</div>
+      <div class="enc-sem">Semana 18 · Global</div>
+      <div class="enc-pond">30%*</div>
+    </div>
+  </div>
+
+</div><!-- end section -->
 
 </main>
 
-<script>
-let xp=0, qCorr=0, qAns=0;
-const seen=new Set();
+<footer>
+  IEI-089 · Programación .NET · Ingeniería en Informática / Analista Programador · Santo Tomás · 2025
+</footer>
 
-function addXP(n){xp=Math.min(xp+n,600);document.getElementById('xp-badge').textContent=xp+' XP';document.getElementById('xp-fill').style.width=(xp/600*100)+'%'}
-
-function goTo(id,el){
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.nl').forEach(l=>l.classList.remove('on'));
-  const s=document.getElementById('sec-'+id);
-  if(s){s.classList.add('on');if(!seen.has(id)){seen.add(id);addXP(10)}}
-  if(el)el.classList.add('on');
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('open');
-  window.scrollTo(0,0);
-}
-
-document.getElementById('hbgBtn').addEventListener('click',()=>{
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('open');
-});
-document.getElementById('overlay').addEventListener('click',()=>{
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('open');
-});
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
-});
-
-function toggleObj(el){
-  if(el.classList.toggle('done')){el.querySelector('.obj-chk').textContent='✓';addXP(5);}
-  else{xp=Math.max(0,xp-5);document.getElementById('xp-badge').textContent=xp+' XP';document.getElementById('xp-fill').style.width=(xp/600*100)+'%';}
-}
-
-function toggleArch(el,id){
-  const det=document.getElementById(id);
-  const was=det.classList.contains('show');
-  document.querySelectorAll('.al-detail').forEach(d=>d.classList.remove('show'));
-  document.querySelectorAll('.arch-layer').forEach(l=>l.classList.remove('active-l'));
-  if(!was){det.classList.add('show');el.classList.add('active-l');if(!seen.has('a'+id)){seen.add('a'+id);addXP(3)}}
-}
-
-function togglePillar(head){
-  const body=head.nextElementSibling;
-  const was=body.classList.contains('op');
-  document.querySelectorAll('.pillar-body').forEach(b=>b.classList.remove('op'));
-  document.querySelectorAll('.pillar-head').forEach(h=>{h.classList.remove('op');h.querySelector('.ph-ar').classList.remove('rot')});
-  if(!was){body.classList.add('op');head.classList.add('op');head.querySelector('.ph-ar').classList.add('rot');
-    const k='p'+head.querySelector('.ph-ti').textContent;if(!seen.has(k)){seen.add(k);addXP(5)}}
-}
-
-function toggleClr(id){
-  const det=document.getElementById('det-'+id);
-  const was=det.classList.contains('op');
-  document.querySelectorAll('.type-detail').forEach(d=>d.classList.remove('op'));
-  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('op'));
-  if(!was){det.classList.add('op');if(!seen.has('c'+id)){seen.add('c'+id);addXP(5)}}
-}
-
-function showPipe(btn,id){
-  document.querySelectorAll('.pipe-detail').forEach(d=>d.classList.remove('show'));
-  document.querySelectorAll('.pipe-step').forEach(s=>s.classList.remove('ap'));
-  btn.classList.add('ap');
-  document.getElementById('pipe-'+id).classList.add('show');
-  if(!seen.has('pp'+id)){seen.add('pp'+id);addXP(3)}
-}
-
-function switchEx(btn,id){
-  document.querySelectorAll('.ex-tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.ex-pane').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById(id).classList.add('on');
-}
-
-function answer(btn,qId,res,fb){
-  const card=document.getElementById(qId);
-  if(card.dataset.ans)return;
-  card.dataset.ans='1';
-  card.querySelectorAll('.qc-opt').forEach(o=>o.disabled=true);
-  btn.classList.add(res);
-  const f=document.getElementById('fb-'+qId);
-  f.style.display='block';
-  f.style.color=res==='correct'?'var(--sage)':'var(--rose)';
-  f.textContent=fb;
-  if(res==='correct'){qCorr++;addXP(25)}
-  qAns++;
-  if(qAns===4){
-    setTimeout(()=>{
-      const r=document.getElementById('quiz-result');
-      r.style.display='block';
-      if(qCorr===4){addXP(50);document.getElementById('quiz-emoji').textContent='🏆';document.getElementById('quiz-msg').textContent='¡Quiz perfecto!';document.getElementById('quiz-detail').textContent='4/4 correctas · +150 XP · ¡Arquitecto .NET certificado!';}
-      else{document.getElementById('quiz-emoji').textContent=qCorr>=3?'🎯':'📖';document.getElementById('quiz-msg').textContent=qCorr>=3?'¡Muy bien!':'Sigue practicando';document.getElementById('quiz-detail').textContent=qCorr+'/4 correctas · Revisa la arquitectura y el ciclo del CIL.';}
-    },600);
-  }
-}
-
-let curCat='all';
-function filterGloss(q){
-  const t=q.toLowerCase();
-  document.querySelectorAll('.gl-item').forEach(item=>{
-    const terms=(item.dataset.terms||'').toLowerCase();
-    const term=item.querySelector('.gi-term').textContent.toLowerCase();
-    const catOk=curCat==='all'||item.dataset.cat===curCat;
-    const txtOk=!t||term.includes(t)||terms.includes(t);
-    item.style.display=catOk&&txtOk?'':'none';
-  });
-}
-function filterCat(cat,btn){
-  curCat=cat;
-  document.querySelectorAll('.gf').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  filterGloss(document.getElementById('glSearch').value);
-}
-function toggleGloss(head){
-  const body=head.nextElementSibling;
-  const op=body.classList.toggle('op');
-  if(op){const k='g'+head.querySelector('.gi-term').textContent;if(!seen.has(k)){seen.add(k);addXP(2)}}
-}
-
-function semSel(btn,c){
-  document.querySelectorAll('.sem-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  const msgs={ve:{t:'¡Excelente! Listo para las colecciones de la Semana 2.',c:'var(--sage)'},am:{t:'Normal para la primera clase. Revisa el glosario y el ciclo del CIL.',c:'var(--amber)'},ro:{t:'Gracias por ser honesto. Habla con el docente o revisa la práctica.',c:'var(--rose)'}};
-  const r=document.getElementById('sem-res');
-  r.style.cssText=`display:block;background:var(--bg3);border:1px solid ${msgs[c].c};border-radius:var(--r);padding:12px 16px;color:${msgs[c].c};font-size:13.5px`;
-  r.textContent=msgs[c].t;
-}
-
-function copyCode(btn){
-  const pre=btn.closest('.code-block').querySelector('pre');
-  navigator.clipboard.writeText(pre.innerText).then(()=>{btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent='Copiar',1800);addXP(5)});
-}
-</script>
 </body>
 </html>
