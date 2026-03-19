@@ -257,7 +257,7 @@ ul.lst li{color:var(--text2);font-size:15.5px;margin-bottom:6px}
   <div class="grid2">
     <div class="box tl"><div class="box-lbl">¿Qué veremos?</div><div class="box-body">Interpolación de strings, arrays unidimensionales y multidimensionales, List&lt;T&gt;, Dictionary&lt;K,V&gt;, Queue&lt;T&gt; y Stack&lt;T&gt;. Cada concepto con 3 niveles de ejemplos comentados.</div></div>
     <div class="box sg"><div class="box-lbl">¿Por qué importa?</div><div class="box-body">Toda aplicación real maneja colecciones de datos: productos, clientes, pedidos, historial. Elegir la estructura correcta es la diferencia entre un sistema lento y uno eficiente.</div></div>
-    <div class="box am"><div class="box-lbl">Hilo semestral</div><div class="box-body"><strong>Almacenes Por Ahí</strong> — Los arrays y colecciones serán el corazón del inventario, historial de ventas y gestión de clientes que construiremos este semestre.</div></div>
+    <div class="box am"><div class="box-lbl">Hilo semestral</div><div class="box-body"><strong>Los 3 contextos de esta clase:</strong> 🎮 Tienda Gamer (básico) · 🛒 Supermercado (intermedio) · 🍕 Pizzería Don Corleone (profesional). Los mismos datos, tres niveles de complejidad creciente.</div></div>
     <div class="box pl"><div class="box-lbl">Próximo hito</div><div class="box-body"><strong>Encargo 1</strong> (10%) — Semana 3. App de consola de baja complejidad. Lo que aprendas hoy es parte del código del encargo.</div></div>
   </div>
 </div>
@@ -305,12 +305,12 @@ ul.lst li{color:var(--text2);font-size:15.5px;margin-bottom:6px}
     <h3 style="margin-bottom:10px">❌ Concatenación vs ✅ Interpolación</h3>
     <div class="interp-vs">
       <div class="interp-bad">
-        <div class="interp-label">❌ CONCATENACIÓN (evitar)</div>
-        <div class="interp-code">string msg = "Producto: " + nombre<br>  + " | Precio: $" + precio<br>  + " | Stock: " + stock<br>  + " unidades";</div>
+        <div class="interp-label">❌ CONCATENACIÓN — difícil de leer y propensa a errores</div>
+        <div class="interp-code">// Unir pedazos con + es tedioso y confuso<br>string msg = "Producto: " + nombre<br>  + " | Precio: $" + precio<br>  + " | Stock: " + stock<br>  + " unidades";<br>// Si olvidas un + o una comilla → error</div>
       </div>
       <div class="interp-good">
-        <div class="interp-label">✅ INTERPOLACIÓN (usar siempre)</div>
-        <div class="interp-code">string msg = $"Producto: {nombre}<br>  | Precio: ${precio:N0}<br>  | Stock: {stock} unidades";</div>
+        <div class="interp-label">✅ INTERPOLACIÓN — limpio, directo y el compilador lo optimiza</div>
+        <div class="interp-code">// El $ activa la interpolación<br>// Las {llaves} insertan la variable<br>string msg = $"Producto: {nombre}<br>  | Precio: ${precio:N0}<br>  | Stock: {stock} unidades";<br>// Mismo resultado, mucho más claro</div>
       </div>
     </div>
   </div>
@@ -359,18 +359,93 @@ ul.lst li{color:var(--text2);font-size:15.5px;margin-bottom:6px}
 <span class="ty">Console</span>.<span class="fn">WriteLine</span>(ficha);</pre>
   </div>
 
+  <div class="sec-title"><span>🔲</span>Cómo hacer los caracteres de caja — ╔══════════╗</div>
+
+  <div class="grid2" style="margin-bottom:14px">
+    <div class="box tl">
+      <div class="box-lbl">¿Qué son estos caracteres?</div>
+      <div class="box-body">Son caracteres especiales llamados <strong>caracteres de dibujo de caja</strong> (Box Drawing Characters), parte del estándar Unicode. No son imágenes — son letras como la "a" o la "b", pero con forma de línea. En C# se escriben directamente dentro de los strings porque Visual Studio y la consola moderna soportan Unicode.</div>
+    </div>
+    <div class="box sg">
+      <div class="box-lbl">¿Cómo los escribo en Visual Studio?</div>
+      <div class="box-body">Cópialos directamente desde aquí: <strong>╔ ╗ ╚ ╝ ║ ═ ╠ ╣ ╦ ╩ ╬</strong><br><br>O en Windows: <kbd>Win+.</kbd> abre el panel de emojis y caracteres especiales. En macOS: <kbd>Ctrl+Cmd+Space</kbd>. También puedes usar el Mapa de caracteres de Windows.</div>
+    </div>
+  </div>
+
+  <div class="box am" style="margin-bottom:14px">
+    <div class="box-lbl">📋 Tabla de caracteres más usados en consola</div>
+    <div class="box-body" style="font-family:'JetBrains Mono',monospace;font-size:14px;line-height:2">
+      <strong>Esquinas:</strong> ╔ (arriba-izq) &nbsp; ╗ (arriba-der) &nbsp; ╚ (abajo-izq) &nbsp; ╝ (abajo-der)<br>
+      <strong>Líneas:</strong> ═ (horizontal doble) &nbsp; ║ (vertical doble) &nbsp; ─ (horizontal simple) &nbsp; │ (vertical simple)<br>
+      <strong>Cruces:</strong> ╠ (T izquierda) &nbsp; ╣ (T derecha) &nbsp; ╦ (T abajo) &nbsp; ╩ (T arriba) &nbsp; ╬ (cruz)<br>
+      <strong>Otros útiles:</strong> • (bullet) &nbsp; → &nbsp; ← &nbsp; ↑ &nbsp; ↓ &nbsp; ✅ &nbsp; ❌ &nbsp; ⚠ &nbsp; 🔔 &nbsp; 🎮 &nbsp; 🛒 &nbsp; 🍕
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr"><span class="code-lang">C# — Cómo dibujar cuadros en la consola (3 técnicas)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+    <pre><span class="cm">// ─────────────────────────────────────────────────────────
+// TÉCNICA 1: Copiar y pegar los caracteres directamente
+// La más simple — los caracteres van dentro del string normal
+// ─────────────────────────────────────────────────────────</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔══════════════════════╗"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  TIENDA GAMER v1.0  ║"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚══════════════════════╝"</span>);
+
+<span class="cm">// ─────────────────────────────────────────────────────────
+// TÉCNICA 2: Usar new string(char, cantidad) para líneas largas
+// Más flexible — puedes cambiar el ancho con una variable
+// new string('═', 30) → genera 30 caracteres '═' seguidos
+// ─────────────────────────────────────────────────────────</span>
+<span class="ty">int</span> ancho = <span class="nm">30</span>;
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"╔{new string('═', ancho)}╗"</span>); <span class="cm">// ╔══════════════════════════════╗</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"║{"SUPERMERCADO",ancho/2+6}{"",ancho/2-6}║"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"╚{new string('═', ancho)}╝"</span>); <span class="cm">// ╚══════════════════════════════╝</span>
+
+<span class="cm">// ─────────────────────────────────────────────────────────
+// TÉCNICA 3: Cuadro con datos variables (la más profesional)
+// Usar interpolación con alineación para que el contenido encaje
+// ─────────────────────────────────────────────────────────</span>
+<span class="ty">string</span> nombreJuego = <span class="st">"FIFA 25"</span>;
+<span class="ty">decimal</span> precio     = <span class="nm">59990m</span>;
+<span class="ty">int</span>     stock      = <span class="nm">12</span>;
+
+<span class="ty">Console</span>.<span class="fn">ForegroundColor</span> = <span class="ty">ConsoleColor</span>.Cyan;
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔══════════════════════════════════╗"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"║  {nombreJuego,-32}║"</span>); <span class="cm">// {var,-32} alinea a la izq en 32 chars</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╠══════════════════════════════════╣"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"║  Precio: ${precio,21:N0}  ║"</span>);      <span class="cm">// alineado a la derecha</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"║  Stock:  {stock,22} uds  ║"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚══════════════════════════════════╝"</span>);
+<span class="ty">Console</span>.ResetColor(); <span class="cm">// SIEMPRE restaurar el color después</span>
+
+<span class="cm">// ─────────────────────────────────────────────────────────
+// TÉCNICA 4: Separadores simples con new string
+// Más limpio que copiar ─────────────────── manualmente
+// ─────────────────────────────────────────────────────────</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'═'</span>, <span class="nm">40</span>)); <span class="cm">// ════════════════════════════════════════</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">40</span>)); <span class="cm">// ────────────────────────────────────────</span>
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
+  </div>
+
+  <div class="box pl" style="margin-bottom:22px">
+    <div class="box-lbl">💡 Consejo — alineación para que los ║ queden rectos</div>
+    <div class="box-body">El truco para que las líneas verticales <code>║</code> queden alineadas es usar interpolación con un ancho fijo: <code>{variable,-N}</code> donde <strong>N</strong> es el número de caracteres que ocupa esa parte del cuadro. Si el texto es más corto, se rellena con espacios automáticamente. Prueba distintos valores de N hasta que el cuadro quede recto.</div>
+  </div>
+
   <div class="challenge">
     <div class="ch-header">
       <span class="ch-icon">⚡</span>
-      <span class="ch-title">Desafío 0 — Interpolación en la práctica</span>
+      <span class="ch-title">Desafío 0 — Cuadro informativo con interpolación</span>
       <span class="ch-badge">+15 XP</span>
     </div>
-    <div class="ch-desc">Declara 3 variables (producto, precio, stock) y genera una tabla con 5 filas alineadas usando interpolación. El precio debe mostrar separador de miles y el ID debe tener 3 dígitos (001, 002…).</div>
+    <div class="ch-desc">Crea un cuadro informativo para un juego de la Tienda Gamer usando los caracteres ╔══╗. El cuadro debe mostrar: nombre del juego, precio con formato :N0, stock y plataforma. Los datos deben alinearse correctamente.</div>
     <div class="ch-req">
       <ul>
-        <li>Usar <code>$"..."</code> obligatoriamente (sin concatenación con <code>+</code>)</li>
-        <li>Formato <code>:N0</code> para precio, <code>:D3</code> para ID</li>
-        <li>Alineación con <code>{valor,-20}</code> para que las columnas sean uniformes</li>
+        <li>Usar caracteres <code>╔ ═ ╗ ║ ╠ ╣ ╚ ╝</code> para el cuadro</li>
+        <li>Usar <code>$"..."</code> con <code>{variable,-N}</code> para alinear el contenido</li>
+        <li>Usar <code>Console.ForegroundColor</code> para colorear el cuadro</li>
+        <li>Usar <code>new string('═', N)</code> para las líneas horizontales</li>
       </ul>
     </div>
   </div>
@@ -403,20 +478,32 @@ ul.lst li{color:var(--text2);font-size:15.5px;margin-bottom:6px}
 
       <div class="box am" style="margin-bottom:18px">
         <div class="box-lbl">🔧 ¿Cuándo usar un Array?</div>
-        <div class="box-body">✅ Tamaño conocido y fijo (ej: 12 meses, 7 días, 5 sucursales) · ✅ Acceso frecuente por índice · ✅ Datos homogéneos · ❌ NO usar cuando la cantidad de elementos varía en tiempo de ejecución.</div>
+        <div class="box-body">✅ Tamaño fijo y conocido desde el inicio (5 géneros, 7 días, 12 meses) · ✅ Cuando necesitas acceder a elementos por posición numérica frecuentemente · ✅ Para tablas con filas y columnas fijas (array 2D) · ❌ <strong>NO usar</strong> si la cantidad de elementos puede cambiar — ahí va List&lt;T&gt;.</div>
+      </div>
+
+      <div class="box pl" style="margin-bottom:18px">
+        <div class="box-lbl">📦 Sintaxis esencial del Array</div>
+        <div class="box-body">
+          <code>tipo[] nombre = new tipo[tamaño];</code> → declarar vacío<br>
+          <code>tipo[] nombre = { val1, val2, val3 };</code> → declarar con valores<br>
+          <code>nombre[0]</code> → primer elemento (índice 0)<br>
+          <code>nombre[nombre.Length - 1]</code> → último elemento<br>
+          <code>nombre.Length</code> → cantidad de elementos
+        </div>
       </div>
 
       <div class="nivel-tabs">
-        <button class="nivel-tab basic on" onclick="switchNivel(this,'arr','b')">🟢 Básico</button>
-        <button class="nivel-tab mid"   onclick="switchNivel(this,'arr','m')">🟡 Intermedio</button>
-        <button class="nivel-tab pro"   onclick="switchNivel(this,'arr','p')">🟣 Profesional</button>
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'arr','b')">🟢 Básico — 🎮 Tienda Videojuegos</button>
+        <button class="nivel-tab mid"   onclick="switchNivel(this,'arr','m')">🟡 Intermedio — 🛒 Supermercado</button>
+        <button class="nivel-tab pro"   onclick="switchNivel(this,'arr','p')">🟣 Profesional — 🍕 Pizzería</button>
       </div>
 
       <!-- BÁSICO -->
       <div class="nivel-pane on" id="arr-b">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px">Declarar, inicializar y recorrer un array simple.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🎮 Tienda de Videojuegos</strong> — La tienda vende 5 géneros fijos (nunca cambian). Usamos un array porque el tamaño es fijo y conocido.</p>
+        <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">¿Por qué array aquí y no List?</div><div class="box-body">Los géneros de videojuegos son fijos: Acción, RPG, Deportes, Terror, Aventura — siempre serán 5. El array es perfecto para datos que nunca cambian de cantidad. La List se usa cuando no sabes cuántos elementos habrá.</div></div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Array básico de precios</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-hdr"><span class="code-lang">C# — Array básico: géneros de videojuegos</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
           <pre><span class="cm">// DECLARAR un array: tipo[] nombre = new tipo[tamaño];</span>
 <span class="cm">// El tamaño se define UNA VEZ y no cambia</span>
 <span class="ty">decimal</span>[] precios = <span class="kw">new</span> <span class="ty">decimal</span>[<span class="nm">5</span>]; <span class="cm">// array de 5 decimales (todos en 0)</span>
@@ -454,20 +541,21 @@ precios[<span class="nm">4</span>] = <span class="nm">12990m</span>;  <span clas
 
       <!-- INTERMEDIO -->
       <div class="nivel-pane" id="arr-m">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px">Arrays multidimensionales y operaciones útiles de System.Array.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🛒 Supermercado</strong> — Necesitamos una tabla de stock: 3 secciones × 4 productos. Un array 2D es como una hoja de cálculo con filas y columnas.</p>
+        <div class="box sg" style="margin-bottom:12px"><div class="box-lbl">¿Cuándo usar un array 2D?</div><div class="box-body">Cuando los datos son una tabla rectangular con filas y columnas fijas. Ejemplo: 3 secciones del supermercado × 4 productos. Accedes con <code>[fila, columna]</code>. <code>GetLength(0)</code> = número de filas. <code>GetLength(1)</code> = número de columnas.</div></div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Array 2D: stock por sucursal y producto</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <div class="code-hdr"><span class="code-lang">C# — Array 2D: stock supermercado por sección</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
           <pre><span class="cm">// ARRAY BIDIMENSIONAL: [filas, columnas]
 // Útil para tablas de datos (como una hoja de cálculo)</span>
-<span class="cm">// Aquí: 3 sucursales × 4 productos = tabla de stock</span>
-<span class="ty">int</span>[,] stock = <span class="kw">new</span> <span class="ty">int</span>[<span class="nm">3</span>, <span class="nm">4</span>]  <span class="cm">// 3 sucursales, 4 productos</span>
+<span class="cm">// Aquí: 3 secciones × 4 productos = tabla de stock del supermercado</span>
+<span class="ty">int</span>[,] stock = <span class="kw">new</span> <span class="ty">int</span>[<span class="nm">3</span>, <span class="nm">4</span>]  <span class="cm">// 3 secciones × 4 productos</span>
 {
     { <span class="nm">120</span>, <span class="nm">45</span>, <span class="nm">80</span>, <span class="nm">200</span> },   <span class="cm">// sucursal 0 (Santiago Centro)</span>
     {  <span class="nm">60</span>, <span class="nm">30</span>, <span class="nm">90</span>,  <span class="nm">50</span> },   <span class="cm">// sucursal 1 (Providencia)</span>
     {  <span class="nm">40</span>, <span class="nm">70</span>, <span class="nm">20</span>, <span class="nm">110</span> },   <span class="cm">// sucursal 2 (Ñuñoa)</span>
 };
 
-<span class="ty">string</span>[] sucursales = { <span class="st">"Santiago C."</span>, <span class="st">"Providencia"</span>, <span class="st">"Ñuñoa"</span> };
+<span class="ty">string</span>[] secciones = { <span class="st">"Abarrotes"</span>, <span class="st">"Panadería"</span>, <span class="st">"Lácteos"</span> };
 <span class="ty">string</span>[] productos  = { <span class="st">"Polera"</span>, <span class="st">"Jeans"</span>, <span class="st">"Chaqueta"</span>, <span class="st">"Calcetines"</span> };
 
 <span class="cm">// RECORRER array 2D con dos for anidados</span>
@@ -479,7 +567,7 @@ precios[<span class="nm">4</span>] = <span class="nm">12990m</span>;  <span clas
 
 <span class="kw">for</span> (<span class="ty">int</span> s = <span class="nm">0</span>; s < stock.<span class="fn">GetLength</span>(<span class="nm">0</span>); s++)  <span class="cm">// .GetLength(0) = filas</span>
 {
-    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{sucursales[s],-14}"</span>);
+    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{secciones[s],-14}"</span>);
     <span class="kw">for</span> (<span class="ty">int</span> p = <span class="nm">0</span>; p < stock.<span class="fn">GetLength</span>(<span class="nm">1</span>); p++) <span class="cm">// .GetLength(1) = columnas</span>
     {
         <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{stock[s,p],12}"</span>);  <span class="cm">// alinear a derecha en 12 chars</span>
@@ -502,77 +590,68 @@ precios[<span class="nm">4</span>] = <span class="nm">12990m</span>;  <span clas
 
       <!-- PROFESIONAL -->
       <div class="nivel-pane" id="arr-p">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px">Procesamiento de datos reales con arrays — informe ejecutivo de sucursales.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🍕 Pizzería Don Corleone</strong> — Informe de ventas semanal. Detecta el día de mayor venta y calcula el total de pizzas vendidas en la semana.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Informe de inventario con arrays</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Escenario real: Almacenes Por Ahí necesita un informe
-// que muestre el stock de cada sucursal y detecte
-// las sucursales con stock crítico (&lt; umbral)</span>
+          <div class="code-hdr"><span class="code-lang">C# — Array 2D profesional: ventas semanales Pizzería Don Corleone</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Tabla: 7 días (filas) × 3 tipos de pizza (columnas)
+// Objetivo: el día más exitoso y la pizza más vendida</span>
 
-<span class="ty">string</span>[] sucursales = { <span class="st">"Santiago C."</span>, <span class="st">"Providencia"</span>, <span class="st">"Ñuñoa"</span>, <span class="st">"La Florida"</span> };
-<span class="ty">decimal</span>[] precios   = { <span class="nm">9990m</span>, <span class="nm">24990m</span>, <span class="nm">4990m</span>, <span class="nm">49990m</span> };
-<span class="ty">string</span>[]  productos = { <span class="st">"Polera"</span>, <span class="st">"Jeans"</span>, <span class="st">"Calcetines"</span>, <span class="st">"Chaqueta"</span> };
+<span class="ty">string</span>[] dias   = { <span class="st">"Lunes"</span>,<span class="st">"Martes"</span>,<span class="st">"Miércoles"</span>,<span class="st">"Jueves"</span>,<span class="st">"Viernes"</span>,<span class="st">"Sábado"</span>,<span class="st">"Domingo"</span> };
+<span class="ty">string</span>[] pizzas = { <span class="st">"Margarita"</span>, <span class="st">"4 Quesos"</span>, <span class="st">"Napolitana"</span> };
 
-<span class="cm">// Tabla de stock: sucursales (filas) × productos (columnas)</span>
-<span class="ty">int</span>[,] stock = {
-    { <span class="nm">120</span>, <span class="nm">45</span>,  <span class="nm">8</span>,  <span class="nm">30</span> },  <span class="cm">// Santiago C.</span>
-    {  <span class="nm">60</span>, <span class="nm">30</span>, <span class="nm">200</span>,   <span class="nm">5</span> },  <span class="cm">// Providencia ← Chaqueta crítica</span>
-    {  <span class="nm">40</span>,  <span class="nm">7</span>,  <span class="nm">90</span>,  <span class="nm">15</span> },  <span class="cm">// Ñuñoa ← Jeans crítico</span>
-    { <span class="nm">200</span>, <span class="nm">80</span>, <span class="nm">150</span>,  <span class="nm">25</span> },  <span class="cm">// La Florida</span>
+<span class="cm">// Unidades vendidas: ventas[dia, pizza]</span>
+<span class="ty">int</span>[,] ventas = {
+    { <span class="nm">12</span>,  <span class="nm">8</span>,  <span class="nm">5</span> }, <span class="cm">// Lunes</span>
+    {  <span class="nm">9</span>,  <span class="nm">6</span>,  <span class="nm">4</span> }, <span class="cm">// Martes</span>
+    { <span class="nm">14</span>, <span class="nm">10</span>,  <span class="nm">7</span> }, <span class="cm">// Miércoles</span>
+    { <span class="nm">11</span>,  <span class="nm">9</span>,  <span class="nm">6</span> }, <span class="cm">// Jueves</span>
+    { <span class="nm">25</span>, <span class="nm">18</span>, <span class="nm">12</span> }, <span class="cm">// Viernes</span>
+    { <span class="nm">40</span>, <span class="nm">30</span>, <span class="nm">20</span> }, <span class="cm">// Sábado ← mejor día</span>
+    { <span class="nm">35</span>, <span class="nm">22</span>, <span class="nm">15</span> }, <span class="cm">// Domingo</span>
 };
 
-<span class="kw">const</span> <span class="ty">int</span> UMBRAL_CRITICO = <span class="nm">10</span>;  <span class="cm">// menos de 10 unidades = alerta</span>
+<span class="cm">// Encabezado de la tabla con interpolación y alineación</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"=== PIZZERÍA DON CORLEONE — VENTAS SEMANALES ==="</span>);
+<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{"DÍA",-12}"</span>);
+<span class="kw">foreach</span> (<span class="ty">string</span> p <span class="kw">in</span> pizzas) <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{p,12}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"{"TOTAL",8}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">50</span>));
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔══════════════════════════════════════════════════════╗"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║        ALMACENES POR AHÍ — INFORME DE STOCK          ║"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚══════════════════════════════════════════════════════╝"</span>);
+<span class="ty">int</span> mejorDiaIdx = <span class="nm">0</span>, maxDia = <span class="nm">0</span>, totalSemana = <span class="nm">0</span>;
 
-<span class="cm">// Encabezado de columnas usando interpolación</span>
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"\n{"SUCURSAL",-14}"</span>);
-<span class="kw">for</span> (<span class="ty">int</span> p = <span class="nm">0</span>; p < productos.Length; p++)
-    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{productos[p],12}"</span>);
-<span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{"TOTAL $",14}\n{"",14}"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">66</span>));
-
-<span class="ty">decimal</span> totalGlobal = <span class="nm">0</span>;
-
-<span class="kw">for</span> (<span class="ty">int</span> s = <span class="nm">0</span>; s < sucursales.Length; s++)
+<span class="kw">for</span> (<span class="ty">int</span> d = <span class="nm">0</span>; d < dias.Length; d++)
 {
-    <span class="ty">decimal</span> totalSucursal = <span class="nm">0</span>;
-    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{sucursales[s],-14}"</span>);
-
-    <span class="kw">for</span> (<span class="ty">int</span> p = <span class="nm">0</span>; p < productos.Length; p++)
+    <span class="ty">int</span> totalDia = <span class="nm">0</span>;
+    <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{dias[d],-12}"</span>);
+    <span class="kw">for</span> (<span class="ty">int</span> p = <span class="nm">0</span>; p < pizzas.Length; p++)
     {
-        <span class="ty">int</span> unidades = stock[s, p];
-        <span class="cm">// Marcar visualmente si el stock está bajo el umbral</span>
-        <span class="ty">string</span> indicador = unidades < UMBRAL_CRITICO ? <span class="st">"⚠"</span> : <span class="st">" "</span>;
-        <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{indicador}{unidades,10}"</span>);
-
-        totalSucursal += precios[p] * unidades; <span class="cm">// valor = precio × unidades</span>
+        <span class="ty">Console</span>.<span class="fn">Write</span>(<span class="st">$"{ventas[d,p],12}"</span>);
+        totalDia += ventas[d, p];
     }
-
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  ${totalSucursal,10:N0}"</span>);
-    totalGlobal += totalSucursal;
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"{totalDia,8}"</span>);
+    totalSemana += totalDia;
+    <span class="kw">if</span> (totalDia > maxDia) { maxDia = totalDia; mejorDiaIdx = d; }
 }
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">66</span>));
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"{"VALOR TOTAL INVENTARIO",-50} ${totalGlobal:N0}"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n⚠ = Stock crítico (menos de 10 unidades)"</span>);</pre>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">50</span>));
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Total semana: {totalSemana} pizzas"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Mejor día:    {dias[mejorDiaIdx]} con {maxDia} pizzas"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="challenge">
         <div class="ch-header">
           <span class="ch-icon">⚡</span>
-          <span class="ch-title">Desafío 1 — Array de sucursales</span>
+          <span class="ch-title">Desafío 1 — Array: ventas por género en la Tienda Gamer</span>
           <span class="ch-badge">+20 XP</span>
         </div>
-        <div class="ch-desc">Almacenes Por Ahí tiene 12 sucursales y registra las ventas diarias de cada una. Usando un array, calcula qué sucursal vendió más hoy y muestra el total de ventas de la cadena.</div>
+        <div class="ch-desc">🎮 La Tienda Gamer vende juegos en 5 géneros. Hoy registró las ventas de cada género. Usando un array, muestra las ventas por género y calcula cuál fue el más vendido del día.</div>
         <div class="ch-req">
           <ul>
-            <li>Declarar <code>string[] nombresSucursales</code> con 12 nombres ficticios</li>
-            <li>Declarar <code>decimal[] ventasDiarias</code> con valores inventados</li>
-            <li>Recorrer con <code>for</code> para encontrar el índice del máximo</li>
+            <li>Declarar <code>string[] generos</code> con 5 géneros (Acción, RPG, etc.)</li>
+            <li>Declarar <code>int[] vendidosHoy</code> con cantidades inventadas</li>
+            <li>Recorrer con <code>for</code> para encontrar el índice del género más vendido</li>
             <li>Mostrar resultado con interpolación <code>$"..."</code></li>
           </ul>
         </div>
@@ -607,168 +686,195 @@ precios[<span class="nm">4</span>] = <span class="nm">12990m</span>;  <span clas
       </div>
 
       <div class="box am" style="margin-bottom:18px">
-        <div class="box-lbl">🔧 Import necesario</div>
-        <div class="box-body"><code>using System.Collections.Generic;</code> — En .NET 8 con <code>ImplicitUsings=enable</code> en el .csproj, ya está incluido automáticamente. Si no: agrégalo al inicio del archivo.</div>
+        <div class="box-lbl">🔧 Import necesario + Sintaxis esencial</div>
+        <div class="box-body">
+          <code>using System.Collections.Generic;</code> — en .NET 8 ya está incluido automáticamente.<br><br>
+          <code>List&lt;string&gt; lista = new();</code> → lista vacía<br>
+          <code>lista.Add("valor");</code> → agregar al final<br>
+          <code>lista[0]</code> → acceder por índice<br>
+          <code>lista.Count</code> → cuántos elementos tiene<br>
+          <code>lista.Remove("valor");</code> → eliminar por valor<br>
+          <code>lista.Contains("valor");</code> → ¿existe el valor?<br>
+          <code>lista.Find(x => condición);</code> → buscar el primero que cumple<br>
+          <code>lista.FindAll(x => condición);</code> → buscar todos los que cumplen
+        </div>
       </div>
 
       <div class="nivel-tabs">
-        <button class="nivel-tab basic on" onclick="switchNivel(this,'list','b')">🟢 Básico</button>
-        <button class="nivel-tab mid"       onclick="switchNivel(this,'list','m')">🟡 Intermedio</button>
-        <button class="nivel-tab pro"       onclick="switchNivel(this,'list','p')">🟣 Profesional</button>
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'list','b')">🟢 Básico — 🎮 Tienda Videojuegos</button>
+        <button class="nivel-tab mid"       onclick="switchNivel(this,'list','m')">🟡 Intermedio — 🛒 Supermercado</button>
+        <button class="nivel-tab pro"       onclick="switchNivel(this,'list','p')">🟣 Profesional — 🍕 Pizzería</button>
       </div>
 
       <div class="nivel-pane on" id="list-b">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🎮 Tienda de Videojuegos</strong> — La tienda tiene un catálogo de juegos que varía: llegan juegos nuevos y se retiran otros. Usamos List porque el tamaño cambia.</p>
+        <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">¿Por qué List y no array aquí?</div><div class="box-body">A diferencia del array, la <code>List&lt;T&gt;</code> puede crecer o reducirse en cualquier momento. Si llega un juego nuevo: <code>Add()</code>. Si se retira: <code>Remove()</code>. No necesitas saber de antemano cuántos juegos habrá.</div></div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — List&lt;T&gt; básico</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="kw">using</span> System.Collections.Generic; <span class="cm">// importar el namespace de la BCL</span>
+          <div class="code-hdr"><span class="code-lang">C# — List básico: catálogo de videojuegos</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// List&lt;string&gt; → lista dinámica de strings
+// A diferencia del array, NO necesitas decir cuántos habrá
+// using System.Collections.Generic; (en .NET 8 ya está incluido)</span>
+<span class="ty">List</span>&lt;<span class="ty">string</span>&gt; catalogo = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">string</span>&gt;();
 
-<span class="cm">// CREAR una lista vacía — el T es el tipo de los elementos</span>
-<span class="ty">List</span>&lt;<span class="ty">string</span>&gt; categorias = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">string</span>&gt;();
+<span class="cm">// Add(): agregar un elemento al FINAL de la lista</span>
+catalogo.<span class="fn">Add</span>(<span class="st">"FIFA 25"</span>);
+catalogo.<span class="fn">Add</span>(<span class="st">"Elden Ring"</span>);
+catalogo.<span class="fn">Add</span>(<span class="st">"Spider-Man 2"</span>);
+catalogo.<span class="fn">Add</span>(<span class="st">"Halo Infinite"</span>);
 
-<span class="cm">// ADD: agregar elementos al final — tiempo O(1)</span>
-categorias.<span class="fn">Add</span>(<span class="st">"Poleras"</span>);
-categorias.<span class="fn">Add</span>(<span class="st">"Jeans"</span>);
-categorias.<span class="fn">Add</span>(<span class="st">"Chaquetas"</span>);
-categorias.<span class="fn">Add</span>(<span class="st">"Calzado"</span>);
+<span class="cm">// Count → cuántos elementos tiene la lista (como .Length del array)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Juegos en catálogo: {catalogo.Count}"</span>); <span class="cm">// 4</span>
 
-<span class="cm">// COUNT: número de elementos (equivale a .size() de Java)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Categorías registradas: {categorias.Count}"</span>);  <span class="cm">// 4</span>
+<span class="cm">// Acceder por índice (igual que array)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Primer juego: {catalogo[0]}"</span>); <span class="cm">// FIFA 25</span>
 
-<span class="cm">// ACCEDER por índice (igual que array)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Primera categoría: {categorias[0]}"</span>); <span class="cm">// Poleras</span>
+<span class="cm">// Recorrer con foreach</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+Catálogo completo:"</span>);
+<span class="kw">foreach</span> (<span class="ty">string</span> juego <span class="kw">in</span> catalogo)
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  • {juego}"</span>);
 
-<span class="cm">// RECORRER con foreach</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\nCatálogo de categorías:"</span>);
-<span class="kw">foreach</span> (<span class="ty">string</span> cat <span class="kw">in</span> categorias)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  • {cat}"</span>);
+<span class="cm">// Remove(): eliminar un elemento por valor
+// La lista se ajusta automáticamente — no quedan "huecos"</span>
+catalogo.<span class="fn">Remove</span>(<span class="st">"Halo Infinite"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+Tras eliminar Halo: {catalogo.Count} juegos"</span>); <span class="cm">// 3</span>
 
-<span class="cm">// REMOVE: eliminar un elemento por valor</span>
-categorias.<span class="fn">Remove</span>(<span class="st">"Calzado"</span>);
+<span class="cm">// Contains(): verificar si un elemento está en la lista</span>
+<span class="ty">bool</span> tieneElden = catalogo.<span class="fn">Contains</span>(<span class="st">"Elden Ring"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"¿Tiene Elden Ring? {tieneElden}"</span>); <span class="cm">// True</span>
 
-<span class="cm">// INSERT: insertar en posición específica</span>
-categorias.<span class="fn">Insert</span>(<span class="nm">1</span>, <span class="st">"Accesorios"</span>); <span class="cm">// insertar en índice 1</span>
-
-<span class="cm">// CONTAINS: verificar si existe el elemento</span>
-<span class="ty">bool</span> tieneJeans = categorias.<span class="fn">Contains</span>(<span class="st">"Jeans"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"¿Hay Jeans? {tieneJeans}"</span>);  <span class="cm">// True</span>
-
-<span class="cm">// CLEAR: vaciar la lista completamente</span>
-categorias.<span class="fn">Clear</span>();
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Elementos tras Clear: {categorias.Count}"</span>);  <span class="cm">// 0</span></pre>
+<span class="cm">// Insert(): agregar en una posición específica
+// Insert(1, ...) → insertar en la posición 1, empujando los demás</span>
+catalogo.<span class="fn">Insert</span>(<span class="nm">1</span>, <span class="st">"God of War"</span>); <span class="cm">// queda entre FIFA y Elden Ring</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+Tras insertar God of War en pos.1: {catalogo[1]}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="list-m">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🛒 Supermercado</strong> — El supermercado tiene una lista de productos con nombre, precio y stock. Necesita buscar productos y actualizar stocks.</p>
+        <div class="box sg" style="margin-bottom:12px"><div class="box-lbl">¿Qué es una lambda (p => ...)?</div><div class="box-body">Una <strong>lambda</strong> es una mini-función que se escribe en una sola línea. <code>p => p.Precio &gt; 1000</code> significa: "para cada p de la lista, evalúa si p.Precio es mayor a 1000". El <code>=></code> se lee como "tal que". Se usa en Find(), FindAll(), Sort() para decirle cómo buscar u ordenar.</div></div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — List&lt;T&gt; con objetos y búsquedas</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Lista de objetos Producto — la BCL acepta cualquier tipo</span>
-<span class="kw">var</span> inventario = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt;();
+          <div class="code-hdr"><span class="code-lang">C# — List con objetos: productos del supermercado</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// List&lt;T&gt; con objetos propios — no solo strings
+// Cada elemento de la lista es un objeto Producto</span>
+<span class="kw">var</span> productos = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt;();
 
-<span class="cm">// Agregar objetos completos</span>
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Polera básica"</span>,   <span class="nm">9990m</span>,  <span class="nm">120</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Jeans skinny"</span>,     <span class="nm">24990m</span>, <span class="nm">45</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Chaqueta invierno"</span>, <span class="nm">49990m</span>, <span class="nm">0</span>));
-inventario.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">4</span>, <span class="st">"Calcetines x3"</span>,    <span class="nm">4990m</span>,  <span class="nm">200</span>));
+<span class="cm">// Agregar objetos completos (usando record para simplificar)</span>
+productos.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">1</span>, <span class="st">"Arroz 1kg"</span>,      <span class="nm">1190m</span>, <span class="nm">80</span>));
+productos.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">2</span>, <span class="st">"Leche 1L"</span>,       <span class="nm">890m</span>,  <span class="nm">120</span>));
+productos.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">3</span>, <span class="st">"Pan Molde"</span>,      <span class="nm">1490m</span>, <span class="nm">0</span>));  <span class="cm">// agotado</span>
+productos.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">4</span>, <span class="st">"Aceite 1L"</span>,      <span class="nm">2990m</span>, <span class="nm">45</span>));
+productos.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(<span class="nm">5</span>, <span class="st">"Pasta Spaghetti"</span>, <span class="nm">890m</span>, <span class="nm">60</span>));
 
-<span class="cm">// FIND: devuelve el PRIMERO que cumple la condición (lambda)
-// p => es la "función anónima": por cada p en la lista, evalúa la condición</span>
-<span class="ty">Producto</span>? encontrado = inventario.<span class="fn">Find</span>(p => p.Id == <span class="nm">2</span>);
-<span class="kw">if</span> (encontrado != <span class="kw">null</span>)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Encontrado: {encontrado.Nombre}"</span>);
+<span class="cm">// Find(): busca y retorna el PRIMERO que cumple la condición
+// p => p.Id == 2 → "busca el producto donde Id sea igual a 2"
+// Si no encuentra nada, retorna null (por eso usamos Producto?)</span>
+<span class="ty">Producto</span>? leche = productos.<span class="fn">Find</span>(p => p.Id == <span class="nm">2</span>);
+<span class="kw">if</span> (leche != <span class="kw">null</span>)
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Encontrado: {leche.Nombre} — ${leche.Precio:N0}"</span>);
 
-<span class="cm">// FINDALL: devuelve TODOS los que cumplen la condición</span>
-<span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; conStock = inventario.<span class="fn">FindAll</span>(p => p.Stock > <span class="nm">0</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Productos con stock: {conStock.Count}"</span>);  <span class="cm">// 3</span>
+<span class="cm">// FindAll(): retorna una NUEVA lista con TODOS los que cumplen la condición
+// Aquí buscamos todos los productos con stock mayor a 0</span>
+<span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; conStock = productos.<span class="fn">FindAll</span>(p => p.Stock > <span class="nm">0</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Productos disponibles: {conStock.Count}"</span>); <span class="cm">// 4 (el Pan tiene 0)</span>
 
-<span class="cm">// SORT: ordenar con un comparador lambda
-// a y b son dos elementos — CompareTo compara los valores</span>
-inventario.<span class="fn">Sort</span>((a, b) => a.Precio.<span class="fn">CompareTo</span>(b.Precio)); <span class="cm">// menor a mayor</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n=== Ordenado por precio ==="</span>);
-<span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> inventario)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  [{p.Id:D3}] {p.Nombre,-22} ${p.Precio:N0}"</span>);
+<span class="cm">// Sort(): ordena la lista según el criterio que definas
+// (a, b) => a.Precio.CompareTo(b.Precio) → ordenar de menor a mayor precio
+// CompareTo retorna: negativo si a < b, 0 si iguales, positivo si a > b</span>
+productos.<span class="fn">Sort</span>((a, b) => a.Precio.<span class="fn">CompareTo</span>(b.Precio));
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+=== PRODUCTOS ORDENADOS POR PRECIO ==="</span>);
+<span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> productos)
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  [{p.Id:D2}] {p.Nombre,-20} ${p.Precio:N0,8}  Stock:{p.Stock}"</span>);
 
-<span class="cm">// REMOVEALL: eliminar todos los que cumplen la condición</span>
-<span class="ty">int</span> eliminados = inventario.<span class="fn">RemoveAll</span>(p => p.Stock == <span class="nm">0</span>); <span class="cm">// sin stock</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\nProductos eliminados (sin stock): {eliminados}"</span>);
+<span class="cm">// RemoveAll(): elimina TODOS los que cumplen la condición y retorna cuántos eliminó</span>
+<span class="ty">int</span> eliminados = productos.<span class="fn">RemoveAll</span>(p => p.Stock == <span class="nm">0</span>); <span class="cm">// quitar los agotados</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+Productos agotados eliminados: {eliminados}"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Quedan en lista: {productos.Count}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();
 
-<span class="cm">// Clase auxiliar para este ejemplo</span>
+<span class="cm">// La clase Producto (simplificada con record)</span>
 <span class="kw">record</span> <span class="ty">Producto</span>(<span class="ty">int</span> Id, <span class="ty">string</span> Nombre, <span class="ty">decimal</span> Precio, <span class="ty">int</span> Stock);</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="list-p">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🍕 Pizzería Don Corleone</strong> — Sistema de pedidos con clase de servicio. Separa la lógica del negocio de la presentación.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Gestión completa de inventario con List&lt;T&gt;</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Clase de servicio que encapsula todas las operaciones
-// sobre la lista de productos — patrón común en proyectos .NET</span>
-<span class="kw">public class</span> <span class="ty">InventarioService</span>
+          <div class="code-hdr"><span class="code-lang">C# — List profesional: servicio de pedidos Pizzería Don Corleone</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// En proyectos reales la lógica de la lista va en una CLASE SEPARADA
+// Esto se llama "Servicio" o "Repositorio" — patrón muy usado en .NET</span>
+<span class="kw">public class</span> <span class="ty">PizzaService</span>
 {
-    <span class="kw">private readonly</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; _productos = <span class="kw">new</span>();
-    <span class="kw">private int</span> _proximoId = <span class="nm">1</span>;
+    <span class="cm">// _pedidos: campo privado — el guión bajo (_) indica campo privado
+    // readonly: la referencia no cambia; la lista sí puede crecer
+    // new(): forma corta de new List&lt;Pedido&gt;()</span>
+    <span class="kw">private readonly</span> <span class="ty">List</span>&lt;<span class="ty">Pedido</span>&gt; _pedidos = <span class="kw">new</span>();
+    <span class="kw">private int</span> _proximoId = <span class="nm">1</span>; <span class="cm">// auto-incremental para los IDs</span>
 
-    <span class="cm">// Agregar validando que no exista nombre duplicado</span>
-    <span class="kw">public bool</span> <span class="fn">Agregar</span>(<span class="ty">string</span> nombre, <span class="ty">decimal</span> precio, <span class="ty">int</span> stock)
+    <span class="cm">// Método público para agregar un pedido con validación</span>
+    <span class="kw">public</span> <span class="ty">Pedido</span> <span class="fn">AgregarPedido</span>(<span class="ty">string</span> cliente, <span class="ty">string</span> pizza, <span class="ty">int</span> cantidad)
     {
-        <span class="cm">// Any: retorna true si al menos UNO cumple la condición</span>
-        <span class="kw">bool</span> existe = _productos.<span class="fn">Any</span>(p => p.Nombre.<span class="fn">Equals</span>(nombre,
-            <span class="ty">StringComparison</span>.OrdinalIgnoreCase));
-        <span class="kw">if</span> (existe) <span class="kw">return false</span>; <span class="cm">// duplicado → rechazar</span>
+        <span class="cm">// Validar antes de agregar</span>
+        <span class="kw">if</span> (cantidad &lt;= <span class="nm">0</span>) <span class="kw">throw new</span> <span class="ty">ArgumentException</span>(<span class="st">"Cantidad debe ser mayor a 0"</span>);
 
-        _productos.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Producto</span>(_proximoId++, nombre, precio, stock));
-        <span class="kw">return true</span>;
+        <span class="kw">var</span> pedido = <span class="kw">new</span> <span class="ty">Pedido</span>(_proximoId++, cliente, pizza, cantidad);
+        _pedidos.<span class="fn">Add</span>(pedido);  <span class="cm">// agregar al final de la lista</span>
+        <span class="kw">return</span> pedido;          <span class="cm">// retornar el pedido creado</span>
     }
 
-    <span class="cm">// Buscar por texto parcial en el nombre (búsqueda tipo "contiene")</span>
-    <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">Producto</span>&gt; <span class="fn">Buscar</span>(<span class="ty">string</span> texto)
-        => _productos.<span class="fn">FindAll</span>(p =>
-            p.Nombre.<span class="fn">Contains</span>(texto, <span class="ty">StringComparison</span>.OrdinalIgnoreCase));
+    <span class="cm">// Buscar pedidos de un cliente específico (puede haber varios)</span>
+    <span class="kw">public</span> <span class="ty">List</span>&lt;<span class="ty">Pedido</span>&gt; <span class="fn">BuscarPorCliente</span>(<span class="ty">string</span> cliente)
+        => _pedidos.<span class="fn">FindAll</span>(p => p.Cliente.<span class="fn">Contains</span>(cliente,
+               <span class="ty">StringComparison</span>.OrdinalIgnoreCase)); <span class="cm">// ignora mayúsculas</span>
 
-    <span class="cm">// Informe resumen con interpolación bien formateada</span>
-    <span class="kw">public void</span> <span class="fn">Informe</span>()
+    <span class="cm">// Informe: muestra todos los pedidos y el total</span>
+    <span class="kw">public void</span> <span class="fn">MostrarInforme</span>()
     {
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\n{"ID",-5} {"NOMBRE",-25} {"PRECIO",10} {"STOCK",7} {"ESTADO",10}"</span>);
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">58</span>));
-
-        <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> _productos)
-        {
-            <span class="ty">string</span> estado = p.Stock == <span class="nm">0</span> ? <span class="st">"⛔ AGOTADO"</span>
-                           : p.Stock < <span class="nm">10</span> ? <span class="st">"⚠ CRÍTICO"</span>
-                           : <span class="st">"✅ OK"</span>;
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(
-                <span class="st">$"{p.Id:D3,-5} {p.Nombre,-25} ${p.Precio,9:N0} {p.Stock,7} {estado}"</span>);
-        }
-
-        <span class="cm">// Calcular estadísticas recorriendo la lista</span>
-        <span class="ty">decimal</span> valorTotal = <span class="nm">0</span>;
-        <span class="ty">int</span> sinStock = <span class="nm">0</span>;
-        <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> _productos)
-        {
-            valorTotal += p.Precio * p.Stock;
-            <span class="kw">if</span> (p.Stock == <span class="nm">0</span>) sinStock++;
-        }
-
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="kw">new</span> <span class="ty">string</span>(<span class="st">'─'</span>, <span class="nm">58</span>));
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Total productos: {_productos.Count} | "</span> +
-                          <span class="st">$"Sin stock: {sinStock} | Valor inv: ${valorTotal:N0}"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔══════════════════════════════════════╗"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║  PIZZERÍA DON CORLEONE — PEDIDOS    ║"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╠══════════════════════════════════════╣"</span>);
+        <span class="cm">// Mostrar cada pedido de la lista con foreach</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> _pedidos)
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"║ #{p.Id:D3} {p.Cliente,-15} {p.Pizza,-12} x{p.Cantidad} ║"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╠══════════════════════════════════════╣"</span>);
+        <span class="cm">// Calcular total de pizzas vendidas</span>
+        <span class="ty">int</span> totalPizzas = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> _pedidos) totalPizzas += p.Cantidad;
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"║ Total pedidos: {_pedidos.Count,-5} Pizzas: {totalPizzas,-9}║"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚══════════════════════════════════════╝"</span>);
     }
 }
 
-<span class="cm">// USO del servicio</span>
-<span class="kw">var</span> svc = <span class="kw">new</span> <span class="ty">InventarioService</span>();
-svc.<span class="fn">Agregar</span>(<span class="st">"Polera básica"</span>, <span class="nm">9990m</span>, <span class="nm">120</span>);
-svc.<span class="fn">Agregar</span>(<span class="st">"Jeans skinny"</span>,  <span class="nm">24990m</span>, <span class="nm">45</span>);
-svc.<span class="fn">Agregar</span>(<span class="st">"Chaqueta"</span>,      <span class="nm">49990m</span>, <span class="nm">0</span>);
-svc.<span class="fn">Informe</span>();</pre>
+<span class="kw">record</span> <span class="ty">Pedido</span>(<span class="ty">int</span> Id, <span class="ty">string</span> Cliente, <span class="ty">string</span> Pizza, <span class="ty">int</span> Cantidad);
+
+<span class="cm">// USAR el servicio</span>
+<span class="kw">var</span> pizzeria = <span class="kw">new</span> <span class="ty">PizzaService</span>();
+pizzeria.<span class="fn">AgregarPedido</span>(<span class="st">"Mesa 1"</span>,    <span class="st">"Margarita"</span>, <span class="nm">2</span>);
+pizzeria.<span class="fn">AgregarPedido</span>(<span class="st">"Delivery"</span>,  <span class="st">"4 Quesos"</span>,  <span class="nm">1</span>);
+pizzeria.<span class="fn">AgregarPedido</span>(<span class="st">"Mesa 3"</span>,    <span class="st">"Napolitana"</span>,<span class="nm">3</span>);
+pizzeria.<span class="fn">AgregarPedido</span>(<span class="st">"Mesa 1"</span>,    <span class="st">"4 Quesos"</span>,  <span class="nm">1</span>); <span class="cm">// la mesa 1 pide más</span>
+pizzeria.<span class="fn">MostrarInforme</span>();
+
+<span class="cm">// Buscar todos los pedidos de Mesa 1</span>
+<span class="kw">var</span> mesa1 = pizzeria.<span class="fn">BuscarPorCliente</span>(<span class="st">"Mesa 1"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+Pedidos de Mesa 1: {mesa1.Count}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
-      <div class="challenge">
+            <div class="challenge">
         <div class="ch-header">
           <span class="ch-icon">⚡</span>
-          <span class="ch-title">Desafío 2 — Carrito de compras</span>
+          <span class="ch-title">Desafío 2 — List: carrito de compras del Supermercado</span>
           <span class="ch-badge">+20 XP</span>
         </div>
-        <div class="ch-desc">Implementa un carrito de compras usando <code>List&lt;string&gt;</code>. El usuario puede agregar, quitar y ver los ítems. Al finalizar, muestra el total de artículos.</div>
+        <div class="ch-desc">🛒 El Supermercado necesita un carrito de compras digital. Usa <code>List&lt;string&gt;</code> para que el cliente agregue productos, los quite y vea lo que tiene. Al pagar, muestra el resumen con total de artículos.</div>
         <div class="ch-req">
           <ul>
             <li>Usar <code>Add()</code>, <code>Remove()</code>, <code>Contains()</code> y <code>Count</code></li>
@@ -806,175 +912,215 @@ svc.<span class="fn">Informe</span>();</pre>
         </div>
       </div>
 
+      <div class="box am" style="margin-bottom:18px">
+        <div class="box-lbl">🔧 Sintaxis esencial del Dictionary</div>
+        <div class="box-body">
+          <code>Dictionary&lt;string, decimal&gt; d = new();</code> → diccionario vacío<br>
+          <code>d["clave"] = valor;</code> → agregar o actualizar<br>
+          <code>d["clave"]</code> → leer (⚠ lanza excepción si no existe)<br>
+          <code>d.ContainsKey("clave")</code> → verificar si existe (antes de leer)<br>
+          <code>d.TryGetValue("clave", out var v)</code> → leer de forma segura ✅<br>
+          <code>d.Remove("clave");</code> → eliminar un par<br>
+          <code>d.Count</code> → cuántos pares tiene<br>
+          <code>foreach (var (k,v) in d)</code> → recorrer todos los pares
+        </div>
+      </div>
+
       <div class="nivel-tabs">
-        <button class="nivel-tab basic on" onclick="switchNivel(this,'dict','b')">🟢 Básico</button>
-        <button class="nivel-tab mid"       onclick="switchNivel(this,'dict','m')">🟡 Intermedio</button>
-        <button class="nivel-tab pro"       onclick="switchNivel(this,'dict','p')">🟣 Profesional</button>
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'dict','b')">🟢 Básico — 🎮 Tienda Videojuegos</button>
+        <button class="nivel-tab mid"       onclick="switchNivel(this,'dict','m')">🟡 Intermedio — 🛒 Supermercado</button>
+        <button class="nivel-tab pro"       onclick="switchNivel(this,'dict','p')">🟣 Profesional — 🍕 Pizzería</button>
       </div>
 
       <div class="nivel-pane on" id="dict-b">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🎮 Tienda de Videojuegos</strong> — Catálogo de precios por código de juego. El cajero escanea el código y necesita el precio al instante.</p>
+        <div class="box tl" style="margin-bottom:12px"><div class="box-lbl">¿Por qué Dictionary y no List aquí?</div><div class="box-body">Con una List tendrías que recorrer todos los juegos hasta encontrar el que buscas (lento). Con un Dictionary, le dices directamente "dame el precio del código PS5-001" y lo entrega en tiempo O(1) — no importa si tienes 10 o 10.000 juegos.</div></div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Dictionary básico</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// CREAR: Dictionary&lt;clave, valor&gt;</span>
-<span class="cm">// string = tipo de la clave | decimal = tipo del valor</span>
+          <div class="code-hdr"><span class="code-lang">C# — Dictionary básico: precios por código de juego</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Dictionary&lt;K, V&gt;: colección de pares clave-valor
+// K (Key)   = tipo de la clave → string (el código del juego)
+// V (Value) = tipo del valor   → decimal (el precio)
+// Cada clave es ÚNICA — no pueden repetirse</span>
 <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">decimal</span>&gt; precios = <span class="kw">new</span>()
 {
-    { <span class="st">"Polera"</span>,    <span class="nm">9990m</span>  },   <span class="cm">// clave → valor</span>
-    { <span class="st">"Jeans"</span>,     <span class="nm">24990m</span> },
-    { <span class="st">"Chaqueta"</span>,  <span class="nm">49990m</span> },
-    { <span class="st">"Calcetines"</span>,<span class="nm">4990m</span>  },
+    <span class="cm">// clave      → valor</span>
+    { <span class="st">"PS5-001"</span>,  <span class="nm">59990m</span> }, <span class="cm">// FIFA 25</span>
+    { <span class="st">"PS5-002"</span>,  <span class="nm">49990m</span> }, <span class="cm">// Elden Ring</span>
+    { <span class="st">"XB-001"</span>,   <span class="nm">39990m</span> }, <span class="cm">// Halo Infinite</span>
+    { <span class="st">"PC-001"</span>,   <span class="nm">29990m</span> }, <span class="cm">// Minecraft</span>
 };
 
-<span class="cm">// ACCEDER por clave — directo, O(1)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio polera: ${precios["Polera"]:N0}"</span>);
+<span class="cm">// ACCEDER por clave → directo, O(1), sin recorrer nada</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio FIFA 25: ${precios["PS5-001"]:N0}"</span>); <span class="cm">// $59.990</span>
 
-<span class="cm">// AGREGAR un nuevo par</span>
-precios[<span class="st">"Gorra"</span>] = <span class="nm">7990m</span>;  <span class="cm">// si no existe, lo crea; si existe, lo actualiza</span>
+<span class="cm">// AGREGAR o ACTUALIZAR un par clave-valor
+// Si la clave NO existe → la crea. Si YA existe → actualiza el valor</span>
+precios[<span class="st">"SW-001"</span>] = <span class="nm">44990m</span>; <span class="cm">// agregar Nintendo Switch game</span>
+precios[<span class="st">"PS5-001"</span>] = <span class="nm">54990m</span>; <span class="cm">// actualizar precio de FIFA 25</span>
 
-<span class="cm">// VERIFICAR si existe la clave ANTES de acceder (evita excepción)</span>
-<span class="ty">string</span> buscar = <span class="st">"Zapatillas"</span>;
+<span class="cm">// ContainsKey(): verificar si una clave existe ANTES de acceder
+// IMPORTANTE: si intentas acceder a una clave que no existe
+// sin verificar, el programa lanza una excepción y se cae</span>
+<span class="ty">string</span> buscar = <span class="st">"NS-999"</span>;
 <span class="kw">if</span> (precios.<span class="fn">ContainsKey</span>(buscar))
     <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"{buscar}: ${precios[buscar]:N0}"</span>);
 <span class="kw">else</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"'{buscar}' no está en el catálogo"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"El código '{buscar}' no existe en el catálogo"</span>);
 
-<span class="cm">// TryGetValue: forma segura — no lanza excepción si no existe</span>
-<span class="kw">if</span> (precios.<span class="fn">TryGetValue</span>(<span class="st">"Jeans"</span>, <span class="kw">out</span> <span class="ty">decimal</span> precioJeans))
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Jeans cuesta: ${precioJeans:N0}"</span>);
+<span class="cm">// TryGetValue(): la forma MÁS SEGURA de buscar
+// Retorna true si encontró la clave, y guarda el valor en 'precio'
+// No lanza excepción si no existe — siempre usarla en producción</span>
+<span class="kw">if</span> (precios.<span class="fn">TryGetValue</span>(<span class="st">"XB-001"</span>, <span class="kw">out</span> <span class="ty">decimal</span> precio))
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Halo Infinite: ${precio:N0}"</span>);  <span class="cm">// $39.990</span>
 
-<span class="cm">// RECORRER todos los pares clave-valor</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\nCatálogo de precios:"</span>);
+<span class="cm">// RECORRER todos los pares con foreach
+// Cada par es un KeyValuePair&lt;string, decimal&gt;</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+=== TODOS LOS PRECIOS ==="</span>);
 <span class="kw">foreach</span> (<span class="ty">KeyValuePair</span>&lt;<span class="ty">string</span>, <span class="ty">decimal</span>&gt; par <span class="kw">in</span> precios)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {par.Key,-15} ${par.Value:N0}"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {par.Key,-10} ${par.Value:N0}"</span>);
 
-<span class="cm">// ELIMINAR por clave</span>
-precios.<span class="fn">Remove</span>(<span class="st">"Gorra"</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\nTotal artículos: {precios.Count}"</span>);</pre>
+<span class="cm">// Count → número de pares en el Dictionary</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+Total juegos: {precios.Count}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="dict-m">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🛒 Supermercado</strong> — Contar cuántas veces se vendió cada producto en el día. Un Dictionary funciona perfecto como contador.</p>
+        <div class="box sg" style="margin-bottom:12px"><div class="box-lbl">Dictionary como contador</div><div class="box-body">Un patrón muy común: usar un Dictionary para contar frecuencias. La clave es el nombre del producto, el valor es cuántas veces apareció. Por cada venta: si la clave ya existe, incrementa el contador; si no, créala con valor 1.</div></div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Dictionary con objetos como valor</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Clave: string (RUT del cliente) → Valor: objeto Cliente completo
-// Permite encontrar un cliente en O(1) por su RUT</span>
-<span class="kw">var</span> clientesPorRUT = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">Cliente</span>&gt;();
+          <div class="code-hdr"><span class="code-lang">C# — Dictionary intermedio: contador de ventas supermercado</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Simular el registro de ventas del supermercado durante el día
+// Cada string es el nombre del producto que pasó por caja</span>
+<span class="ty">string</span>[] ventasDia = {
+    <span class="st">"Leche"</span>, <span class="st">"Pan"</span>, <span class="st">"Arroz"</span>, <span class="st">"Leche"</span>, <span class="st">"Pan"</span>,
+    <span class="st">"Arroz"</span>, <span class="st">"Leche"</span>, <span class="st">"Aceite"</span>, <span class="st">"Pan"</span>, <span class="st">"Leche"</span>,
+    <span class="st">"Aceite"</span>, <span class="st">"Arroz"</span>, <span class="st">"Pasta"</span>, <span class="st">"Pan"</span>, <span class="st">"Leche"</span>
+};
 
-<span class="cm">// Agregar clientes</span>
-clientesPorRUT[<span class="st">"12.345.678-9"</span>] = <span class="kw">new</span> <span class="ty">Cliente</span>(<span class="st">"Ana López"</span>, <span class="st">"ana@mail.com"</span>);
-clientesPorRUT[<span class="st">"98.765.432-1"</span>] = <span class="kw">new</span> <span class="ty">Cliente</span>(<span class="st">"Juan Pérez"</span>, <span class="st">"juan@mail.com"</span>);
-clientesPorRUT[<span class="st">"45.678.901-2"</span>] = <span class="kw">new</span> <span class="ty">Cliente</span>(<span class="st">"María Torres"</span>, <span class="st">"maria@mail.com"</span>);
+<span class="cm">// Dictionary para contar: clave=producto, valor=cantidad vendida</span>
+<span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">int</span>&gt; contador = <span class="kw">new</span>();
 
-<span class="cm">// Buscar cliente por RUT — O(1) sin recorrer toda la lista</span>
-<span class="ty">string</span> rut = <span class="st">"12.345.678-9"</span>;
-<span class="kw">if</span> (clientesPorRUT.<span class="fn">TryGetValue</span>(rut, <span class="kw">out</span> <span class="ty">Cliente</span>? cliente))
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Cliente encontrado: {cliente.Nombre} — {cliente.Email}"</span>);
-
-<span class="cm">// Recorrer usando deconstrucción (C# moderno)</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n=== DIRECTORIO DE CLIENTES ==="</span>);
-<span class="kw">foreach</span> (<span class="kw">var</span> (rutKey, cli) <span class="kw">in</span> clientesPorRUT)  <span class="cm">// deconstrucción del par</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {rutKey,-15} {cli.Nombre,-20} {cli.Email}"</span>);
-
-<span class="cm">// Dictionary como contador (frecuencia de ventas por categoría)</span>
-<span class="kw">var</span> ventasPorCategoria = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">int</span>&gt;();
-<span class="ty">string</span>[] ventasHoy = { <span class="st">"Polera"</span>, <span class="st">"Jeans"</span>, <span class="st">"Polera"</span>, <span class="st">"Chaqueta"</span>, <span class="st">"Polera"</span> };
-
-<span class="kw">foreach</span> (<span class="ty">string</span> cat <span class="kw">in</span> ventasHoy)
+<span class="cm">// Recorrer cada venta y contar</span>
+<span class="kw">foreach</span> (<span class="ty">string</span> producto <span class="kw">in</span> ventasDia)
 {
-    <span class="cm">// Si la clave existe, incrementa; si no, inicia en 1</span>
-    <span class="kw">if</span> (ventasPorCategoria.<span class="fn">ContainsKey</span>(cat))
-        ventasPorCategoria[cat]++;
+    <span class="cm">// Si el producto YA está en el Dictionary → incrementar su contador</span>
+    <span class="kw">if</span> (contador.<span class="fn">ContainsKey</span>(producto))
+        contador[producto]++;     <span class="cm">// ++ incrementa en 1</span>
     <span class="kw">else</span>
-        ventasPorCategoria[cat] = <span class="nm">1</span>;
+        contador[producto] = <span class="nm">1</span>;  <span class="cm">// primera vez que aparece → iniciar en 1</span>
 }
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n=== VENTAS POR CATEGORÍA HOY ==="</span>);
-<span class="kw">foreach</span> (<span class="kw">var</span> (cat, total) <span class="kw">in</span> ventasPorCategoria)
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {cat,-15}: {total} unidades"</span>);
+<span class="cm">// Mostrar el resumen de ventas</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"=== RESUMEN DE VENTAS DEL DÍA ==="</span>);
+<span class="kw">foreach</span> (<span class="kw">var</span> (producto, cantidad) <span class="kw">in</span> contador) <span class="cm">// deconstrucción moderna</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {producto,-12}: {cantidad} unidades"</span>);
 
-<span class="kw">record</span> <span class="ty">Cliente</span>(<span class="ty">string</span> Nombre, <span class="ty">string</span> Email);</pre>
+<span class="cm">// Encontrar el producto más vendido
+// Empieza con el primero y va comparando con el resto</span>
+<span class="ty">string</span> masVendido = <span class="st">""</span>;
+<span class="ty">int</span>    maxCantidad = <span class="nm">0</span>;
+<span class="kw">foreach</span> (<span class="kw">var</span> (prod, cant) <span class="kw">in</span> contador)
+{
+    <span class="kw">if</span> (cant > maxCantidad)
+    {
+        maxCantidad = cant;
+        masVendido  = prod;
+    }
+}
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+🏆 Producto más vendido: {masVendido} con {maxCantidad} ventas"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Total ventas del día: {ventasDia.Length}"</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="dict-p">
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🍕 Pizzería Don Corleone</strong> — Sistema de punto de venta. El cajero ingresa el código de la pizza y el Dictionary retorna el precio al instante para cobrar.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Sistema de caché y lookup con Dictionary</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Escenario real: sistema de punto de venta
-// El cajero escanea el código del producto y necesita el precio
-// al instante — el Dictionary funciona como lookup table O(1)</span>
-
-<span class="kw">public class</span> <span class="ty">PuntoDeVenta</span>
+          <div class="code-hdr"><span class="code-lang">C# — Dictionary profesional: punto de venta Pizzería Don Corleone</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Sistema de caja — el cajero ingresa códigos y el Dictionary
+// retorna precio y nombre al instante sin recorrer toda la lista</span>
+<span class="kw">public class</span> <span class="ty">CajaPizzeria</span>
 {
-    <span class="cm">// Clave: código SKU del producto | Valor: (nombre, precio)</span>
+    <span class="cm">// Clave: código de pizza | Valor: tupla con nombre y precio
+    // Una tupla agrupa varios valores sin necesidad de una clase separada</span>
     <span class="kw">private readonly</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, (<span class="ty">string</span> Nombre, <span class="ty">decimal</span> Precio)&gt; _catalogo;
 
-    <span class="cm">// Historial de transacciones: hora → lista de ítems comprados</span>
-    <span class="kw">private readonly</span> <span class="ty">Dictionary</span>&lt;<span class="ty">DateTime</span>, <span class="ty">List</span>&lt;<span class="ty">string</span>&gt;&gt; _historial = <span class="kw">new</span>();
+    <span class="cm">// Historial de ventas: código → cuántas veces se vendió hoy</span>
+    <span class="kw">private readonly</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>, <span class="ty">int</span>&gt; _ventasHoy = <span class="kw">new</span>();
 
-    <span class="kw">public</span> <span class="ty">PuntoDeVenta</span>()
+    <span class="kw">public</span> <span class="ty">CajaPizzeria</span>()
     {
-        <span class="cm">// Inicializar catálogo con sintaxis de colección moderna (C# 9+)</span>
+        <span class="cm">// Inicializar el catálogo con valores por defecto</span>
         _catalogo = <span class="kw">new</span>()
         {
-            [<span class="st">"POL-001"</span>] = (<span class="st">"Polera básica"</span>,   <span class="nm">9990m</span>),
-            [<span class="st">"JNS-042"</span>] = (<span class="st">"Jeans skinny"</span>,     <span class="nm">24990m</span>),
-            [<span class="st">"CHA-007"</span>] = (<span class="st">"Chaqueta invierno"</span>, <span class="nm">49990m</span>),
-            [<span class="st">"CAL-099"</span>] = (<span class="st">"Calcetines x3"</span>,    <span class="nm">4990m</span>),
+            [<span class="st">"MAR"</span>] = (<span class="st">"Margarita"</span>,  <span class="nm">8990m</span>),
+            [<span class="st">"4QS"</span>] = (<span class="st">"4 Quesos"</span>,   <span class="nm">11990m</span>),
+            [<span class="st">"NAP"</span>] = (<span class="st">"Napolitana"</span>, <span class="nm">9990m</span>),
+            [<span class="st">"PEP"</span>] = (<span class="st">"Pepperoni"</span>,  <span class="nm">10990m</span>),
         };
     }
 
-    <span class="cm">// Procesar una venta: recibe lista de SKUs escaneados</span>
-    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">ProcesarVenta</span>(<span class="ty">List</span>&lt;<span class="ty">string</span>&gt; skusEscaneados)
+    <span class="cm">// Registrar una venta: retorna el total de esa venta</span>
+    <span class="kw">public</span> <span class="ty">decimal</span> <span class="fn">RegistrarVenta</span>(<span class="ty">string</span> codigo, <span class="ty">int</span> cantidad)
     {
-        <span class="ty">decimal</span> total = <span class="nm">0</span>;
-        <span class="kw">var</span> itemsVenta = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">string</span>&gt;();
-
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n=== BOLETA ALMACENES POR AHÍ ==="</span>);
-
-        <span class="kw">foreach</span> (<span class="ty">string</span> sku <span class="kw">in</span> skusEscaneados)
+        <span class="cm">// TryGetValue: buscar de forma segura sin excepción</span>
+        <span class="kw">if</span> (!_catalogo.<span class="fn">TryGetValue</span>(codigo, <span class="kw">out var</span> pizza))
         {
-            <span class="cm">// TryGetValue: forma segura de buscar — no lanza excepción</span>
-            <span class="kw">if</span> (_catalogo.<span class="fn">TryGetValue</span>(sku, <span class="kw">out var</span> item))
-            {
-                total += item.Precio;
-                itemsVenta.<span class="fn">Add</span>(<span class="st">$"{sku}: {item.Nombre}"</span>);
-                <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {item.Nombre,-25} ${item.Precio:N0}"</span>);
-            }
-            <span class="kw">else</span>
-                <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  SKU '{sku}' no encontrado ⚠️"</span>);
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"⚠ Código '{codigo}' no encontrado"</span>);
+            <span class="kw">return</span> <span class="nm">0</span>;
         }
 
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"{"",30}──────────"</span>);
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {"TOTAL",-25} ${total:N0}"</span>);
+        <span class="ty">decimal</span> total = pizza.Precio * cantidad;
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"✅ {pizza.Nombre} × {cantidad} = ${total:N0}"</span>);
 
-        <span class="cm">// Guardar en historial con la hora actual como clave</span>
-        _historial[<span class="ty">DateTime</span>.Now] = itemsVenta;
+        <span class="cm">// Registrar en el historial (patrón contador)</span>
+        <span class="kw">if</span> (_ventasHoy.<span class="fn">ContainsKey</span>(codigo))
+            _ventasHoy[codigo] += cantidad;
+        <span class="kw">else</span>
+            _ventasHoy[codigo] = cantidad;
 
         <span class="kw">return</span> total;
     }
 
-    <span class="cm">// Mostrar estadísticas del día</span>
-    <span class="kw">public void</span> <span class="fn">ResumenDia</span>()
+    <span class="cm">// Informe de cierre: resumen de ventas del día</span>
+    <span class="kw">public void</span> <span class="fn">InformeCierre</span>()
     {
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\nTransacciones hoy: {_historial.Count}"</span>);
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Artículos en catálogo: {_catalogo.Count}"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+=== CIERRE DEL DÍA — PIZZERÍA DON CORLEONE ==="</span>);
+        <span class="ty">decimal</span> totalDia = <span class="nm">0</span>;
+        <span class="kw">foreach</span> (<span class="kw">var</span> (codigo, cantidad) <span class="kw">in</span> _ventasHoy)
+        {
+            <span class="kw">var</span> pizza = _catalogo[codigo]; <span class="cm">// seguro porque código viene del historial</span>
+            <span class="ty">decimal</span> subtotal = pizza.Precio * cantidad;
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {pizza.Nombre,-15}: {cantidad,3} uds  ${subtotal:N0}"</span>);
+            totalDia += subtotal;
+        }
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  {"TOTAL DEL DÍA",-15}:       ${totalDia:N0}"</span>);
     }
 }
 
-<span class="cm">// USO</span>
-<span class="kw">var</span> pos = <span class="kw">new</span> <span class="ty">PuntoDeVenta</span>();
-pos.<span class="fn">ProcesarVenta</span>(<span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">string</span>&gt; { <span class="st">"POL-001"</span>, <span class="st">"JNS-042"</span>, <span class="st">"XYZ-999"</span> });
-pos.<span class="fn">ResumenDia</span>();</pre>
+<span class="cm">// USAR el sistema de caja</span>
+<span class="kw">var</span> caja = <span class="kw">new</span> <span class="ty">CajaPizzeria</span>();
+caja.<span class="fn">RegistrarVenta</span>(<span class="st">"MAR"</span>, <span class="nm">2</span>);  <span class="cm">// 2 Margaritas</span>
+caja.<span class="fn">RegistrarVenta</span>(<span class="st">"4QS"</span>, <span class="nm">1</span>);  <span class="cm">// 1 Pizza 4 Quesos</span>
+caja.<span class="fn">RegistrarVenta</span>(<span class="st">"XYZ"</span>, <span class="nm">1</span>);  <span class="cm">// código inexistente → muestra advertencia</span>
+caja.<span class="fn">RegistrarVenta</span>(<span class="st">"MAR"</span>, <span class="nm">3</span>);  <span class="cm">// 3 Margaritas más</span>
+caja.<span class="fn">InformeCierre</span>();
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
-      <div class="challenge">
+            <div class="challenge">
         <div class="ch-header">
           <span class="ch-icon">⚡</span>
-          <span class="ch-title">Desafío 3 — Contador de ventas</span>
+          <span class="ch-title">Desafío 3 — Dictionary: pizza más pedida en la Pizzería</span>
           <span class="ch-badge">+20 XP</span>
         </div>
-        <div class="ch-desc">Dada una lista de 20 ventas (strings con el nombre del producto vendido), usa un Dictionary para contar cuántas veces se vendió cada producto y mostrar el ranking de los 3 más vendidos.</div>
+        <div class="ch-desc">🍕 La Pizzería Don Corleone atendió 15 pedidos hoy. Usa un Dictionary para contar cuántas veces se pidió cada tipo de pizza y muestra el ranking: cuál fue la más pedida y cuál la menos.</div>
         <div class="ch-req">
           <ul>
             <li>Usar <code>ContainsKey()</code> para el conteo</li>
@@ -992,7 +1138,7 @@ pos.<span class="fn">ResumenDia</span>();</pre>
 <section id="sec-queue" class="scroll-sec">
 <div class="scroll-inner">
   <h2 class="s-title">🔁 Queue&lt;T&gt; y Stack&lt;T&gt;</h2>
-  <p class="s-sub">Dos colecciones con comportamientos opuestos. Namespace: <code>System.Collections.Generic</code>. Contextos: 🍕 Pizzería Don Corleone · 🍎 Frutería La Cosecha · 🎮 GameZone.</p>
+  <p class="s-sub">Dos colecciones con comportamientos opuestos. Namespace: <code>System.Collections.Generic</code>. Contextos: 🎮 Tienda Gamer (básico) · 🛒 Supermercado (intermedio) · 🍕 Pizzería Don Corleone (profesional).</p>
 
   <!-- ════ QUEUE ════ -->
   <div class="concepto" style="margin-bottom:28px">
@@ -1015,122 +1161,145 @@ pos.<span class="fn">ResumenDia</span>();</pre>
       </div>
 
       <div class="nivel-tabs">
-        <button class="nivel-tab basic on" onclick="switchNivel(this,'queue','b')">🟢 Básico — 🍕 Pizzería</button>
-        <button class="nivel-tab mid"       onclick="switchNivel(this,'queue','m')">🟡 Intermedio — 🍎 Frutería</button>
-        <button class="nivel-tab pro"       onclick="switchNivel(this,'queue','p')">🟣 Profesional — 🎮 GameZone</button>
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'queue','b')">🟢 Básico — 🎮 Tienda Gamer</button>
+        <button class="nivel-tab mid"       onclick="switchNivel(this,'queue','m')">🟡 Intermedio — 🛒 Supermercado</button>
+        <button class="nivel-tab pro"       onclick="switchNivel(this,'queue','p')">🟣 Profesional — 🍕 Pizzería</button>
       </div>
 
       <div class="nivel-pane on" id="queue-b">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Pizzería Don Corleone</strong> — Los pedidos llegan por teléfono. La cocina los prepara en estricto orden de llegada.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🎮 Tienda Gamer</strong> — Los clientes hacen cola para reservar el nuevo lanzamiento. El primero que llegó es el primero que es atendido.</p>
+        <div class="box tl" style="margin-bottom:12px">
+          <div class="box-lbl">¿Qué es FIFO?</div>
+          <div class="box-body"><strong>First In, First Out</strong> — El primero que entra es el primero que sale. Exactamente como la fila del banco o la cola de un videojuego en línea. <code>Enqueue()</code> = ponerse al final de la fila. <code>Dequeue()</code> = el cajero atiende al primero. <code>Peek()</code> = mirar quién es el siguiente sin atenderlo aún.</div>
+        </div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Queue básico: cola de pedidos</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Queue&lt;T&gt; — Pizzería Don Corleone</span>
-<span class="cm">// El primero que llamó = primero que recibe su pizza (FIFO)</span>
-<span class="kw">var</span> colaPedidos = <span class="kw">new</span> <span class="ty">Queue</span>&lt;<span class="ty">string</span>&gt;();
+          <div class="code-hdr"><span class="code-lang">C# — Queue básico: reservas Tienda Gamer</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Queue&lt;T&gt; — El primero que se registró es el primero que recibe su juego
+// Contexto: cola de reservas para el lanzamiento de FIFA 26</span>
+<span class="kw">var</span> colaReservas = <span class="kw">new</span> <span class="ty">Queue</span>&lt;<span class="ty">string</span>&gt;();
 
-<span class="cm">// Enqueue(): agregar al FINAL de la cola (el cliente se pone a esperar)</span>
-colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Mesa 3 — Pizza Margarita"</span>);   <span class="cm">// llegó primero</span>
-colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Delivery — Pizza 4 Quesos"</span>);  <span class="cm">// llegó segundo</span>
-colaPedidos.<span class="fn">Enqueue</span>(<span class="st">"Mesa 1 — Pizza Napolitana"</span>);  <span class="cm">// llegó tercero</span>
+<span class="cm">// Enqueue(): agrega al FINAL de la cola (se pone a esperar)</span>
+colaReservas.<span class="fn">Enqueue</span>(<span class="st">"Carlos Pérez"</span>);   <span class="cm">// llegó primero</span>
+colaReservas.<span class="fn">Enqueue</span>(<span class="st">"Ana Torres"</span>);    <span class="cm">// llegó segundo</span>
+colaReservas.<span class="fn">Enqueue</span>(<span class="st">"Luis Rojas"</span>);    <span class="cm">// llegó tercero</span>
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Pedidos en espera: {colaPedidos.Count}"</span>); <span class="cm">// 3</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Clientes en cola: {colaReservas.Count}"</span>); <span class="cm">// 3</span>
 
-<span class="cm">// Peek(): ¿cuál es el próximo? Lo vemos SIN sacarlo de la cola</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Preparando ahora: {colaPedidos.Peek()}"</span>); <span class="cm">// Mesa 3</span>
+<span class="cm">// Peek(): ver quién es el siguiente SIN sacarlo de la cola</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Próximo a atender: {colaReservas.Peek()}"</span>); <span class="cm">// Carlos</span>
 
-<span class="cm">// Dequeue(): la cocina atiende y entrega — SACA el primero de la cola</span>
-<span class="kw">while</span> (colaPedidos.Count > <span class="nm">0</span>)
+<span class="cm">// Dequeue(): atender al primero de la cola (FIFO)
+// Cada llamada saca al cliente que lleva más tiempo esperando</span>
+<span class="kw">while</span> (colaReservas.Count > <span class="nm">0</span>)
 {
-    <span class="ty">string</span> pedido = colaPedidos.<span class="fn">Dequeue</span>(); <span class="cm">// siempre extrae el más antiguo</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"✅ Entregado: {pedido}"</span>);
+    <span class="ty">string</span> cliente = colaReservas.<span class="fn">Dequeue</span>(); <span class="cm">// extrae el más antiguo</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"✅ Entregando FIFA 26 a: {cliente}"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   Clientes restantes: {colaReservas.Count}"</span>);
 }
-<span class="cm">// Salida (en orden de llegada, no de último):
-// ✅ Entregado: Mesa 3 — Pizza Margarita   ← llegó primero, sale primero
-// ✅ Entregado: Delivery — Pizza 4 Quesos
-// ✅ Entregado: Mesa 1 — Pizza Napolitana  ← llegó último, sale último</span></pre>
+<span class="cm">// Salida (orden de llegada - FIFO):
+// ✅ Entregando FIFA 26 a: Carlos Pérez   ← llegó 1°, sale 1°
+// ✅ Entregando FIFA 26 a: Ana Torres
+// ✅ Entregando FIFA 26 a: Luis Rojas     ← llegó 3°, sale 3°</span>
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="queue-m">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Frutería La Cosecha</strong> — Sistema de tickets. Cada cliente toma un número y espera su turno en pantalla.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🛒 Supermercado</strong> — Sistema de tickets. Cada cliente toma un número al entrar y espera ser llamado en pantalla en orden de llegada.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Queue intermedio: sistema de tickets</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Frutería La Cosecha — sistema de atención con ticket numérico</span>
-<span class="cm">// Cada cliente recibe un número y espera ser llamado</span>
-
-<span class="cm">// Queue de tuplas: (número ticket, nombre, sección que visita)</span>
+          <div class="code-hdr"><span class="code-lang">C# — Queue intermedio: sistema de tickets Supermercado</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Queue de tuplas: agrupa varios datos por cliente
+// (int Ticket, string Nombre, string Seccion) es una TUPLA
+// Una tupla agrupa valores sin necesitar una clase separada</span>
 <span class="kw">var</span> cola = <span class="kw">new</span> <span class="ty">Queue</span>&lt;(<span class="ty">int</span> Ticket, <span class="ty">string</span> Nombre, <span class="ty">string</span> Seccion)&gt;();
-<span class="ty">int</span> proximoTicket = <span class="nm">1</span>; <span class="cm">// contador de tickets emitidos</span>
+<span class="ty">int</span> proximoTicket = <span class="nm">1</span>; <span class="cm">// contador auto-incremental de tickets</span>
 
-<span class="cm">// Simular llegada de 4 clientes</span>
+<span class="cm">// Llegan 4 clientes — cada uno recibe su ticket numerado</span>
 cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Ana López"</span>,   <span class="st">"Frutas"</span>));
-cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Juan Torres"</span>,  <span class="st">"Verduras"</span>));
-cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"María Silva"</span>,  <span class="st">"Frutas"</span>));
-cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Pedro Ruiz"</span>,   <span class="st">"Jugos"</span>));
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Juan Torres"</span>,  <span class="st">"Carnicería"</span>));
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"María Silva"</span>,  <span class="st">"Panadería"</span>));
+cola.<span class="fn">Enqueue</span>((proximoTicket++, <span class="st">"Pedro Ruiz"</span>,   <span class="st">"Lácteos"</span>));
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"=== FRUTERÍA LA COSECHA — SISTEMA DE ATENCIÓN ==="</span>);
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Clientes en espera: {cola.Count}\n"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╔════════════════════════════════╗"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"║   SUPERMERCADO — ATENCIÓN      ║"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"╚════════════════════════════════╝"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Clientes esperando: {cola.Count}
+"</span>);
 
-<span class="cm">// Atender uno a uno. Dequeue() siempre saca al que llegó antes (FIFO)</span>
+<span class="cm">// Atender uno a uno — Dequeue() siempre saca al que llegó antes</span>
 <span class="kw">while</span> (cola.Count > <span class="nm">0</span>)
 {
-    <span class="cm">// Deconstrucción de la tupla: asignamos cada campo a una variable</span>
+    <span class="cm">// Deconstrucción: asignamos cada campo de la tupla a su variable</span>
     <span class="kw">var</span> (ticket, nombre, seccion) = cola.<span class="fn">Dequeue</span>();
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"🔔 Ticket #{ticket:D3} — {nombre,-15} [{seccion}]"</span>);
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   Clientes restantes en cola: {cola.Count}"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"🔔 Ticket #{ticket:D3} — {nombre,-15} Sección: {seccion}"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   Restantes en cola: {cola.Count}"</span>);
 }
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"\n✅ Todos los clientes fueron atendidos."</span>);</pre>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+✅ Todos los clientes atendidos."</span>);
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="queue-p">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>GameZone</strong> — Matchmaking de torneos. Cuando hay 2 jugadores esperando, se forma una partida automáticamente.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🍕 Pizzería Don Corleone</strong> — Sistema completo de pedidos. Los pedidos llegan en orden y se procesan uno a uno. El cocinero siempre trabaja el pedido más antiguo primero.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Queue profesional: matchmaking de torneos</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// GameZone — Sistema de matchmaking para torneos
-// Los jugadores se inscriben en la cola y se emparejan de a 2 (FIFO)</span>
-
-<span class="kw">public class</span> <span class="ty">Matchmaking</span>
+          <div class="code-hdr"><span class="code-lang">C# — Queue profesional: sistema de pedidos Pizzería Don Corleone</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Sistema real de pedidos con clase de servicio
+// Encapsula la Queue dentro de una clase para organizar mejor el código</span>
+<span class="kw">public class</span> <span class="ty">SistemaPedidos</span>
 {
-    <span class="kw">private readonly</span> <span class="ty">Queue</span>&lt;<span class="ty">Jugador</span>&gt; _colaEspera = <span class="kw">new</span>();
-    <span class="kw">private int</span> _numeroPartida = <span class="nm">1</span>;
+    <span class="kw">private readonly</span> <span class="ty">Queue</span>&lt;<span class="ty">Pedido</span>&gt; _cola = <span class="kw">new</span>();
+    <span class="kw">private int</span> _numeroPedido = <span class="nm">1</span>;
 
-    <span class="cm">// Inscribir jugador: se pone al final de la cola de espera</span>
-    <span class="kw">public void</span> <span class="fn">Inscribir</span>(<span class="ty">Jugador</span> jugador)
+    <span class="cm">// Registrar pedido nuevo: llega al FINAL de la cola</span>
+    <span class="kw">public void</span> <span class="fn">RegistrarPedido</span>(<span class="ty">string</span> mesa, <span class="ty">string</span> pizza, <span class="ty">int</span> cantidad)
     {
-        _colaEspera.<span class="fn">Enqueue</span>(jugador);
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"[+] {jugador.Alias,-15} en espera. Cola: {_colaEspera.Count}"</span>);
-        <span class="fn">IntentarFormarPartida</span>();
+        <span class="kw">var</span> p = <span class="kw">new</span> <span class="ty">Pedido</span>(_numeroPedido++, mesa, pizza, cantidad);
+        _cola.<span class="fn">Enqueue</span>(p);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"📝 Pedido #{p.Id:D3} registrado — {mesa}: {cantidad}x {pizza}"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   Pedidos en cola: {_cola.Count}"</span>);
     }
 
-    <span class="cm">// Si hay 2 o más jugadores, formarlos en partidas de a pares</span>
-    <span class="kw">private void</span> <span class="fn">IntentarFormarPartida</span>()
+    <span class="cm">// Procesar el siguiente pedido (el más antiguo — FIFO)</span>
+    <span class="kw">public void</span> <span class="fn">ProcesarSiguiente</span>()
     {
-        <span class="kw">while</span> (_colaEspera.Count >= <span class="nm">2</span>)
-        {
-            <span class="cm">// Dequeue extrae siempre el que lleva MÁS tiempo esperando (FIFO)</span>
-            <span class="kw">var</span> j1 = _colaEspera.<span class="fn">Dequeue</span>(); <span class="cm">// el más antiguo en espera</span>
-            <span class="kw">var</span> j2 = _colaEspera.<span class="fn">Dequeue</span>(); <span class="cm">// el siguiente en espera</span>
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"\n🎮 PARTIDA #{_numeroPartida++:D3} FORMADA"</span>);
-            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   {j1.Alias} (ELO:{j1.Elo}) vs {j2.Alias} (ELO:{j2.Elo})"</span>);
-        }
+        <span class="kw">if</span> (_cola.Count == <span class="nm">0</span>)
+        { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"✅ No hay pedidos pendientes."</span>); <span class="kw">return</span>; }
+
+        <span class="kw">var</span> pedido = _cola.<span class="fn">Dequeue</span>(); <span class="cm">// extrae el más antiguo</span>
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"
+🍕 COCINANDO: #{pedido.Id:D3} {pedido.Mesa} — {pedido.Cantidad}x {pedido.Pizza}"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"   Pedidos pendientes: {_cola.Count}"</span>);
+    }
+
+    <span class="cm">// Ver el próximo pedido sin procesarlo</span>
+    <span class="kw">public void</span> <span class="fn">VerProximo</span>()
+    {
+        <span class="kw">if</span> (_cola.Count == <span class="nm">0</span>) { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"Cola vacía."</span>); <span class="kw">return</span>; }
+        <span class="kw">var</span> sig = _cola.<span class="fn">Peek</span>(); <span class="cm">// ver sin extraer</span>
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"⏳ Próximo a cocinar: #{sig.Id:D3} {sig.Mesa} — {sig.Pizza}"</span>);
     }
 }
 
-<span class="kw">record</span> <span class="ty">Jugador</span>(<span class="ty">string</span> Alias, <span class="ty">int</span> Elo);
+<span class="kw">record</span> <span class="ty">Pedido</span>(<span class="ty">int</span> Id, <span class="ty">string</span> Mesa, <span class="ty">string</span> Pizza, <span class="ty">int</span> Cantidad);
 
-<span class="cm">// USO del sistema de matchmaking</span>
-<span class="kw">var</span> mm = <span class="kw">new</span> <span class="ty">Matchmaking</span>();
-mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"ProGamer99"</span>, <span class="nm">1850</span>));
-mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"NightWolf"</span>,  <span class="nm">1720</span>)); <span class="cm">// ← 2 jugadores → partida #001</span>
-mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"QuickShot"</span>,  <span class="nm">1900</span>));
-mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty">Jugador</span>(<span class="st">"ShadowX"</span>,    <span class="nm">1810</span>)); <span class="cm">// ← 2 jugadores → partida #002</span></pre>
+<span class="cm">// USAR el sistema</span>
+<span class="kw">var</span> pizzeria = <span class="kw">new</span> <span class="ty">SistemaPedidos</span>();
+pizzeria.<span class="fn">RegistrarPedido</span>(<span class="st">"Mesa 1"</span>, <span class="st">"Margarita"</span>,  <span class="nm">2</span>);
+pizzeria.<span class="fn">RegistrarPedido</span>(<span class="st">"Delivery"</span>,<span class="st">"4 Quesos"</span>,   <span class="nm">1</span>);
+pizzeria.<span class="fn">RegistrarPedido</span>(<span class="st">"Mesa 3"</span>, <span class="st">"Napolitana"</span>, <span class="nm">3</span>);
+Console.WriteLine();
+pizzeria.<span class="fn">VerProximo</span>();       <span class="cm">// Mesa 1 (llegó primero)</span>
+pizzeria.<span class="fn">ProcesarSiguiente</span>(); <span class="cm">// cocina Mesa 1</span>
+pizzeria.<span class="fn">ProcesarSiguiente</span>(); <span class="cm">// cocina Delivery</span>
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
+      
       <div class="challenge">
         <div class="ch-header"><span class="ch-icon">⚡</span><span class="ch-title">Desafío — Queue</span><span class="ch-badge">+20 XP</span></div>
-        <div class="ch-desc">Frutería La Cosecha atiende 8 clientes seguidos. Simula la llegada de todos, luego atiente de a uno mostrando cuántos quedan en cola. Al final muestra cuántos atendiste.</div>
+        <div class="ch-desc">🛒 El Supermercado abre una nueva caja. Llegan 6 clientes en orden. Simula la llegada de todos con Enqueue(), luego atiéndelos uno a uno con Dequeue() mostrando cuántos quedan en cola.</div>
         <div class="ch-req"><ul><li>Usar <code>Queue&lt;string&gt;</code> con nombres ficticios</li><li>Usar <code>Enqueue()</code>, <code>Dequeue()</code>, <code>Count</code></li><li>Toda salida con interpolación <code>$"..."</code></li></ul></div>
       </div>
     </div>
@@ -1157,129 +1326,151 @@ mm.<span class="fn">Inscribir</span>(<span class="kw">new</span> <span class="ty
       </div>
 
       <div class="nivel-tabs">
-        <button class="nivel-tab basic on" onclick="switchNivel(this,'stack','b')">🟢 Básico — 🍕 Pizzería</button>
-        <button class="nivel-tab mid"       onclick="switchNivel(this,'stack','m')">🟡 Intermedio — 🍎 Frutería</button>
-        <button class="nivel-tab pro"       onclick="switchNivel(this,'stack','p')">🟣 Profesional — 🎮 GameZone</button>
+        <button class="nivel-tab basic on" onclick="switchNivel(this,'stack','b')">🟢 Básico — 🎮 Tienda Gamer</button>
+        <button class="nivel-tab mid"       onclick="switchNivel(this,'stack','m')">🟡 Intermedio — 🛒 Supermercado</button>
+        <button class="nivel-tab pro"       onclick="switchNivel(this,'stack','p')">🟣 Profesional — 🍕 Pizzería</button>
       </div>
 
       <div class="nivel-pane on" id="stack-b">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Pizzería Don Corleone</strong> — El cocinero apila las pizzas terminadas en la bandeja de despacho. El repartidor siempre lleva la que quedó encima.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🎮 Tienda Gamer</strong> — Historial de compras del cliente. El último juego comprado aparece primero (como el historial de un navegador web).</p>
+        <div class="box sg" style="margin-bottom:12px">
+          <div class="box-lbl">¿Qué es LIFO?</div>
+          <div class="box-body"><strong>Last In, First Out</strong> — Lo último que entró es lo primero que sale. Como una pila de platos: el que pusiste último encima es el primero que sacas. <code>Push()</code> = poner encima. <code>Pop()</code> = sacar el de arriba. <code>Peek()</code> = ver el de arriba sin sacarlo. El botón <strong>Ctrl+Z</strong> de cualquier programa usa un Stack internamente.</div>
+        </div>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Stack básico: pila de pizzas listas</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Stack&lt;T&gt; — Pizzería Don Corleone
-// Las pizzas se apilan conforme se terminan. El repartidor lleva la de arriba (LIFO).</span>
+          <div class="code-hdr"><span class="code-lang">C# — Stack básico: historial de compras Tienda Gamer</span><span class="code-level basic">Básico</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Stack&lt;T&gt; — El último que entró es el primero que sale (LIFO)
+// Contexto: historial de compras del cliente en la tienda gamer</span>
+<span class="kw">var</span> historialCompras = <span class="kw">new</span> <span class="ty">Stack</span>&lt;<span class="ty">string</span>&gt;();
 
-<span class="kw">var</span> pilaEntregas = <span class="kw">new</span> <span class="ty">Stack</span>&lt;<span class="ty">string</span>&gt;();
+<span class="cm">// Push(): agregar ENCIMA de la pila (igual que apilar platos)</span>
+historialCompras.<span class="fn">Push</span>(<span class="st">"FIFA 25"</span>);       <span class="cm">// comprado primero → queda abajo</span>
+historialCompras.<span class="fn">Push</span>(<span class="st">"Elden Ring"</span>);    <span class="cm">// comprado después → en el medio</span>
+historialCompras.<span class="fn">Push</span>(<span class="st">"Spider-Man 2"</span>);  <span class="cm">// comprado último → queda ARRIBA</span>
 
-<span class="cm">// Push(): el cocinero pone cada pizza ENCIMA de la pila</span>
-pilaEntregas.<span class="fn">Push</span>(<span class="st">"Pizza Margarita"</span>);   <span class="cm">// puesta primera → queda abajo</span>
-pilaEntregas.<span class="fn">Push</span>(<span class="st">"Pizza 4 Quesos"</span>);    <span class="cm">// puesta segunda → en el medio</span>
-pilaEntregas.<span class="fn">Push</span>(<span class="st">"Pizza Napolitana"</span>);  <span class="cm">// puesta última  → queda ARRIBA</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Juegos comprados: {historialCompras.Count}"</span>); <span class="cm">// 3</span>
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Pizzas listas: {pilaEntregas.Count}"</span>); <span class="cm">// 3</span>
+<span class="cm">// Peek(): ver el más reciente SIN sacarlo</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Última compra: {historialCompras.Peek()}"</span>); <span class="cm">// Spider-Man 2</span>
 
-<span class="cm">// Peek(): ¿cuál es la pizza de arriba? La vemos SIN sacarla</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Próxima entrega: {pilaEntregas.Peek()}"</span>); <span class="cm">// Napolitana</span>
-
-<span class="cm">// Pop(): el repartidor lleva la de arriba (la última en terminar)</span>
-<span class="kw">while</span> (pilaEntregas.Count > <span class="nm">0</span>)
+<span class="cm">// Pop(): sacar el de arriba — el más reciente sale primero (LIFO)</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+Historial (más reciente primero):"</span>);
+<span class="kw">while</span> (historialCompras.Count > <span class="nm">0</span>)
 {
-    <span class="ty">string</span> pizza = pilaEntregas.<span class="fn">Pop</span>(); <span class="cm">// saca SIEMPRE la que está arriba</span>
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"🍕 Entregando: {pizza}"</span>);
+    <span class="ty">string</span> juego = historialCompras.<span class="fn">Pop</span>(); <span class="cm">// saca el de ARRIBA</span>
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  🎮 {juego}"</span>);
 }
-<span class="cm">// Salida (orden INVERSO al de entrada — LIFO):
-// 🍕 Entregando: Pizza Napolitana  ← entró última, sale PRIMERA
-// 🍕 Entregando: Pizza 4 Quesos
-// 🍕 Entregando: Pizza Margarita   ← entró primera, sale ÚLTIMA</span></pre>
+<span class="cm">// Salida (LIFO — inverso al orden de compra):
+//   🎮 Spider-Man 2   ← comprado último, aparece PRIMERO
+//   🎮 Elden Ring
+//   🎮 FIFA 25        ← comprado primero, aparece ÚLTIMO</span>
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="stack-m">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>Frutería La Cosecha</strong> — Historial de cambios de precio. El cajero puede deshacer el último cambio (Ctrl+Z) para volver al precio anterior.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🛒 Supermercado</strong> — Historial de precios de un producto. El cajero puede deshacer el último cambio de precio (Ctrl+Z).</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Stack intermedio: deshacer cambios de precio</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// Frutería La Cosecha — historial de precios con Ctrl+Z
-// Cada cambio de precio se apila. Deshacer saca el último cambio (LIFO).</span>
+          <div class="code-hdr"><span class="code-lang">C# — Stack intermedio: deshacer cambios de precio Supermercado</span><span class="code-level mid">Intermedio</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Stack para implementar Ctrl+Z (deshacer)
+// Cada vez que cambia el precio, guardamos el anterior en la pila
+// Al deshacer, sacamos el último precio guardado (el más reciente)</span>
 
 <span class="kw">var</span> historialPrecios = <span class="kw">new</span> <span class="ty">Stack</span>&lt;(<span class="ty">string</span> Producto, <span class="ty">decimal</span> PrecioAnterior)&gt;();
-<span class="ty">decimal</span> precioActual = <span class="nm">990m</span>; <span class="cm">// precio inicial del kilo de manzana</span>
+<span class="ty">decimal</span> precioActual = <span class="nm">1190m</span>; <span class="cm">// precio inicial del Arroz 1kg</span>
 
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio inicial: ${precioActual:N0}/kg"</span>);
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio inicial: ${precioActual:N0}"</span>);
 
-<span class="cm">// Método que cambia el precio y GUARDA el anterior en el Stack</span>
+<span class="cm">// Método que cambia el precio y guarda el anterior en el Stack</span>
 <span class="kw">void</span> <span class="fn">CambiarPrecio</span>(<span class="ty">decimal</span> nuevoPrecio)
 {
-    historialPrecios.<span class="fn">Push</span>((<span class="st">"Manzana Fuji"</span>, precioActual)); <span class="cm">// guarda el anterior</span>
+    <span class="cm">// Push: apilar el precio actual ANTES de cambiarlo</span>
+    historialPrecios.<span class="fn">Push</span>((<span class="st">"Arroz 1kg"</span>, precioActual));
     precioActual = nuevoPrecio;
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"→ Precio cambiado a ${precioActual:N0}/kg"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"→ Precio cambiado a ${precioActual:N0}"</span>);
 }
 
-<span class="cm">// Método que deshace el ÚLTIMO cambio (el que está en el tope del Stack)</span>
+<span class="cm">// Método que deshace el último cambio (Ctrl+Z)</span>
 <span class="kw">void</span> <span class="fn">Deshacer</span>()
 {
     <span class="kw">if</span> (historialPrecios.Count == <span class="nm">0</span>)
     { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠ Sin cambios para deshacer."</span>); <span class="kw">return</span>; }
 
-    <span class="kw">var</span> (prod, anterior) = historialPrecios.<span class="fn">Pop</span>(); <span class="cm">// saca el último push</span>
+    <span class="cm">// Pop: sacar el último precio guardado (el más reciente)</span>
+    <span class="kw">var</span> (prod, anterior) = historialPrecios.<span class="fn">Pop</span>();
     precioActual = anterior;
-    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"↩ Deshecho — {prod} volvió a ${precioActual:N0}/kg"</span>);
+    <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"↩ Deshecho — {prod} volvió a ${precioActual:N0}"</span>);
 }
 
-<span class="fn">CambiarPrecio</span>(<span class="nm">1090m</span>); <span class="cm">// sube → Stack: [(Manzana,990)]</span>
-<span class="fn">CambiarPrecio</span>(<span class="nm">890m</span>);  <span class="cm">// baja → Stack: [(Manzana,990),(Manzana,1090)]</span>
-<span class="fn">CambiarPrecio</span>(<span class="nm">1200m</span>); <span class="cm">// sube → Stack: [(Manzana,990),(Manzana,1090),(Manzana,890)]</span>
-<span class="fn">Deshacer</span>();            <span class="cm">// vuelve a 890  ← saca el último (1200 era precio)</span>
-<span class="fn">Deshacer</span>();            <span class="cm">// vuelve a 1090 ← saca el siguiente</span>
-<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio final: ${precioActual:N0}/kg"</span>); <span class="cm">// 1090</span></pre>
+<span class="fn">CambiarPrecio</span>(<span class="nm">1390m</span>); <span class="cm">// sube   → Stack tiene 1 elemento</span>
+<span class="fn">CambiarPrecio</span>(<span class="nm">990m</span>);  <span class="cm">// baja   → Stack tiene 2 elementos</span>
+<span class="fn">CambiarPrecio</span>(<span class="nm">1500m</span>); <span class="cm">// sube   → Stack tiene 3 elementos</span>
+<span class="fn">Deshacer</span>();           <span class="cm">// vuelve a 990  ← saca el último (1500 era precio)</span>
+<span class="fn">Deshacer</span>();           <span class="cm">// vuelve a 1390 ← saca el siguiente</span>
+<span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Precio final: ${precioActual:N0}"</span>); <span class="cm">// 1390</span>
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
       <div class="nivel-pane" id="stack-p">
-        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>GameZone</strong> — Navegación entre pantallas de la app. El botón "Atrás" regresa a la pantalla anterior, igual que un navegador web.</p>
+        <p style="font-size:15px;color:var(--text3);margin-bottom:10px"><strong>🍕 Pizzería Don Corleone</strong> — Registro de acciones del cajero durante el turno. Permite deshacer cualquier acción cometida por error.</p>
         <div class="code-block">
-          <div class="code-hdr"><span class="code-lang">C# — Stack profesional: historial de navegación</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
-          <pre><span class="cm">// GameZone — Navegación entre pantallas con Stack&lt;T&gt;
-// Cada pantalla visitada se apila. "Atrás" desapila (LIFO).
-// Exactamente como funciona el botón ← de Chrome o Firefox.</span>
-
-<span class="kw">public class</span> <span class="ty">Navegador</span>
+          <div class="code-hdr"><span class="code-lang">C# — Stack profesional: registro de acciones Pizzería Don Corleone</span><span class="code-level pro">Profesional</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+          <pre><span class="cm">// Sistema de auditoría y deshacer para la caja de la pizzería
+// Registra cada acción del cajero y permite revertir la última</span>
+<span class="kw">public class</span> <span class="ty">RegistroAcciones</span>
 {
-    <span class="kw">private readonly</span> <span class="ty">Stack</span>&lt;<span class="ty">string</span>&gt; _historial = <span class="kw">new</span>();
-    <span class="kw">public string</span> PantallaActual { <span class="kw">get</span>; <span class="kw">private set</span>; } = <span class="st">"Inicio"</span>;
+    <span class="kw">private readonly</span> <span class="ty">Stack</span>&lt;<span class="ty">Accion</span>&gt; _historial = <span class="kw">new</span>();
 
-    <span class="cm">// Navegar: guardar la pantalla actual y moverse a la nueva</span>
-    <span class="kw">public void</span> <span class="fn">Ir</span>(<span class="ty">string</span> destino)
+    <span class="cm">// Registrar una acción — la apila en el tope del Stack</span>
+    <span class="kw">public void</span> <span class="fn">Registrar</span>(<span class="ty">string</span> tipo, <span class="ty">string</span> detalle, <span class="ty">decimal</span> monto)
     {
-        _historial.<span class="fn">Push</span>(PantallaActual); <span class="cm">// apilar la pantalla actual antes de salir</span>
-        PantallaActual = destino;
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"→ [{PantallaActual}]   (historial: {_historial.Count} pasos)"</span>);
+        <span class="kw">var</span> accion = <span class="kw">new</span> <span class="ty">Accion</span>(<span class="ty">DateTime</span>.Now, tipo, detalle, monto);
+        _historial.<span class="fn">Push</span>(accion);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"[{accion.Hora:HH:mm}] {tipo}: {detalle} ${monto:N0}"</span>);
     }
 
-    <span class="cm">// Atrás: sacar la pantalla anterior del tope del Stack</span>
-    <span class="kw">public void</span> <span class="fn">Atras</span>()
+    <span class="cm">// Deshacer la última acción (la del tope del Stack)</span>
+    <span class="kw">public void</span> <span class="fn">DeshacerUltima</span>()
     {
         <span class="kw">if</span> (_historial.Count == <span class="nm">0</span>)
-        { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠ Ya estás en el inicio — no hay atrás."</span>); <span class="kw">return</span>; }
-        PantallaActual = _historial.<span class="fn">Pop</span>(); <span class="cm">// recupera la última guardada</span>
-        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"← [{PantallaActual}]   (historial: {_historial.Count} pasos)"</span>);
+        { <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"⚠ Sin acciones para deshacer."</span>); <span class="kw">return</span>; }
+        <span class="kw">var</span> revertida = _historial.<span class="fn">Pop</span>(); <span class="cm">// sacar la más reciente</span>
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"↩ DESHECHO: {revertida.Tipo} — {revertida.Detalle}"</span>);
+    }
+
+    <span class="cm">// Ver el log completo sin destruir el Stack</span>
+    <span class="kw">public void</span> <span class="fn">MostrarLog</span>()
+    {
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">"
+=== REGISTRO DEL TURNO ==="</span>);
+        <span class="cm">// foreach NO destruye el Stack — solo lo recorre visualmente</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> a <span class="kw">in</span> _historial)
+            <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  [{a.Hora:HH:mm}] {a.Tipo,-15} {a.Detalle,-20} ${a.Monto:N0}"</span>);
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"  Total acciones: {_historial.Count}"</span>);
     }
 }
 
-<span class="cm">// USO</span>
-<span class="kw">var</span> nav = <span class="kw">new</span> <span class="ty">Navegador</span>();
-nav.<span class="fn">Ir</span>(<span class="st">"Catálogo"</span>);          <span class="cm">// → [Catálogo]</span>
-nav.<span class="fn">Ir</span>(<span class="st">"Detalle: FIFA 25"</span>); <span class="cm">// → [Detalle: FIFA 25]</span>
-nav.<span class="fn">Ir</span>(<span class="st">"Carrito"</span>);          <span class="cm">// → [Carrito]</span>
-nav.<span class="fn">Atras</span>();               <span class="cm">// ← [Detalle: FIFA 25]</span>
-nav.<span class="fn">Atras</span>();               <span class="cm">// ← [Catálogo]</span>
-nav.<span class="fn">Atras</span>();               <span class="cm">// ← [Inicio]</span>
-nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya estás en el inicio</span></pre>
+<span class="kw">record</span> <span class="ty">Accion</span>(<span class="ty">DateTime</span> Hora, <span class="ty">string</span> Tipo, <span class="ty">string</span> Detalle, <span class="ty">decimal</span> Monto);
+
+<span class="cm">// USAR el registro de acciones</span>
+<span class="kw">var</span> registro = <span class="kw">new</span> <span class="ty">RegistroAcciones</span>();
+registro.<span class="fn">Registrar</span>(<span class="st">"Venta"</span>,     <span class="st">"2x Margarita"</span>,   <span class="nm">17980m</span>);
+registro.<span class="fn">Registrar</span>(<span class="st">"Descuento"</span>, <span class="st">"10% estudiante"</span>, <span class="nm">1798m</span>);
+registro.<span class="fn">Registrar</span>(<span class="st">"Venta"</span>,     <span class="st">"1x Napolitana"</span>,  <span class="nm">9990m</span>);
+registro.<span class="fn">Registrar</span>(<span class="st">"Anulación"</span>, <span class="st">"Error de caja"</span>,  <span class="nm">9990m</span>); <span class="cm">// ← error!</span>
+registro.<span class="fn">MostrarLog</span>();
+registro.<span class="fn">DeshacerUltima</span>(); <span class="cm">// revertir la anulación</span>
+registro.<span class="fn">MostrarLog</span>();
+<span class="ty">Console</span>.<span class="fn">ReadKey</span>();</pre>
         </div>
       </div>
 
+      
       <div class="challenge">
         <div class="ch-header"><span class="ch-icon">⚡</span><span class="ch-title">Desafío — Stack</span><span class="ch-badge">+20 XP</span></div>
-        <div class="ch-desc">Implementa un historial de acciones para la caja de la Pizzería Don Corleone. El cajero puede registrar acciones (agregar ítem, quitar ítem, aplicar descuento) y deshacerlas con Ctrl+Z.</div>
+        <div class="ch-desc">🎮 La Tienda Gamer necesita un historial de navegación. El cliente visita pantallas (Inicio → Catálogo → Detalle → Carrito). Implementa el botón "Atrás" usando un Stack que guarda las pantallas visitadas.</div>
         <div class="ch-req"><ul><li>Usar <code>Stack&lt;string&gt;</code></li><li>Métodos <code>RegistrarAccion(string)</code> y <code>Deshacer()</code></li><li>Mostrar el contenido actual del Stack después de cada operación</li></ul></div>
       </div>
     </div>
@@ -1301,7 +1492,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
         <th style="padding:12px 16px;border:1px solid var(--border);text-align:left;color:var(--text)">Colección</th>
         <th style="padding:12px 16px;border:1px solid var(--border);text-align:left;color:var(--teal)">Cuándo usarla</th>
         <th style="padding:12px 16px;border:1px solid var(--border);text-align:left;color:var(--rose)">Cuándo NO usarla</th>
-        <th style="padding:12px 16px;border:1px solid var(--border);text-align:left;color:var(--amber)">En Almacenes Por Ahí</th>
+        <th style="padding:12px 16px;border:1px solid var(--border);text-align:left;color:var(--amber)">Ejemplo en los 3 contextos</th>
       </tr>
     </thead>
     <tbody>
@@ -1309,31 +1500,31 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
         <td style="padding:10px 16px;border:1px solid var(--border);font-weight:700;color:var(--text);background:var(--bg3)">Array <code>T[]</code></td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Tamaño fijo y conocido. Acceso por índice constante.</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Cantidad variable de elementos.</td>
-        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Las 12 sucursales, los 7 días de la semana.</td>
+        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">🎮 Los 5 géneros de la tienda gamer · Los 7 días de la semana · Las 3 plataformas (PS5/Xbox/PC).</td>
       </tr>
       <tr style="background:rgba(255,255,255,.02)">
         <td style="padding:10px 16px;border:1px solid var(--border);font-weight:700;color:var(--text);background:var(--bg3)">List&lt;T&gt;</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Lista dinámica de cualquier tamaño. El 90% de los casos.</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Búsqueda frecuente por clave (usa Dictionary).</td>
-        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Lista de productos, clientes, ventas del día.</td>
+        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">🛒 Lista de productos del supermercado · Carrito de compras · Pedidos del día.</td>
       </tr>
       <tr>
         <td style="padding:10px 16px;border:1px solid var(--border);font-weight:700;color:var(--text);background:var(--bg3)">Dictionary&lt;K,V&gt;</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Buscar por clave única en O(1). Claves no duplicadas.</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Datos sin clave natural o con duplicados.</td>
-        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Buscar producto por SKU, cliente por RUT.</td>
+        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">🍕 Precios por código de pizza · Contador de ventas por producto · Catálogo de juegos por SKU.</td>
       </tr>
       <tr style="background:rgba(255,255,255,.02)">
         <td style="padding:10px 16px;border:1px solid var(--border);font-weight:700;color:var(--text);background:var(--bg3)">Queue&lt;T&gt;</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Procesamiento en orden de llegada (FIFO).</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Cuando necesitas acceso aleatorio.</td>
-        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Cola de atención a clientes, pedidos pendientes.</td>
+        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">🛒 Fila de caja del supermercado · 🎮 Reservas de la tienda gamer · 🍕 Pedidos pendientes de la pizzería.</td>
       </tr>
       <tr>
         <td style="padding:10px 16px;border:1px solid var(--border);font-weight:700;color:var(--text);background:var(--bg3)">Stack&lt;T&gt;</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Historial, deshacer acciones, navegación (LIFO).</td>
         <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Procesamiento ordenado por llegada.</td>
-        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">Historial de transacciones, deshacer en UI.</td>
+        <td style="padding:10px 16px;border:1px solid var(--border);color:var(--text2);font-size:14px">🎮 Historial de compras de la tienda gamer · 🛒 Deshacer cambio de precio · 🍕 Registro de acciones de caja.</td>
       </tr>
     </tbody>
   </table>
@@ -1370,7 +1561,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
     <div class="box-body">
       <ul class="lst">
         <li>Actividad en <strong>parejas</strong>.</li>
-        <li>Analizar el problema del documento <strong>IEI-089_U1_02_Problema</strong> (mismo caso Almacenes Por Ahí).</li>
+        <li>Aplicar arreglos y colecciones usando cualquiera de los 3 contextos vistos: 🎮 Tienda Gamer · 🛒 Supermercado · 🍕 Pizzería Don Corleone.</li>
         <li>Tu docente indicará cuál de los <strong>10 requerimientos</strong> abordará tu pareja (excepto N°3).</li>
         <li>Usar los conceptos de arreglos y colecciones vistos en la clase de hoy.</li>
       </ul>
@@ -1417,7 +1608,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--sage);border-radius:var(--r);padding:14px 18px">
       <div style="font-size:11px;font-weight:700;color:var(--sage);margin-bottom:4px">PREGUNTA 2</div>
-      <div style="font-size:16px;color:var(--text)">¿En qué otros problemas de Almacenes Por Ahí aplicarías lo visto hoy?</div>
+      <div style="font-size:16px;color:var(--text)">¿En cuál de los 3 contextos (Tienda Gamer, Supermercado, Pizzería) usarías un Dictionary? ¿Por qué ahí y no una List?</div>
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:var(--r);padding:14px 18px">
       <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:4px">PREGUNTA 3</div>
@@ -1435,7 +1626,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
 
   <div id="quiz-container">
     <div class="quiz-card" id="q1">
-      <div class="qc-head"><div class="qc-num">PREGUNTA 1 de 4</div><div class="qc-q">En Almacenes Por Ahí, ¿qué colección usarías para almacenar la lista de productos del inventario si la cantidad varía dinámicamente?</div></div>
+      <div class="qc-head"><div class="qc-num">PREGUNTA 1 de 4</div><div class="qc-q">En la 🎮 Tienda Gamer, ¿qué colección usarías para guardar el catálogo de juegos si constantemente llegan nuevos títulos y se retiran otros?</div></div>
       <div class="qc-opts">
         <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ El array tiene tamaño fijo — si entran nuevos productos no puedes crecer.')">A) int[] (array de enteros)</button>
         <button class="qc-opt" onclick="answer(this,'q1','correct','✅ Correcto — List&lt;T&gt; es dinámica: crece y decrece según se agreguen o eliminen productos.')">B) List&lt;Producto&gt;</button>
@@ -1509,7 +1700,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
 
     <div class="gl-item" data-cat="bcl" data-terms="array arreglo indice length fijo">
       <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Array — Arreglo de tamaño fijo</span><span class="gi-cat bcl">BCL</span></div>
-      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Estructura de datos lineal con posiciones contiguas en memoria. Tamaño fijo en creación. Acceso O(1) por índice. Clase base <code>System.Array</code>.</p><p><strong style="color:var(--sage)">Uso:</strong> Cuando el número de elementos es conocido y fijo (12 sucursales, 7 días).</p><p><strong style="color:var(--amber)">Java:</strong> Idéntico — <code>int[] arr = new int[5]</code> es igual en ambos.</p></div>
+      <div class="gi-body"><p><strong style="color:var(--teal)">📐 Técnica:</strong> Estructura de datos lineal con posiciones contiguas en memoria. Tamaño fijo en creación. Acceso O(1) por índice. Clase base <code>System.Array</code>.</p><p><strong style="color:var(--sage)">Uso:</strong> Cuando el número de elementos es conocido y fijo: 5 géneros de juegos, 7 días de la semana, 3 plataformas.</p><p><strong style="color:var(--amber)">Java:</strong> Idéntico — <code>int[] arr = new int[5]</code> es igual en ambos.</p></div>
     </div>
 
     <div class="gl-item" data-cat="col" data-terms="list lista dinamica add remove find count">
@@ -1565,7 +1756,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
   <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Arrays unidimensionales y bidimensionales</div><div class="os-how">Tres niveles: básico (declaración/recorrido), intermedio (tabla stock por sucursal), profesional (informe ejecutivo con alertas).</div></div></div>
   <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">List&lt;T&gt; — colección dinámica</div><div class="os-how">Add, Remove, Find, FindAll, Sort, RemoveAll con lambdas. Nivel profesional: clase InventarioService.</div></div></div>
   <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Dictionary&lt;K,V&gt; — búsqueda por clave</div><div class="os-how">TryGetValue, ContainsKey, patrón contador. Nivel profesional: sistema PuntoDeVenta con lookup O(1).</div></div></div>
-  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Queue, Stack y tabla comparativa</div><div class="os-how">FIFO (cola de pedidos) y LIFO (historial de acciones). Tabla de decisión para elegir la colección correcta.</div></div></div>
+  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Queue, Stack y tabla comparativa</div><div class="os-how">Queue FIFO con 🎮 Tienda Gamer, 🛒 Supermercado y 🍕 Pizzería. Stack LIFO con los mismos 3 contextos. Tabla de decisión para elegir la colección correcta.</div></div></div>
   <div class="box tl" style="margin-top:18px">
     <div class="box-lbl">📅 Próxima clase — Semana 3</div>
     <div class="box-body"><strong>Actividad 1.3: Interfaces de Usuario con Windows Presentation Foundation (WPF)</strong> — Primer contacto con XAML, controles y eventos. <strong>Encargo 1 (10%)</strong> se evalúa en Semana 3.</div>
@@ -1578,7 +1769,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
 <div class="scroll-inner">
   <h2 class="s-title">🎙️ Plenario Metacognitivo</h2>
   <p class="s-sub">Reflexión de cierre. Solo preguntas — el debate es oral.</p>
-  <div class="plen-q"><div class="plen-n">PREGUNTA 1</div>Si tuvieras que almacenar el historial de ventas de las 12 sucursales de Almacenes Por Ahí, ¿qué colección elegirías y por qué?</div>
+  <div class="plen-q"><div class="plen-n">PREGUNTA 1</div>Si tuvieras que registrar el historial de pedidos de la 🍕 Pizzería Don Corleone durante un turno completo, ¿qué colección usarías y por qué?</div>
   <div class="plen-q"><div class="plen-n">PREGUNTA 2</div>¿Cuándo dejaría de ser conveniente usar un Dictionary? ¿Qué pasa si dos productos tienen el mismo nombre?</div>
   <div class="plen-q"><div class="plen-n">PREGUNTA 3</div>La interpolación <code>$"..."</code> que usaron hoy, ¿en qué parte del Encargo 1 la van a aplicar?</div>
   <div class="plen-q"><div class="plen-n">PREGUNTA 4</div>¿Qué diferencia hay entre un error de compilación y un error en tiempo de ejecución al trabajar con colecciones?</div>
@@ -1593,7 +1784,7 @@ nav.<span class="fn">Atras</span>();               <span class="cm">// ⚠ Ya es
   <div style="margin-top:32px;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--border);border-radius:13px">
     <div style="font-size:28px;margin-bottom:8px">🚀</div>
     <div style="font-family:'Lora',serif;font-size:18px;color:var(--text);margin-bottom:6px">¡Semana 2 completada!</div>
-    <div style="font-size:15px;color:var(--text2);max-width:500px;margin:0 auto">Arrays, listas, diccionarios, colas y pilas. Son las herramientas con las que construirás el inventario de Almacenes Por Ahí. La semana 3 arranca con las interfaces gráficas — WPF te espera.</div>
+    <div style="font-size:15px;color:var(--text2);max-width:500px;margin:0 auto">Arrays, listas, diccionarios, colas y pilas — aplicados en 🎮 Tienda Gamer, 🛒 Supermercado y 🍕 Pizzería. La semana 3 arranca con interfaces gráficas — WPF te espera.</div>
   </div>
 </div>
 </section>
