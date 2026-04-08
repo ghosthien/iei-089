@@ -27,11 +27,18 @@ body{font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.8;color:var(-
 /* ─── TOP BAR ────────────────────────────────────────────────── */
 #xp-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--bg3);z-index:1000}
 #xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sage),var(--teal),var(--plum));transition:width .6s ease}
-#xp-badge{position:fixed;top:10px;right:16px;z-index:1001;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:5px;box-shadow:0 2px 12px rgba(0,0,0,.5)}
+#xp-badge{flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:5px}
 #xp-badge::before{content:'⚡';font-size:12px}
 
 /* ─── STICKY NAV ─────────────────────────────────────────────── */
-.topnav{position:fixed;top:3px;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 16px}
+.topnav{position:fixed;top:3px;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-bottom:1px solid var(--border);z-index:200;display:flex;align-items:center;padding:0 14px;gap:10px}
+.nav-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-brand{display:flex;align-items:center;gap:5px;text-decoration:none}
+.nav-course{font-family:'Lora',serif;font-size:14px;font-weight:700;color:var(--teal)}
+.nav-sep{color:var(--text3);font-size:12px}
+.nav-wk{font-size:11px;font-weight:700;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:10px}
+.nav-title{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
+#xp-badge{flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--sage)}
 .topnav::-webkit-scrollbar{display:none}
 .nav-home{display:flex;align-items:center;gap:8px;padding:0 16px 0 4px;border-right:1px solid var(--border);margin-right:8px;flex-shrink:0;text-decoration:none}
 .nav-home-course{font-family:'Lora',serif;font-size:14px;font-weight:700;color:var(--teal);white-space:nowrap}
@@ -266,38 +273,109 @@ ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
 @media(max-width:480px){
   .mod-grid{grid-template-columns:1fr}
 }
+
+/* ─── HAMBURGER NAV ─── */
+.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:1px solid rgba(255,255,255,.14);border-radius:8px;cursor:pointer;padding:7px;flex-shrink:0;transition:background .18s}
+.hamburger:hover{background:rgba(91,173,190,.11)}
+.hamburger span{display:block;height:2px;background:var(--text2);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s}
+.menu-overlay.open{opacity:1;pointer-events:all}
+.menu-drawer{position:fixed;top:0;left:0;bottom:0;width:300px;background:var(--bg2);border-right:1px solid rgba(255,255,255,.14);z-index:500;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.menu-drawer.open{transform:translateX(0)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;background:var(--bg3)}
+.drawer-title{font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--text)}
+.drawer-close{background:none;border:1px solid rgba(255,255,255,.14);border-radius:6px;color:var(--text3);cursor:pointer;width:30px;height:30px;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.drawer-close:hover{background:rgba(196,123,123,.11);color:#c47b7b;border-color:#c47b7b}
+.drawer-week{padding:10px 18px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:rgba(91,173,190,.11);border-bottom:1px solid rgba(255,255,255,.07)}
+.drawer-nav{flex:1;padding:8px 0}
+.dnav-link{display:flex;align-items:center;gap:12px;padding:11px 18px;text-decoration:none;color:var(--text2);font-size:15px;font-weight:500;transition:all .18s;border-left:3px solid transparent}
+.dnav-link:hover{background:var(--bg3);color:var(--text);border-left-color:var(--teal)}
+.dnav-link.active{background:rgba(91,173,190,.11);color:var(--teal);border-left-color:var(--teal)}
+.dnav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.drawer-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.drawer-portal{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--text3);text-decoration:none;transition:color .18s}
+.drawer-portal:hover{color:var(--teal)}
 </style>
 </head>
 <body>
 
 <div id="xp-bar"><div id="xp-fill"></div></div>
-<div id="xp-badge">0 XP</div>
-
 <!-- STICKY NAV -->
 <nav class="topnav" id="topnav">
-  <a class="nav-home" href="../index.html">
-    <span class="nav-home-course">IEI-089</span>
-    <span class="nav-home-week">· S01</span>
-  </a>
-  <a href="#sec-hero" class="nlink" data-sec="hero"><span class="nicon">🏠</span>Inicio</a>
-<a href="#sec-obj" class="nlink" data-sec="obj"><span class="nicon">🎯</span>Objetivos</a>
-<a href="#sec-herr" class="nlink" data-sec="herr"><span class="nicon">🛠️</span>Visual Studio</a>
-<a href="#sec-caso" class="nlink" data-sec="caso"><span class="nicon">🏬</span>Almacenes</a>
-<a href="#sec-modulos" class="nlink" data-sec="modulos"><span class="nicon">📦</span>Módulos</a>
-<a href="#sec-act11" class="nlink" data-sec="act11"><span class="nicon">✏️</span>Actividad 1.1</a>
-<a href="#sec-arq" class="nlink" data-sec="arq"><span class="nicon">🏗️</span>Arquitectura</a>
-<a href="#sec-pil" class="nlink" data-sec="pil"><span class="nicon">⚙️</span>7 Pilares</a>
-<a href="#sec-clr" class="nlink" data-sec="clr"><span class="nicon">🔧</span>CLR</a>
-<a href="#sec-cil" class="nlink" data-sec="cil"><span class="nicon">🔄</span>CIL</a>
-<a href="#sec-res" class="nlink" data-sec="res"><span class="nicon">🔑</span>Palabras Clave</a>
-<a href="#sec-cls" class="nlink" data-sec="cls"><span class="nicon">🧱</span>Clases</a>
-<a href="#sec-est" class="nlink" data-sec="est"><span class="nicon">📁</span>Estructura</a>
-<a href="#sec-prac" class="nlink" data-sec="prac"><span class="nicon">💻</span>Práctica</a>
-<a href="#sec-quiz" class="nlink" data-sec="quiz"><span class="nicon">🧠</span>Quiz</a>
-<a href="#sec-glos" class="nlink" data-sec="glos"><span class="nicon">📖</span>Glosario</a>
-<a href="#sec-sum" class="nlink" data-sec="sum"><span class="nicon">✅</span>Resumen</a>
-<a href="#sec-plen" class="nlink" data-sec="plen"><span class="nicon">🎙️</span>Plenario</a>
+  <div class="nav-left">
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Índice">
+      <span></span><span></span><span></span>
+    </button>
+    <a class="nav-brand" href="../index.html">
+      <span class="nav-course">IEI-089</span>
+      <span class="nav-sep">·</span>
+      <span class="nav-wk">S01</span>
+    </a>
+  </div>
+  <div class="nav-title">Arquitectura .NET · Primer Programa</div>
+  <div id="xp-badge">0 XP</div>
 </nav>
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<!-- DRAWER -->
+<aside class="menu-drawer" id="menuDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">📋 Índice de la clase</div>
+    <button class="drawer-close" onclick="closeMenu()">✕</button>
+  </div>
+  <div class="drawer-week">Semana 1 · CLR · C# · Primer programa</div>
+  <nav class="drawer-nav">
+    <a href="#sec-hero" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏠</span><span>Inicio</span></a>
+    <a href="#sec-obj" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎯</span><span>Objetivos</span></a>
+    <a href="#sec-tool" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🛠️</span><span>Visual Studio</span></a>
+    <a href="#sec-almacenes" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏬</span><span>Almacenes Por Ahí</span></a>
+    <a href="#sec-arch" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏗️</span><span>Arquitectura .NET</span></a>
+    <a href="#sec-clr" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">⚙️</span><span>CLR</span></a>
+    <a href="#sec-cil" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔤</span><span>CIL y JIT</span></a>
+    <a href="#sec-res" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔑</span><span>Palabras reservadas</span></a>
+    <a href="#sec-cls" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧱</span><span>Clases y POO</span></a>
+    <a href="#sec-prac" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">💻</span><span>Primer Programa C#</span></a>
+    <a href="#sec-quiz" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧠</span><span>Quiz</span></a>
+    <a href="#sec-glos" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📖</span><span>Glosario</span></a>
+    <a href="#sec-sum" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">✅</span><span>Resumen</span></a>
+    <a href="#sec-plen" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎙️</span><span>Plenario</span></a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="../index.html" class="drawer-portal">← Volver al portal</a>
+  </div>
+</aside>
+
+<!-- OVERLAY -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+<!-- DRAWER -->
+<aside class="menu-drawer" id="menuDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">📋 Índice de la clase</div>
+    <button class="drawer-close" onclick="closeMenu()">✕</button>
+  </div>
+  <div class="drawer-week">Semana 1 · CLR · C# · Primer programa</div>
+  <nav class="drawer-nav">
+    <a href="#sec-hero" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏠</span><span>Inicio</span></a>
+    <a href="#sec-obj" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎯</span><span>Objetivos</span></a>
+    <a href="#sec-tool" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🛠️</span><span>Herramienta Visual Studio</span></a>
+    <a href="#sec-almacenes" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏬</span><span>Almacenes Por Ahí</span></a>
+    <a href="#sec-arch" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏗️</span><span>Arquitectura .NET</span></a>
+    <a href="#sec-clr" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">⚙️</span><span>CLR — Motor de ejecución</span></a>
+    <a href="#sec-cil" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔤</span><span>CIL y compilación JIT</span></a>
+    <a href="#sec-res" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔑</span><span>Palabras reservadas C#</span></a>
+    <a href="#sec-cls" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧱</span><span>Clases y POO</span></a>
+    <a href="#sec-prac" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">💻</span><span>Primer Programa C#</span></a>
+    <a href="#sec-quiz" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧠</span><span>Quiz</span></a>
+    <a href="#sec-glos" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📖</span><span>Glosario</span></a>
+    <a href="#sec-sum" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">✅</span><span>Resumen de objetivos</span></a>
+    <a href="#sec-plen" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎙️</span><span>Plenario</span></a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="../index.html" class="drawer-portal">← Volver al portal IEI-089</a>
+  </div>
+</aside>
 
 <main>
 
@@ -531,7 +609,14 @@ ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
       card.style.borderRadius='var(--r) var(--r) 0 0';
     }
   }
-  </script>
+  
+const _secs2=[...document.querySelectorAll('.scroll-sec')];
+const _dlinks=[...document.querySelectorAll('.dnav-link')];
+if(_secs2.length>0){
+  const _io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){_dlinks.forEach(l=>l.classList.remove('active'));const al=document.querySelector('.dnav-link[href="#'+e.target.id+'"]');if(al)al.classList.add('active');}});},{rootMargin:'-20% 0px -70% 0px'});
+  _secs2.forEach(s=>_io.observe(s));
+}
+</script>
 
   </div>
 </section>
@@ -1966,8 +2051,8 @@ srv.<span class="fn">Agregar</span>(<span class="kw">new</span> <span class="ty"
 
 <span class="cm">// ─── USANDO LA CLASE ─────────────────────────────────────
 // 'new Persona(...)' llama al constructor y crea un objeto en memoria</span>
-<span class="ty">Persona</span> persona1 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Ana López"</span>, <span class="nm">25</span>, <span class="st">"ana@mail.com"</span>);
-<span class="ty">Persona</span> persona2 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Juan Pérez"</span>, <span class="nm">17</span>, <span class="st">"juan@mail.com"</span>);
+<span class="ty">Persona</span> persona1 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Ana López"</span>, <span class="nm">25</span>, <span class="st">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1b7a757a5b767a727735787476">[email&#160;protected]</a>"</span>);
+<span class="ty">Persona</span> persona2 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Juan Pérez"</span>, <span class="nm">17</span>, <span class="st">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="523827333c123f333b3e7c313d3f">[email&#160;protected]</a>"</span>);
 
 <span class="cm">// Acceder a propiedades con el punto (.)</span>
 <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Nombre: {persona1.Nombre}"</span>);   <span class="cm">// Ana López</span>
@@ -2353,7 +2438,7 @@ nuevo.Talla = talla;
   Albahari (2022) · Troelsen &amp; Japikse (2022) · Microsoft Learn (2024)
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 let xp=0,qCorr=0,qAns=0;
 const seen=new Set();
 
@@ -2475,15 +2560,4 @@ function semSel(btn,c){
   document.querySelectorAll('.sem-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
   const msgs={ve:'✅ Listo para Semana 2 — Colecciones en C#.',am:'🟡 Repasa el glosario y el ciclo del CIL.',ro:'🔴 Habla con el docente antes de la próxima clase.'};
   const r=document.getElementById('sem-res');
-  r.style.cssText='display:block;margin-top:12px;padding:12px 16px;border-radius:var(--r);font-size:14.5px;background:var(--bg3);color:var(--text2)';
-  r.textContent=msgs[c];
-}
-
-/* COPY CODE */
-function copyCode(btn){
-  const pre=btn.closest('.code-block').querySelector('pre');
-  navigator.clipboard.writeText(pre.innerText).then(()=>{btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent='Copiar',1800);addXP(3)});
-}
-</script>
-</body>
-</html>
+  r.style.cssText='display:block;margin-top:12px;padding:12px 16px;border-radius:var(--r);font-size:14.5px;backg
