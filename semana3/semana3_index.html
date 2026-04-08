@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IEI-089 · Semana 3 — Windows Forms</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ─── VARIABLES ─── */
+:root{
+  --bg:#1a1c1e;--bg2:#22252a;--bg3:#2a2d33;--bg4:#31353d;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --text:#e8e4dc;--text2:#b3aea2;--text3:#6a6560;
+  --sage:#6aaa8a;--sage-bg:rgba(106,170,138,.11);
+  --teal:#5badbe;--teal-bg:rgba(91,173,190,.11);
+  --amber:#d4944a;--amber-bg:rgba(212,148,74,.11);
+  --rose:#c47b7b;--rose-bg:rgba(196,123,123,.11);
+  --plum:#9b7ec8;--plum-bg:rgba(155,126,200,.11);
+  --sky:#5b9bd4;--sky-bg:rgba(91,155,212,.11);
+  --code-bg:#0f1117;--r:10px;
+  --nav-h:56px;--drawer-w:300px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.8;color:var(--text);background:var(--bg);min-height:100vh}
+::selection{background:var(--teal);color:#fff}
+
+/* ─── XP BAR ─── */
+#xp-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--bg3);z-index:300}
+#xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sage),var(--teal),var(--plum));transition:width .6s}
+
+/* ─── TOP NAV ─── */
+.topnav{
+  position:fixed;top:3px;left:0;right:0;height:var(--nav-h);
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  z-index:200;display:flex;align-items:center;padding:0 16px;gap:14px;
+}
+.nav-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hamburger{
+  display:flex;flex-direction:column;justify-content:center;gap:5px;
+  width:36px;height:36px;background:none;border:1px solid var(--border2);
+  border-radius:8px;cursor:pointer;padding:7px;flex-shrink:0;transition:background .18s;
+}
+.hamburger:hover{background:var(--teal-bg)}
+.hamburger span{display:block;height:2px;background:var(--text2);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nav-brand{display:flex;align-items:center;gap:6px;text-decoration:none}
+.nav-course{font-family:'Lora',serif;font-size:15px;font-weight:700;color:var(--teal)}
+.nav-sep{color:var(--text3);font-size:13px}
+.nav-week{font-size:12px;font-weight:700;color:var(--text3);background:var(--bg3);padding:2px 8px;border-radius:12px}
+.nav-title-center{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#xp-badge{flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 13px;font-size:13px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:5px}
+#xp-badge::before{content:'⚡';font-size:12px}
+
+/* ─── DRAWER ─── */
+.menu-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.menu-overlay.open{opacity:1;pointer-events:all}
+.menu-drawer{
+  position:fixed;top:0;left:0;bottom:0;width:var(--drawer-w);
+  background:var(--bg2);border-right:1px solid var(--border2);
+  z-index:500;display:flex;flex-direction:column;
+  transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+}
+.menu-drawer.open{transform:translateX(0)}
+.drawer-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px;border-bottom:1px solid var(--border);flex-shrink:0;
+  background:var(--bg3);
+}
+.drawer-title{font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--text)}
+.drawer-close{background:none;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;width:30px;height:30px;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.drawer-close:hover{background:var(--rose-bg);color:var(--rose);border-color:var(--rose)}
+.drawer-week{padding:10px 18px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:var(--teal-bg);border-bottom:1px solid var(--border)}
+.drawer-nav{flex:1;padding:8px 0}
+.dnav-link{
+  display:flex;align-items:center;gap:12px;padding:11px 18px;
+  text-decoration:none;color:var(--text2);font-size:15px;font-weight:500;
+  transition:all .18s;border-left:3px solid transparent;
+}
+.dnav-link:hover{background:var(--bg3);color:var(--text);border-left-color:var(--teal)}
+.dnav-link.active{background:var(--teal-bg);color:var(--teal);border-left-color:var(--teal)}
+.dnav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.drawer-footer{padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0}
+.drawer-portal{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--text3);text-decoration:none;transition:color .18s}
+.drawer-portal:hover{color:var(--teal)}
+
+/* ─── SCROLL SECTIONS ─── */
+.scroll-sec{padding-top:calc(var(--nav-h) + 3px);scroll-margin-top:calc(var(--nav-h) + 3px)}
+.scroll-inner{max-width:900px;margin:0 auto;padding:52px 40px 72px}
+.scroll-sec+.scroll-sec{border-top:1px solid var(--border)}
+
+/* ─── TYPOGRAPHY ─── */
+.s-title{font-family:'Lora',serif;font-size:clamp(26px,3.5vw,40px);font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.2}
+.s-sub{font-size:18px;color:var(--text2);margin-bottom:28px;line-height:1.65}
+.sec-title{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--text);margin:32px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:9px}
+p{margin-bottom:10px;color:var(--text2);font-size:17px;line-height:1.75}
+strong{color:var(--text)}
+
+/* ─── BOXES ─── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:22px}
+.box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.box.tl{border-left:4px solid var(--teal)}.box.sg{border-left:4px solid var(--sage)}
+.box.am{border-left:4px solid var(--amber)}.box.ro{border-left:4px solid var(--rose)}
+.box.pl{border-left:4px solid var(--plum)}.box.sk{border-left:4px solid var(--sky)}
+.box-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
+.box.tl .box-lbl{color:var(--teal)}.box.sg .box-lbl{color:var(--sage)}
+.box.am .box-lbl{color:var(--amber)}.box.ro .box-lbl{color:var(--rose)}
+.box.pl .box-lbl{color:var(--plum)}.box.sk .box-lbl{color:var(--sky)}
+.box-body{font-size:15.5px;color:var(--text2);line-height:1.65}
+
+/* ─── STEPS ─── */
+.steps{display:flex;flex-direction:column;gap:16px;margin-bottom:26px}
+.step{display:flex;gap:16px;align-items:flex-start}
+.step-n{width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-n.am{background:var(--amber)}.step-n.sg{background:var(--sage)}.step-n.pl{background:var(--plum)}
+.step-b .step-t{font-size:17px;font-weight:700;color:var(--text);margin-bottom:4px}
+.step-b .step-d{font-size:16px;color:var(--text2);line-height:1.65}
+
+/* ─── CODE ─── */
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);margin:14px 0;overflow:hidden}
+.code-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.code-lang{font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--text3)}
+.code-badge{font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px}
+.badge-paso{background:var(--teal-bg);color:var(--teal)}
+.badge-warn{background:var(--amber-bg);color:var(--amber)}
+.badge-tip{background:var(--sage-bg);color:var(--sage)}
+.copy-btn{font-size:12px;font-weight:600;color:var(--teal);background:none;border:none;cursor:pointer;padding:3px 8px;border-radius:4px;transition:background .18s}
+.copy-btn:hover{background:var(--teal-bg)}
+pre{padding:18px 22px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.85}
+.cm{color:#3d5040;font-style:italic}.kw{color:#5badbe}.ty{color:#d4944a}
+.st{color:#6aaa8a}.nm{color:#c47b7b}.fn{color:#9b7ec8}.pp{color:#e8b86d}
+
+/* ─── CONTROL CARDS ─── */
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:22px}
+.ctrl-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:all .2s}
+.ctrl-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.ctrl-icon{font-size:26px;margin-bottom:8px}
+.ctrl-name{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--teal);margin-bottom:4px}
+.ctrl-desc{font-size:13.5px;color:var(--text2);line-height:1.5;margin-bottom:8px}
+.ctrl-where{font-size:11.5px;color:var(--text3);font-style:italic}
+
+/* ─── MANUAL STEPS ─── */
+.manual-step{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:20px;overflow:hidden}
+.ms-header{display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.ms-num{width:36px;height:36px;border-radius:50%;background:var(--amber);color:#fff;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ms-title{font-family:'Lora',serif;font-size:18px;font-weight:700;color:var(--text);flex:1}
+.ms-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;background:var(--amber-bg);color:var(--amber);white-space:nowrap}
+.ms-body{padding:20px}
+.ms-body p{font-size:16px;margin-bottom:10px}
+.ms-tip{background:var(--sage-bg);border:1px solid rgba(106,170,138,.3);border-left:4px solid var(--sage);border-radius:var(--r);padding:12px 16px;margin:12px 0;font-size:15px;color:var(--text2)}
+.ms-tip::before{content:'💡 ';font-style:normal}
+.ms-warn{background:var(--amber-bg);border:1px solid rgba(212,148,74,.3);border-left:4px solid var(--amber);border-radius:var(--r);padding:12px 16px;margin:12px 0;font-size:15px;color:var(--text2)}
+.ms-warn::before{content:'⚠️ ';font-style:normal}
+.ms-vs{background:var(--teal-bg);border:1px solid rgba(91,173,190,.3);border-left:4px solid var(--teal);border-radius:var(--r);padding:12px 16px;margin:12px 0;font-size:15px;color:var(--text2)}
+.ms-vs::before{content:'🖥️ Visual Studio: ';font-weight:700;color:var(--teal)}
+
+/* ─── OBJECTIVES ─── */
+.obj-list{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.obj{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;cursor:pointer;transition:all .18s}
+.obj:hover{border-color:var(--border2)}
+.obj.done{border-color:rgba(106,170,138,.32);background:var(--sage-bg)}
+.obj-chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:all .18s;background:var(--bg3)}
+.obj.done .obj-chk{background:var(--sage);border-color:var(--sage);color:#fff}
+.obj-txt{font-size:16.5px;color:var(--text2);flex:1}
+.obj.done .obj-txt{color:var(--text)}
+.obj-xp{font-size:12px;font-weight:700;color:var(--sage)}
+.four-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px}
+.fc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.fc .fci{font-size:22px;margin-bottom:8px}
+.fc .fct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.fc .fch{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.fc .fcb{font-size:14.5px;color:var(--text2);line-height:1.5}
+.fc.k{border-top:3px solid var(--teal)}.fc.k .fct{color:var(--teal)}
+.fc.s{border-top:3px solid var(--sage)}.fc.s .fct{color:var(--sage)}
+.fc.a{border-top:3px solid var(--amber)}.fc.a .fct{color:var(--amber)}
+.fc.e{border-top:3px solid var(--plum)}.fc.e .fct{color:var(--plum)}
+
+/* ─── QUIZ ─── */
+.quiz-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
+.qc-head{padding:18px 22px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.qc-num{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px}
+.qc-q{font-size:17px;font-weight:600;color:var(--text)}
+.qc-opts{padding:16px 22px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.qc-opt{padding:11px 15px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:15px;color:var(--text2);transition:all .18s;text-align:left;background:none}
+.qc-opt:hover{border-color:var(--border2);background:var(--bg3);color:var(--text)}
+.qc-opt.correct{background:var(--sage-bg);border-color:var(--sage);color:var(--sage)}
+.qc-opt.wrong{background:var(--rose-bg);border-color:var(--rose);color:var(--rose)}
+.qc-fb{padding:0 22px 16px;font-size:13.5px;display:none}
+
+/* ─── GLOSSARY ─── */
+.gl-search{width:100%;padding:11px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;margin-bottom:16px;outline:none;transition:border-color .18s}
+.gl-search:focus{border-color:var(--teal)}
+.gl-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.gf{padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;color:var(--text2);background:none}
+.gf.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.gl-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);margin-bottom:9px;overflow:hidden}
+.gi-head{padding:13px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .18s}
+.gi-head:hover{background:var(--bg3)}
+.gi-term{font-size:16px;font-weight:700;color:var(--text)}
+.gi-cat{font-size:11px;font-weight:600;padding:2px 9px;border-radius:12px}
+.gi-cat.wf{background:var(--sky-bg);color:var(--sky)}.gi-cat.cs{background:var(--teal-bg);color:var(--teal)}
+.gi-cat.vs{background:var(--sage-bg);color:var(--sage)}.gi-cat.prev{background:var(--rose-bg);color:var(--rose)}
+.gi-body{display:none;padding:16px 18px;border-top:1px solid var(--border);font-size:15px;color:var(--text2)}
+.gi-body.op{display:block;animation:fi .2s ease}
+
+/* ─── MISC ─── */
+.kb{display:inline-block;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--amber);border-bottom:2px solid var(--border2)}
+ul.lst{padding-left:18px;margin-bottom:10px}
+ul.lst li{color:var(--text2);font-size:15.5px;margin-bottom:6px}
+.plen-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 22px;margin-bottom:12px;font-size:18px;font-weight:500;color:var(--text);font-family:'Lora',serif;border-left:4px solid var(--amber)}
+.plen-n{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:5px}
+.sem{display:flex;gap:12px;margin-top:16px}
+.sem-btn{flex:1;padding:15px;border-radius:var(--r);border:2px solid transparent;cursor:pointer;font-weight:700;font-size:15.5px;transition:all .18s;background:var(--bg3);color:var(--text)}
+.sem-btn.ve{border-color:var(--sage)}.sem-btn.ve:hover,.sem-btn.ve.on{background:var(--sage-bg);color:var(--sage)}
+.sem-btn.am{border-color:var(--amber)}.sem-btn.am:hover,.sem-btn.am.on{background:var(--amber-bg);color:var(--amber)}
+.sem-btn.ro{border-color:var(--rose)}.sem-btn.ro:hover,.sem-btn.ro.on{background:var(--rose-bg);color:var(--rose)}
+.os-item{display:flex;gap:12px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:10px}
+.os-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:2px;background:var(--sage);color:#fff}
+.os-obj{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px}
+.os-how{font-size:13.5px;color:var(--text2)}
+.encargo-box{background:var(--amber-bg);border:2px solid rgba(212,148,74,.4);border-radius:12px;padding:24px;margin-bottom:20px}
+.site-footer{border-top:1px solid var(--border);padding:28px 40px;text-align:center;font-size:13.5px;color:var(--text3);margin-top:40px}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:780px){
+  .scroll-inner{padding:36px 18px 56px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .controls-grid{grid-template-columns:1fr 1fr}
+  .qc-opts{grid-template-columns:1fr}
+  .sem{flex-direction:column}
+  .nav-title-center{display:none}
+  pre{font-size:12px}
+}
+@media(max-width:480px){
+  .controls-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="xp-bar"><div id="xp-fill"></div></div>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <div class="nav-left">
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú de navegación">
+      <span></span><span></span><span></span>
+    </button>
+    <a class="nav-brand" href="../index.html">
+      <span class="nav-course">IEI-089</span>
+      <span class="nav-sep">·</span>
+      <span class="nav-week">S03</span>
+    </a>
+  </div>
+  <div class="nav-title-center">Windows Forms — Interfaces de Usuario</div>
+  <div id="xp-badge">0 XP</div>
+</nav>
+
+<!-- OVERLAY -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+<!-- DRAWER -->
+<aside class="menu-drawer" id="menuDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">📋 Índice de la clase</div>
+    <button class="drawer-close" onclick="closeMenu()">✕</button>
+  </div>
+  <div class="drawer-week">Semana 3 · Windows Forms</div>
+  <nav class="drawer-nav">
+    <a href="#sec-hero"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏠</span><span>Inicio</span></a>
+    <a href="#sec-obj"      class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎯</span><span>Objetivos</span></a>
+    <a href="#sec-que"      class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🪟</span><span>¿Qué es Windows Forms?</span></a>
+    <a href="#sec-proyecto" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🛠️</span><span>Crear Proyecto WinForms</span></a>
+    <a href="#sec-controles" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧩</span><span>Controles Esenciales</span></a>
+    <a href="#sec-eventos"  class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">⚡</span><span>Eventos y Click</span></a>
+    <a href="#sec-form"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📋</span><span>Formulario Completo</span></a>
+    <a href="#sec-nav"      class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔀</span><span>Navegación entre Forms</span></a>
+    <a href="#sec-manual"   class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📖</span><span>Manual paso a paso</span></a>
+    <a href="#sec-encargo"  class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📝</span><span>Encargo 1 (10%)</span></a>
+    <a href="#sec-quiz"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧠</span><span>Quiz</span></a>
+    <a href="#sec-glos"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📖</span><span>Glosario</span></a>
+    <a href="#sec-sum"      class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">✅</span><span>Resumen</span></a>
+    <a href="#sec-plen"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎙️</span><span>Plenario</span></a>
+  </nav>
+  <div class="drawer-footer">
+    <a href="../index.html" class="drawer-portal">← Volver al portal IEI-089</a>
+  </div>
+</aside>
+
+<main>
+
+<!-- ═══ HERO ═══ -->
+<section id="sec-hero" class="scroll-sec">
+<div class="scroll-inner">
+  <div style="margin-bottom:6px"><span style="font-size:13px;font-weight:700;color:var(--sky);letter-spacing:.08em;text-transform:uppercase">Semana 3 · Unidad I · Act. 1.3 — WinForms</span></div>
+  <h1 class="s-title">🪟 Interfaces de Usuario con Windows Forms</h1>
+  <p class="s-sub">Pasamos de la consola de texto a una <strong>aplicación con ventanas reales</strong>. Windows Forms es el framework de interfaz gráfica de .NET para escritorio Windows — la misma tecnología usada en aplicaciones empresariales.</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px">
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:7px;padding:7px 14px;font-size:13.5px;font-weight:600">⏱️ 4 horas pedagógicas</div>
+    <div style="background:var(--sky-bg);border:1px solid rgba(91,155,212,.22);border-radius:7px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--sky)">🪟 Windows Forms (.NET 8)</div>
+    <div style="background:var(--amber-bg);border:1px solid rgba(212,148,74,.22);border-radius:7px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--amber)">📝 Encargo 1 (10%) — se evalúa esta semana</div>
+    <div style="background:var(--sage-bg);border:1px solid rgba(106,170,138,.22);border-radius:7px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--sage)">👤 Individual</div>
+  </div>
+
+  <div class="grid2">
+    <div class="box sk">
+      <div class="box-lbl">¿Qué haremos hoy?</div>
+      <div class="box-body">Crear la primera ventana gráfica del proyecto <strong>Almacenes Por Ahí</strong>. Aprenderás a colocar botones, campos de texto y tablas en una ventana real, y a conectarlos con el código C# que ya escribiste.</div>
+    </div>
+    <div class="box am">
+      <div class="box-lbl">⚠️ Windows Forms, no WPF</div>
+      <div class="box-body">La planificación oficial de IEI-089 indica <strong>Windows Forms</strong>, no WPF. Son distintos: WinForms construye la UI por código o con el diseñador visual arrastrar-y-soltar. WPF usa XAML. Esta asignatura usa <strong>WinForms</strong>.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ OBJETIVOS ═══ -->
+<section id="sec-obj" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🎯 Objetivos de la Clase</h2>
+  <p class="s-sub">Marca cada objetivo a medida que lo logres durante la clase.</p>
+  <div class="obj-list">
+    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Crear un proyecto Windows Forms en Visual Studio (.NET 8) con <code>UseWindowsForms=true</code>.</div><div class="obj-xp">+5 XP</div></div>
+    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Usar controles básicos: Label, TextBox, Button, DataGridView y ComboBox en un formulario.</div><div class="obj-xp">+5 XP</div></div>
+    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Conectar el evento Click de un botón con un método C# que valida y procesa datos.</div><div class="obj-xp">+5 XP</div></div>
+    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Reutilizar los servicios (ProductoService) de la consola en la interfaz gráfica.</div><div class="obj-xp">+5 XP</div></div>
+    <div class="obj" onclick="toggleObj(this)"><div class="obj-chk">✓</div><div class="obj-txt">Navegar entre formularios usando <code>ShowDialog()</code> y <code>Show()</code>.</div><div class="obj-xp">+5 XP</div></div>
+  </div>
+  <div class="four-cards">
+    <div class="fc k"><div class="fci">🧠</div><div class="fct">Conocimiento</div><div class="fch">WinForms + Controles</div><div class="fcb">Form, controles, eventos, DataGridView, ComboBox, navegación entre formularios.</div></div>
+    <div class="fc s"><div class="fci">🖱️</div><div class="fct">Habilidad</div><div class="fch">Construir UI gráfica</div><div class="fcb">Crear formularios funcionales que reutilicen los servicios de la consola.</div></div>
+    <div class="fc a"><div class="fci">🤝</div><div class="fct">Actitud</div><div class="fch">Proactividad</div><div class="fcb">Generoso/a con compañeros. Compartir soluciones en plenario. PROG-3 + SINT-3.</div></div>
+    <div class="fc e"><div class="fci">📝</div><div class="fct">Evaluación</div><div class="fch">Encargo 1 (10%)</div><div class="fcb">App de consola — se evalúa esta semana en el laboratorio.</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ ¿QUÉ ES WINDOWS FORMS? ═══ -->
+<section id="sec-que" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🪟 ¿Qué es Windows Forms?</h2>
+  <p class="s-sub">Antes de escribir código, entendamos qué es lo que vamos a usar y por qué existe.</p>
+
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="box sk">
+      <div class="box-lbl">📐 Definición técnica</div>
+      <div class="box-body"><strong>Windows Forms (WinForms)</strong> es un framework de la BCL de .NET para crear interfaces gráficas de escritorio en Windows. Cada ventana es un objeto de tipo <code>Form</code>. Los elementos visuales (botones, campos, tablas) son objetos de tipo <code>Control</code> que se agregan al formulario con <code>Controls.Add()</code>.</div>
+    </div>
+    <div class="box sg">
+      <div class="box-lbl">💡 En palabras simples</div>
+      <div class="box-body">Hasta ahora el programa solo mostraba texto en una pantalla negra. Con Windows Forms, el programa abre una <strong>ventana de Windows real</strong> con botones, campos para escribir y tablas — exactamente como cualquier software que usas en tu PC. El código C# controla todo lo que pasa en esa ventana.</div>
+    </div>
+  </div>
+
+  <div class="box am" style="margin-bottom:20px">
+    <div class="box-lbl">🏢 Ejemplo profesional</div>
+    <div class="box-body">Falabella, Ripley y Paris usan sistemas internos de punto de venta construidos con Windows Forms. El cajero ve una ventana con campos para ingresar el código del producto y botones para procesar la venta — exactamente lo que construiremos en Almacenes Por Ahí.</div>
+  </div>
+
+  <div class="sec-title"><span>🔄</span>Consola vs Windows Forms — comparación</div>
+  <div class="grid2">
+    <div class="box ro">
+      <div class="box-lbl">📟 App de Consola (Semanas 1-2)</div>
+      <div class="box-body">
+        <ul class="lst">
+          <li>Solo texto — sin botones ni ventanas</li>
+          <li>El usuario escribe con el teclado y presiona Enter</li>
+          <li>La interfaz se construye con <code>Console.WriteLine()</code></li>
+          <li>Un solo hilo de ejecución de arriba hacia abajo</li>
+          <li>Útil para aprender lógica y colecciones</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box sk">
+      <div class="box-lbl">🪟 Windows Forms (Semana 3+)</div>
+      <div class="box-body">
+        <ul class="lst">
+          <li>Ventana real con botones, campos y tablas</li>
+          <li>El usuario hace clic — el programa reacciona a <strong>eventos</strong></li>
+          <li>La interfaz se construye con controles (<code>new Button()</code>)</li>
+          <li>Programación <strong>orientada a eventos</strong>: el código espera acciones</li>
+          <li>Reutiliza los servicios que ya escribiste en la consola</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ CREAR PROYECTO ═══ -->
+<section id="sec-proyecto" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🛠️ Crear un Proyecto Windows Forms</h2>
+  <p class="s-sub">Pasos exactos en Visual Studio Community. Seguir el orden — cada paso depende del anterior.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-b">
+        <div class="step-t">Archivo → Nuevo → Proyecto</div>
+        <div class="step-d">En el buscador de plantillas escribe: <strong>"Windows Forms"</strong>. Selecciona la opción <strong>"Aplicación de Windows Forms (.NET)"</strong> — el ícono es morado. <strong>NO</strong> elegir "WPF" ni "UWP".</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-b">
+        <div class="step-t">Configurar el proyecto</div>
+        <div class="step-d">
+          <strong>Nombre del proyecto:</strong> <code>AlmacenesWinForms</code><br>
+          <strong>Ubicación:</strong> la misma carpeta donde tienes <code>AlmacenesConsola</code><br>
+          <strong>Framework:</strong> <code>.NET 8.0 (soporte a largo plazo)</code>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-b">
+        <div class="step-t">Verificar el .csproj generado</div>
+        <div class="step-d">Visual Studio crea automáticamente el archivo <code>AlmacenesWinForms.csproj</code>. Ábrelo con doble clic en el Explorador de Soluciones y verifica que contenga <code>&lt;UseWindowsForms&gt;true&lt;/UseWindowsForms&gt;</code>. Esa línea habilita todo el framework de interfaz gráfica.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-b">
+        <div class="step-t">El Program.cs de WinForms</div>
+        <div class="step-d">A diferencia de la consola, el <code>Program.cs</code> de WinForms tiene dos líneas especiales que arrancan la aplicación gráfica. El archivo se genera automáticamente — solo debes conocer qué hace cada línea.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">5</div>
+      <div class="step-b">
+        <div class="step-t">Ejecutar con F5</div>
+        <div class="step-d">Presiona <span class="kb">F5</span> (con depurador) o <span class="kb">Ctrl+F5</span> (sin depurador). Debe aparecer una ventana vacía llamada "Form1". Si aparece → el proyecto está configurado correctamente.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <span class="code-lang">XML — AlmacenesWinForms.csproj (archivo de configuración)</span>
+      <span class="code-badge badge-paso">Paso 3</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+    </div>
+    <pre><span class="cm">&lt;!-- Este archivo configura el proyecto Windows Forms --&gt;</span>
+<span class="pp">&lt;Project Sdk=</span><span class="st">"Microsoft.NET.Sdk"</span><span class="pp">&gt;</span>
+
+  <span class="pp">&lt;PropertyGroup&gt;</span>
+    <span class="cm">&lt;!-- Exe = genera un .exe ejecutable (no librería) --&gt;</span>
+    <span class="pp">&lt;OutputType&gt;</span>WinExe<span class="pp">&lt;/OutputType&gt;</span>
+
+    <span class="cm">&lt;!-- .NET 8 con soporte para Windows (necesario para WinForms) --&gt;</span>
+    <span class="pp">&lt;TargetFramework&gt;</span>net8.0-windows<span class="pp">&lt;/TargetFramework&gt;</span>
+
+    <span class="cm">&lt;!-- ESTA ES LA LÍNEA CLAVE: activa Windows Forms --&gt;</span>
+    <span class="pp">&lt;UseWindowsForms&gt;</span>true<span class="pp">&lt;/UseWindowsForms&gt;</span>
+
+    <span class="cm">&lt;!-- Habilita anotaciones de null (detecta errores de null) --&gt;</span>
+    <span class="pp">&lt;Nullable&gt;</span>enable<span class="pp">&lt;/Nullable&gt;</span>
+
+    <span class="cm">&lt;!-- Agrega using System; y otros namespaces automáticamente --&gt;</span>
+    <span class="pp">&lt;ImplicitUsings&gt;</span>enable<span class="pp">&lt;/ImplicitUsings&gt;</span>
+  <span class="pp">&lt;/PropertyGroup&gt;</span>
+
+<span class="pp">&lt;/Project&gt;</span>
+
+<span class="cm">&lt;!-- IMPORTANTE: NO agregar PackageReference a EF Core todavía.
+     El paquete Pomelo se agrega en la Semana 4, no ahora.
+     Si lo agregas ahora y no haces 'dotnet restore', el proyecto no compila. --&gt;</span></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr">
+      <span class="code-lang">C# — Program.cs de Windows Forms</span>
+      <span class="code-badge badge-paso">Paso 4</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copiar</button>
+    </div>
+    <pre><span class="cm">// Program.cs de Windows Forms — generado automáticamente
+// Es diferente al Program.cs de la consola</span>
+
+<span class="cm">// ApplicationConfiguration.Initialize():
+// Configura DPI (resolución de pantalla), fuentes y compatibilidad
+// SIEMPRE debe ser la primera línea — sin esto, la ventana puede verse borrosa</span>
+<span class="ty">ApplicationConfiguration</span>.<span class="fn">Initialize</span>();
+
+<span class="cm">// Application.Run(form):
+// Abre el formulario especificado y mantiene la app en ejecución
+// La app corre mientras esta ventana esté abierta
+// Cuando el usuario cierra FrmPrincipal → la app termina</span>
+<span class="ty">Application</span>.<span class="fn">Run</span>(<span class="kw">new</span> <span class="ty">FrmPrincipal</span>());
+
+<span class="cm">// Diferencia con la consola:
+// Consola:  el código corre de arriba hacia abajo y termina
+// WinForms: Application.Run() entra en un BUCLE de eventos interno
+//           que espera clics, teclazos, etc. hasta que el usuario cierre</span></pre>
+  </div>
+</div>
+</section>
+
+<!-- ═══ CONTROLES ═══ -->
+<section id="sec-controles" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🧩 Controles Esenciales de Windows Forms</h2>
+  <p class="s-sub">Los controles son los elementos visuales de la interfaz — botones, campos, tablas, listas. Cada uno es un objeto C# con propiedades y eventos.</p>
+
+  <div class="box tl" style="margin-bottom:20px">
+    <div class="box-lbl">¿Qué es un Control?</div>
+    <div class="box-body">Un control es un objeto C# que tiene representación visual en la pantalla. Tiene <strong>propiedades</strong> que definen su apariencia (<code>Text</code>, <code>Size</code>, <code>Location</code>), y <strong>eventos</strong> a los que puede reaccionar (<code>Click</code>, <code>TextChanged</code>). Para que aparezca en la ventana debes agregarlo con <code>Controls.Add(miControl)</code> — sin esa línea el control existe en memoria pero no se ve.</div>
+  </div>
+
+  <div class="controls-grid">
+    <div class="ctrl-card">
+      <div class="ctrl-icon">🏷️</div>
+      <div class="ctrl-name">Label</div>
+      <div class="ctrl-desc">Texto estático no editable. Funciona como una etiqueta que le dice al usuario qué datos ingresar.</div>
+      <div class="ctrl-where">📍 Todos los formularios</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">📝</div>
+      <div class="ctrl-name">TextBox</div>
+      <div class="ctrl-desc">Campo de texto editable. El usuario escribe aquí. Se lee con <code>.Text</code> y se limpia con <code>.Clear()</code>.</div>
+      <div class="ctrl-where">📍 FrmInventario, FrmClientes</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">🔘</div>
+      <div class="ctrl-name">Button</div>
+      <div class="ctrl-desc">Botón que reacciona al clic. Conectado a un método manejador de eventos con el operador <code>+=</code>.</div>
+      <div class="ctrl-where">📍 Todos los formularios</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">📊</div>
+      <div class="ctrl-name">DataGridView</div>
+      <div class="ctrl-desc">Tabla con filas y columnas. Muestra colecciones de datos. Se rellena con <code>Rows.Add()</code> y se limpia con <code>Rows.Clear()</code>.</div>
+      <div class="ctrl-where">📍 FrmInventario, FrmClientes</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">📋</div>
+      <div class="ctrl-name">ComboBox</div>
+      <div class="ctrl-desc">Lista desplegable de opciones. El usuario elige una opción. Se llena con <code>Items.Add()</code>.</div>
+      <div class="ctrl-where">📍 FrmVentas (producto y cliente)</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">🔢</div>
+      <div class="ctrl-name">NumericUpDown</div>
+      <div class="ctrl-desc">Campo numérico con flechas ↑↓ para subir/bajar el valor. Evita que el usuario ingrese texto no numérico.</div>
+      <div class="ctrl-where">📍 FrmVentas (cantidad)</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">📦</div>
+      <div class="ctrl-name">GroupBox</div>
+      <div class="ctrl-desc">Contenedor que agrupa controles relacionados con un borde y título visual. Organiza el formulario.</div>
+      <div class="ctrl-where">📍 FrmInventario, FrmClientes</div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-icon">💬</div>
+      <div class="ctrl-name">MessageBox</div>
+      <div class="ctrl-desc">Diálogo emergente de validación. Método estático — no se agrega al form. Bloquea hasta que el usuario hace clic.</div>
+      <div class="ctrl-where">📍 Validaciones en todos los forms</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr"><span class="code-lang">C# — Crear controles por código (sin diseñador arrastrar-soltar)</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+    <pre><span class="cm">// En WinForms se pueden crear controles de 2 formas:
+// 1. Diseñador visual (arrastrar y soltar en el .Designer.cs)
+// 2. Por código — que es lo que usaremos en este curso
+//
+// VENTAJA del código: entiendes qué hace cada línea.
+// VENTAJA del diseñador: más rápido para layoutear.</span>
+
+<span class="cm">// ─── LABEL ───────────────────────────────────────────────</span>
+<span class="ty">Label</span> lblNombre = <span class="kw">new</span> <span class="ty">Label</span>
+{
+    Text     = <span class="st">"Nombre del producto:"</span>,    <span class="cm">// texto que muestra</span>
+    Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">10</span>, <span class="nm">15</span>),       <span class="cm">// posición (x, y) en pixeles</span>
+    AutoSize = <span class="kw">true</span>                        <span class="cm">// ajusta el tamaño al texto</span>
+};
+Controls.<span class="fn">Add</span>(lblNombre); <span class="cm">// ← SIN ESTO EL LABEL NO APARECE</span>
+
+<span class="cm">// ─── TEXTBOX ─────────────────────────────────────────────</span>
+<span class="ty">TextBox</span> txtNombre = <span class="kw">new</span> <span class="ty">TextBox</span>
+{
+    Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">10</span>, <span class="nm">35</span>),
+    Size     = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">250</span>, <span class="nm">24</span>),       <span class="cm">// ancho × alto en pixeles</span>
+    PlaceholderText = <span class="st">"Ej: Polera básica"</span> <span class="cm">// texto gris cuando está vacío</span>
+};
+Controls.<span class="fn">Add</span>(txtNombre);
+
+<span class="cm">// ─── BUTTON ──────────────────────────────────────────────</span>
+<span class="ty">Button</span> btnAgregar = <span class="kw">new</span> <span class="ty">Button</span>
+{
+    Text     = <span class="st">"Agregar"</span>,
+    Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">270</span>, <span class="nm">33</span>),
+    Size     = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">90</span>, <span class="nm">28</span>),
+    BackColor = <span class="ty">Color</span>.FromArgb(<span class="nm">91</span>, <span class="nm">173</span>, <span class="nm">190</span>), <span class="cm">// color de fondo</span>
+    ForeColor = <span class="ty">Color</span>.White                    <span class="cm">// color del texto</span>
+};
+<span class="cm">// Conectar el evento Click al método manejador (ver sección Eventos)</span>
+btnAgregar.Click += <span class="fn">BtnAgregar_Click</span>;
+Controls.<span class="fn">Add</span>(btnAgregar);
+
+<span class="cm">// ─── DATAGRIDVIEW ─────────────────────────────────────────</span>
+<span class="ty">DataGridView</span> grid = <span class="kw">new</span> <span class="ty">DataGridView</span>
+{
+    Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">10</span>, <span class="nm">80</span>),
+    Size     = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">740</span>, <span class="nm">270</span>),
+    ReadOnly = <span class="kw">true</span>,              <span class="cm">// el usuario no puede editar las celdas</span>
+    AllowUserToAddRows = <span class="kw">false</span>,   <span class="cm">// no mostrar fila vacía al final</span>
+    SelectionMode = <span class="ty">DataGridViewSelectionMode</span>.FullRowSelect, <span class="cm">// seleccionar fila completa</span>
+    AutoSizeColumnsMode = <span class="ty">DataGridViewAutoSizeColumnsMode</span>.Fill <span class="cm">// columnas ocupan todo el ancho</span>
+};
+<span class="cm">// Agregar columnas manualmente</span>
+grid.Columns.<span class="fn">Add</span>(<span class="st">"colId"</span>,     <span class="st">"ID"</span>);
+grid.Columns.<span class="fn">Add</span>(<span class="st">"colNombre"</span>, <span class="st">"Nombre"</span>);
+grid.Columns.<span class="fn">Add</span>(<span class="st">"colPrecio"</span>, <span class="st">"Precio"</span>);
+grid.Columns.<span class="fn">Add</span>(<span class="st">"colStock"</span>,  <span class="st">"Stock"</span>);
+Controls.<span class="fn">Add</span>(grid);
+
+<span class="cm">// ─── MESSAGEBOX (NO se agrega a Controls — es estático) ───</span>
+<span class="ty">MessageBox</span>.<span class="fn">Show</span>(
+    <span class="st">"El nombre es obligatorio."</span>,      <span class="cm">// mensaje</span>
+    <span class="st">"Validación"</span>,                      <span class="cm">// título de la ventana</span>
+    <span class="ty">MessageBoxButtons</span>.OK,              <span class="cm">// botones que muestra</span>
+    <span class="ty">MessageBoxIcon</span>.Warning             <span class="cm">// ícono (Warning, Error, Info)</span>
+);</pre>
+  </div>
+</div>
+</section>
+
+<!-- ═══ EVENTOS ═══ -->
+<section id="sec-eventos" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">⚡ Eventos — Cómo Reacciona la Ventana</h2>
+  <p class="s-sub">Un <strong>evento</strong> es algo que ocurre: el usuario hace clic, presiona una tecla, cierra la ventana. El código C# "escucha" esos eventos y reacciona ejecutando un método.</p>
+
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="box tl">
+      <div class="box-lbl">📐 Definición técnica</div>
+      <div class="box-body">Un evento es un mecanismo del lenguaje C# basado en el patrón Observer (delegados). <code>btn.Click += Metodo</code> usa el operador <code>+=</code> para <strong>suscribir</strong> un método al evento Click. Cuando ocurre el clic, el runtime invoca automáticamente todos los métodos suscritos.</div>
+    </div>
+    <div class="box sg">
+      <div class="box-lbl">💡 En palabras simples</div>
+      <div class="box-body">Es como poner un timbre en una puerta. El timbre es el evento (<code>Click</code>). El operador <code>+=</code> conecta el timbre con una acción (el método). Cuando alguien presiona el timbre (clic del usuario), la acción se ejecuta automáticamente — sin que tú llames al método manualmente.</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr"><span class="code-lang">C# — Eventos: Click, TextChanged y SelectedIndexChanged</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+    <pre><span class="cm">// ─── EVENTO CLICK ─────────────────────────────────────────
+// Sintaxis: control.Click += NombreDelMetodo;
+// El método manejador siempre tiene estos dos parámetros:
+//   object? sender → el control que disparó el evento (el botón)
+//   EventArgs e    → datos del evento (para Click no se usa mucho)</span>
+
+<span class="cm">// 1. Suscribir el método al evento (esto va en el constructor del form)</span>
+btnAgregar.Click += <span class="fn">BtnAgregar_Click</span>; <span class="cm">// += = "cuando ocurra Click, llama a BtnAgregar_Click"</span>
+btnBuscar.Click  += <span class="fn">BtnBuscar_Click</span>;
+btnLimpiar.Click += <span class="fn">BtnLimpiar_Click</span>;
+
+<span class="cm">// 2. Definir el método manejador (private, void, con los dos parámetros)</span>
+<span class="kw">private void</span> <span class="fn">BtnAgregar_Click</span>(<span class="ty">object</span>? sender, <span class="ty">EventArgs</span> e)
+{
+    <span class="cm">// Validar que los campos no estén vacíos ANTES de procesar
+    // string.IsNullOrWhiteSpace() → true si es null, vacío o solo espacios</span>
+    <span class="kw">if</span> (<span class="ty">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(_txtNombre.Text))
+    {
+        <span class="ty">MessageBox</span>.<span class="fn">Show</span>(<span class="st">"El nombre es obligatorio."</span>, <span class="st">"Validación"</span>,
+            <span class="ty">MessageBoxButtons</span>.OK, <span class="ty">MessageBoxIcon</span>.Warning);
+        _txtNombre.<span class="fn">Focus</span>(); <span class="cm">// poner el cursor en el campo vacío</span>
+        <span class="kw">return</span>; <span class="cm">// salir del método sin procesar</span>
+    }
+
+    <span class="cm">// Convertir el TextBox (string) a decimal con TryParse</span>
+    <span class="kw">if</span> (!<span class="ty">decimal</span>.<span class="fn">TryParse</span>(_txtPrecio.Text, <span class="kw">out</span> <span class="ty">decimal</span> precio) || precio <= <span class="nm">0</span>)
+    {
+        <span class="ty">MessageBox</span>.<span class="fn">Show</span>(<span class="st">"Ingresa un precio válido mayor a 0."</span>, <span class="st">"Validación"</span>,
+            <span class="ty">MessageBoxButtons</span>.OK, <span class="ty">MessageBoxIcon</span>.Warning);
+        <span class="kw">return</span>;
+    }
+
+    <span class="cm">// Llamar al servicio (mismo que usábamos en la consola)</span>
+    _svc.<span class="fn">Agregar</span>(_txtNombre.Text, precio, (<span class="ty">int</span>)_nudStock.Value);
+
+    <span class="cm">// Refrescar la tabla con los datos actualizados</span>
+    <span class="fn">CargarGrid</span>();
+
+    <span class="cm">// Limpiar los campos para el próximo ingreso</span>
+    _txtNombre.<span class="fn">Clear</span>();
+    _txtPrecio.<span class="fn">Clear</span>();
+    _nudStock.Value = <span class="nm">0</span>;
+    _txtNombre.<span class="fn">Focus</span>(); <span class="cm">// cursor vuelve al primer campo</span>
+}
+
+<span class="cm">// ─── EVENTO SELECTEDINDEXCHANGED (ComboBox) ───────────────
+// Se dispara cuando el usuario cambia la selección</span>
+<span class="kw">private void</span> <span class="fn">CmbProducto_SelectedIndexChanged</span>(<span class="ty">object</span>? sender, <span class="ty">EventArgs</span> e)
+{
+    <span class="kw">if</span> (_cmb.SelectedItem <span class="kw">is string</span> seleccionado)
+        <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Seleccionado: {seleccionado}"</span>); <span class="cm">// para debug</span>
+}
+
+<span class="cm">// ─── EVENTOS MÁS COMUNES ─────────────────────────────────
+// Click             → cuando se hace clic en un control
+// TextChanged       → cuando cambia el texto de un TextBox
+// SelectedIndexChanged → cuando cambia la selección de un ComboBox
+// FormClosing       → justo antes de que se cierre el formulario
+// Load              → cuando el formulario termina de cargarse</span></pre>
+  </div>
+</div>
+</section>
+
+<!-- ═══ FORMULARIO COMPLETO ═══ -->
+<section id="sec-form" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">📋 Formulario Completo — FrmInventario</h2>
+  <p class="s-sub">Estructura completa del formulario de inventario. Este es el patrón que se repite en todos los formularios del proyecto.</p>
+
+  <div class="box am" style="margin-bottom:18px">
+    <div class="box-lbl">¿Por qué el formulario hereda de Form?</div>
+    <div class="box-body">Cuando escribes <code>public class FrmInventario : Form</code>, estás diciendo que <code>FrmInventario</code> <strong>hereda</strong> de la clase <code>Form</code>. Eso significa que tu formulario recibe automáticamente todas las propiedades (como <code>Text</code> para el título, <code>Size</code> para el tamaño) y los métodos de <code>Form</code>. Sin esa herencia, no sería una ventana. Es exactamente igual a como en Java extiendes <code>JFrame</code>.</div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr"><span class="code-lang">C# WinForms — FrmInventario.cs completo y comentado</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+    <pre><span class="cm">// Archivo: Forms/FrmInventario.cs
+// Formulario de inventario — muestra, agrega y busca productos</span>
+<span class="kw">using</span> System.Windows.Forms; <span class="cm">// namespace de todos los controles WinForms</span>
+<span class="kw">namespace</span> AlmacenesWinForms.Forms;
+
+<span class="cm">// FrmInventario hereda de Form → obtiene todas las propiedades de una ventana</span>
+<span class="kw">public class</span> <span class="ty">FrmInventario</span> : <span class="ty">Form</span>
+{
+    <span class="cm">// ─── DEPENDENCIA INYECTADA ────────────────────────────────
+    // El servicio viene de la consola — no se duplica código
+    // readonly: la referencia no cambia una vez asignada en el constructor</span>
+    <span class="kw">private readonly</span> <span class="ty">ProductoService</span> _svc;
+
+    <span class="cm">// ─── CONTROLES (campos privados) ──────────────────────────
+    // Se declaran aquí para que todos los métodos de la clase puedan usarlos
+    // null! → le decimos al compilador "sé que es null ahora, pero en BuildUI() lo asignaré"</span>
+    <span class="kw">private</span> <span class="ty">DataGridView</span> _grid    = <span class="kw">null</span>!;
+    <span class="kw">private</span> <span class="ty">TextBox</span>      _txtNombre = <span class="kw">null</span>!;
+    <span class="kw">private</span> <span class="ty">TextBox</span>      _txtPrecio = <span class="kw">null</span>!;
+    <span class="kw">private</span> <span class="ty">NumericUpDown</span> _nudStock = <span class="kw">null</span>!;
+
+    <span class="cm">// ─── CONSTRUCTOR ─────────────────────────────────────────</span>
+    <span class="kw">public</span> <span class="ty">FrmInventario</span>(<span class="ty">ProductoService</span> svc)
+    {
+        _svc = svc;
+
+        <span class="cm">// Propiedades del formulario (la ventana)</span>
+        Text          = <span class="st">"Inventario de Productos — Almacenes Por Ahí"</span>; <span class="cm">// título</span>
+        Size          = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">800</span>, <span class="nm">560</span>);                         <span class="cm">// tamaño ventana</span>
+        StartPosition = <span class="ty">FormStartPosition</span>.CenterScreen;             <span class="cm">// centrar en pantalla</span>
+        MinimumSize   = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">600</span>, <span class="nm">400</span>);                         <span class="cm">// tamaño mínimo</span>
+
+        <span class="fn">BuildUI</span>();      <span class="cm">// crear y posicionar todos los controles</span>
+        <span class="fn">CargarGrid</span>();   <span class="cm">// llenar la tabla con los datos actuales</span>
+    }
+
+    <span class="cm">// ─── BUILD UI ─────────────────────────────────────────────
+    // Este método crea todos los controles y los agrega al formulario</span>
+    <span class="kw">private void</span> <span class="fn">BuildUI</span>()
+    {
+        <span class="cm">// Panel superior — formulario de ingreso</span>
+        <span class="ty">GroupBox</span> grp = <span class="kw">new</span> <span class="ty">GroupBox</span>
+        {
+            Text     = <span class="st">"Agregar Producto"</span>,
+            Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">10</span>, <span class="nm">10</span>),
+            Size     = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">765</span>, <span class="nm">90</span>)
+        };
+        Controls.<span class="fn">Add</span>(grp);
+
+        <span class="cm">// Nombre</span>
+        grp.Controls.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Label</span> { Text = <span class="st">"Nombre:"</span>, Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">10</span>, <span class="nm">25</span>), AutoSize = <span class="kw">true</span> });
+        _txtNombre = <span class="kw">new</span> <span class="ty">TextBox</span> { Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">65</span>, <span class="nm">22</span>), Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">250</span>, <span class="nm">24</span>) };
+        grp.Controls.<span class="fn">Add</span>(_txtNombre);
+
+        <span class="cm">// Precio</span>
+        grp.Controls.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Label</span> { Text = <span class="st">"Precio:"</span>, Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">330</span>, <span class="nm">25</span>), AutoSize = <span class="kw">true</span> });
+        _txtPrecio = <span class="kw">new</span> <span class="ty">TextBox</span> { Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">380</span>, <span class="nm">22</span>), Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">100</span>, <span class="nm">24</span>), PlaceholderText = <span class="st">"9990"</span> };
+        grp.Controls.<span class="fn">Add</span>(_txtPrecio);
+
+        <span class="cm">// Stock con NumericUpDown (flechas para subir/bajar)</span>
+        grp.Controls.<span class="fn">Add</span>(<span class="kw">new</span> <span class="ty">Label</span> { Text = <span class="st">"Stock:"</span>, Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">495</span>, <span class="nm">25</span>), AutoSize = <span class="kw">true</span> });
+        _nudStock = <span class="kw">new</span> <span class="ty">NumericUpDown</span> { Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">540</span>, <span class="nm">22</span>), Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">70</span>, <span class="nm">24</span>), Minimum = <span class="nm">0</span>, Maximum = <span class="nm">9999</span> };
+        grp.Controls.<span class="fn">Add</span>(_nudStock);
+
+        <span class="cm">// Botón Agregar</span>
+        <span class="ty">Button</span> btnAgregar = <span class="kw">new</span> <span class="ty">Button</span> { Text = <span class="st">"➕ Agregar"</span>, Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">630</span>, <span class="nm">20</span>), Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">120</span>, <span class="nm">32</span>) };
+        btnAgregar.Click += <span class="fn">BtnAgregar_Click</span>; <span class="cm">// conectar evento</span>
+        grp.Controls.<span class="fn">Add</span>(btnAgregar);
+
+        <span class="cm">// DataGridView — tabla de productos</span>
+        _grid = <span class="kw">new</span> <span class="ty">DataGridView</span>
+        {
+            Location             = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">10</span>, <span class="nm">115</span>),
+            Size                 = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">765</span>, <span class="nm">340</span>),
+            ReadOnly             = <span class="kw">true</span>,
+            AllowUserToAddRows   = <span class="kw">false</span>,
+            SelectionMode        = <span class="ty">DataGridViewSelectionMode</span>.FullRowSelect,
+            AutoSizeColumnsMode  = <span class="ty">DataGridViewAutoSizeColumnsMode</span>.Fill
+        };
+        _grid.Columns.<span class="fn">Add</span>(<span class="st">"colId"</span>,     <span class="st">"ID"</span>);
+        _grid.Columns.<span class="fn">Add</span>(<span class="st">"colNombre"</span>, <span class="st">"Nombre"</span>);
+        _grid.Columns.<span class="fn">Add</span>(<span class="st">"colPrecio"</span>, <span class="st">"Precio"</span>);
+        _grid.Columns.<span class="fn">Add</span>(<span class="st">"colStock"</span>,  <span class="st">"Stock"</span>);
+        Controls.<span class="fn">Add</span>(_grid); <span class="cm">// ← SIN ESTO LA TABLA NO APARECE</span>
+    }
+
+    <span class="cm">// ─── EVENTO HANDLERS ─────────────────────────────────────</span>
+    <span class="kw">private void</span> <span class="fn">BtnAgregar_Click</span>(<span class="ty">object</span>? sender, <span class="ty">EventArgs</span> e)
+    {
+        <span class="cm">// Validar nombre</span>
+        <span class="kw">if</span> (<span class="ty">string</span>.<span class="fn">IsNullOrWhiteSpace</span>(_txtNombre.Text))
+        {
+            <span class="ty">MessageBox</span>.<span class="fn">Show</span>(<span class="st">"El nombre es obligatorio."</span>, <span class="st">"Validación"</span>,
+                <span class="ty">MessageBoxButtons</span>.OK, <span class="ty">MessageBoxIcon</span>.Warning);
+            <span class="kw">return</span>;
+        }
+
+        <span class="cm">// Validar precio con TryParse (NUNCA usar decimal.Parse en un TextBox)</span>
+        <span class="kw">if</span> (!<span class="ty">decimal</span>.<span class="fn">TryParse</span>(_txtPrecio.Text, <span class="kw">out</span> <span class="ty">decimal</span> precio) || precio <= <span class="nm">0</span>)
+        {
+            <span class="ty">MessageBox</span>.<span class="fn">Show</span>(<span class="st">"Ingresa un precio válido mayor a 0."</span>, <span class="st">"Validación"</span>,
+                <span class="ty">MessageBoxButtons</span>.OK, <span class="ty">MessageBoxIcon</span>.Warning);
+            <span class="kw">return</span>;
+        }
+
+        <span class="cm">// Todo válido → llamar al servicio (misma lógica que en la consola)</span>
+        _svc.<span class="fn">Agregar</span>(_txtNombre.Text.<span class="fn">Trim</span>(), precio, (<span class="ty">int</span>)_nudStock.Value);
+
+        <span class="fn">CargarGrid</span>(); <span class="cm">// actualizar la tabla</span>
+        _txtNombre.<span class="fn">Clear</span>(); _txtPrecio.<span class="fn">Clear</span>(); _nudStock.Value = <span class="nm">0</span>;
+        _txtNombre.<span class="fn">Focus</span>();
+    }
+
+    <span class="cm">// ─── LLENAR DATAGRIDVIEW ──────────────────────────────────</span>
+    <span class="kw">private void</span> <span class="fn">CargarGrid</span>()
+    {
+        _grid.Rows.<span class="fn">Clear</span>(); <span class="cm">// limpiar filas existentes</span>
+        <span class="kw">foreach</span> (<span class="kw">var</span> p <span class="kw">in</span> _svc.<span class="fn">Listar</span>()) <span class="cm">// mismo servicio de la consola</span>
+            _grid.Rows.<span class="fn">Add</span>(p.Id, p.Nombre, <span class="st">$"${p.Precio:N0}"</span>, p.Stock);
+    }
+}</pre>
+  </div>
+</div>
+</section>
+
+<!-- ═══ NAVEGACIÓN ENTRE FORMS ═══ -->
+<section id="sec-nav" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🔀 Navegación entre Formularios</h2>
+  <p class="s-sub">Una aplicación real tiene varias ventanas. Aprende a abrirlas correctamente.</p>
+
+  <div class="grid2" style="margin-bottom:20px">
+    <div class="box tl">
+      <div class="box-lbl">ShowDialog() — bloqueante</div>
+      <div class="box-body">Abre la ventana hija y <strong>bloquea</strong> el formulario padre. El usuario no puede interactuar con la ventana padre hasta que cierre la hija. Usar para submenús y ventanas de detalle donde el padre debe esperar.</div>
+    </div>
+    <div class="box sg">
+      <div class="box-lbl">Show() — no bloqueante</div>
+      <div class="box-body">Abre la ventana hija pero el padre <strong>sigue activo</strong>. Ambas ventanas son independientes. Usar para paneles que pueden estar abiertos en paralelo, como un panel de monitoreo.</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-hdr"><span class="code-lang">C# WinForms — Navegación desde FrmPrincipal</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+    <pre><span class="cm">// FrmPrincipal.cs — menú principal de la aplicación</span>
+<span class="kw">public class</span> <span class="ty">FrmPrincipal</span> : <span class="ty">Form</span>
+{
+    <span class="cm">// El servicio se crea UNA VEZ aquí y se pasa a cada formulario hijo
+    // Así todos comparten los mismos datos en memoria</span>
+    <span class="kw">private readonly</span> <span class="ty">ProductoService</span> _productoSvc = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="ty">FrmPrincipal</span>()
+    {
+        Text = <span class="st">"Almacenes Por Ahí — Sistema de Gestión"</span>;
+        Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">500</span>, <span class="nm">350</span>);
+        StartPosition = <span class="ty">FormStartPosition</span>.CenterScreen;
+        <span class="fn">BuildUI</span>();
+    }
+
+    <span class="kw">private void</span> <span class="fn">BuildUI</span>()
+    {
+        <span class="ty">Button</span> btnInventario = <span class="kw">new</span> <span class="ty">Button</span> { Text = <span class="st">"📦 Inventario"</span>, Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">150</span>, <span class="nm">80</span>), Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">200</span>, <span class="nm">50</span>) };
+        btnInventario.Click += <span class="fn">BtnInventario_Click</span>;
+        Controls.<span class="fn">Add</span>(btnInventario);
+
+        <span class="ty">Button</span> btnClientes  = <span class="kw">new</span> <span class="ty">Button</span> { Text = <span class="st">"👥 Clientes"</span>,   Location = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">150</span>, <span class="nm">150</span>), Size = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">200</span>, <span class="nm">50</span>) };
+        btnClientes.Click  += <span class="fn">BtnClientes_Click</span>;
+        Controls.<span class="fn">Add</span>(btnClientes);
+    }
+
+    <span class="kw">private void</span> <span class="fn">BtnInventario_Click</span>(<span class="ty">object</span>? sender, <span class="ty">EventArgs</span> e)
+    {
+        <span class="cm">// ShowDialog: bloquea FrmPrincipal mientras FrmInventario está abierto
+        // this = pasar referencia al padre (buena práctica)
+        // El servicio se pasa como parámetro — mismo objeto en memoria</span>
+        <span class="kw">using var</span> frm = <span class="kw">new</span> <span class="ty">FrmInventario</span>(_productoSvc);
+        frm.<span class="fn">ShowDialog</span>(<span class="kw">this</span>);
+        <span class="cm">// El código continúa acá DESPUÉS de que FrmInventario se cierre</span>
+    }
+
+    <span class="kw">private void</span> <span class="fn">BtnClientes_Click</span>(<span class="ty">object</span>? sender, <span class="ty">EventArgs</span> e)
+    {
+        <span class="kw">using var</span> frm = <span class="kw">new</span> <span class="ty">FrmClientes</span>();
+        frm.<span class="fn">ShowDialog</span>(<span class="kw">this</span>);
+    }
+}</pre>
+  </div>
+
+  <div class="box am" style="margin-top:14px">
+    <div class="box-lbl">⚠️ Diferencia clave con Java</div>
+    <div class="box-body">En Java (Swing/JavaFX) se usa <code>setVisible(true)</code> y el padre sigue activo. En WinForms, para bloquear el padre hay que usar <code>ShowDialog()</code>. Usar solo <code>Show()</code> en WinForms hace que ambas ventanas estén activas al mismo tiempo — eso puede confundir al usuario en un flujo de negocio lineal.</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ MANUAL DEL ALUMNO ═══ -->
+<section id="sec-manual" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">📖 Manual del Alumno — Levanta el Proyecto Paso a Paso</h2>
+  <p class="s-sub">Sigue estos pasos en orden. Al final tendrás una aplicación Windows Forms funcionando que reutiliza el código de la consola.</p>
+
+  <div class="box sk" style="margin-bottom:22px">
+    <div class="box-lbl">¿Qué vamos a construir?</div>
+    <div class="box-body">Una aplicación de escritorio con ventana principal (<strong>FrmPrincipal</strong>) que tiene botones para navegar al formulario de inventario (<strong>FrmInventario</strong>). El FrmInventario muestra los productos en una tabla, permite agregar nuevos y buscar por nombre.</div>
+  </div>
+
+  <div class="manual-step">
+    <div class="ms-header">
+      <div class="ms-num">1</div>
+      <div class="ms-title">Crear el proyecto Windows Forms</div>
+      <div class="ms-badge">Visual Studio</div>
+    </div>
+    <div class="ms-body">
+      <p>En Visual Studio: <strong>Archivo → Nuevo → Proyecto → Aplicación de Windows Forms (.NET)</strong></p>
+      <div class="ms-vs">Nombre: <code>AlmacenesWinForms</code> · Framework: <code>.NET 8.0</code> · Ubicación: junto a la carpeta de la consola</div>
+      <div class="ms-tip">Visual Studio crea automáticamente <code>Form1.cs</code> y <code>Program.cs</code>. Puedes renombrar <code>Form1</code> haciendo clic derecho → Renombrar.</div>
+      <div class="ms-warn">Si aparece una ventana vacía al presionar F5 — ¡perfecto! El proyecto está bien configurado. Si hay error de compilación, verifica que el <code>.csproj</code> tenga <code>&lt;UseWindowsForms&gt;true&lt;/UseWindowsForms&gt;</code>.</div>
+    </div>
+  </div>
+
+  <div class="manual-step">
+    <div class="ms-header">
+      <div class="ms-num">2</div>
+      <div class="ms-title">Organizar la estructura de carpetas</div>
+      <div class="ms-badge">Explorador de Soluciones</div>
+    </div>
+    <div class="ms-body">
+      <p>En el Explorador de Soluciones, clic derecho en el proyecto → <strong>Agregar → Nueva carpeta</strong>. Crear estas carpetas:</p>
+      <div class="code-block">
+        <div class="code-hdr"><span class="code-lang">Estructura de carpetas del proyecto</span></div>
+        <pre><span class="cm">AlmacenesWinForms/
+├── Program.cs              ← punto de entrada (ya existe)
+├── Forms/                  ← carpeta para los formularios
+│   ├── FrmPrincipal.cs     ← menú principal
+│   └── FrmInventario.cs    ← formulario de inventario
+├── Modelos/                ← copiar desde AlmacenesConsola
+│   └── Producto.cs
+└── Servicios/              ← copiar desde AlmacenesConsola
+    └── ProductoService.cs</span></pre>
+      </div>
+      <div class="ms-tip">Los archivos de <code>Modelos/</code> y <code>Servicios/</code> son los <strong>mismos</strong> que creaste en la consola. Cópialos o agrégalos como referencia al proyecto. La lógica de negocio no cambia — solo cambia la interfaz.</div>
+    </div>
+  </div>
+
+  <div class="manual-step">
+    <div class="ms-header">
+      <div class="ms-num">3</div>
+      <div class="ms-title">Crear FrmPrincipal — el menú principal</div>
+      <div class="ms-badge">Forms/FrmPrincipal.cs</div>
+    </div>
+    <div class="ms-body">
+      <p>Clic derecho en la carpeta <code>Forms/</code> → <strong>Agregar → Clase</strong> → nombre: <code>FrmPrincipal.cs</code>. Pegar el siguiente código:</p>
+      <div class="code-block">
+        <div class="code-hdr"><span class="code-lang">C# — FrmPrincipal.cs mínimo para empezar</span><button class="copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <pre><span class="kw">namespace</span> AlmacenesWinForms.Forms;
+
+<span class="kw">public class</span> <span class="ty">FrmPrincipal</span> : <span class="ty">Form</span>
+{
+    <span class="cm">// Servicio compartido entre todos los formularios</span>
+    <span class="kw">private readonly</span> <span class="ty">ProductoService</span> _svc = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="ty">FrmPrincipal</span>()
+    {
+        Text          = <span class="st">"Almacenes Por Ahí — Menú Principal"</span>;
+        Size          = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">420</span>, <span class="nm">300</span>);
+        StartPosition = <span class="ty">FormStartPosition</span>.CenterScreen;
+        BackColor     = <span class="ty">Color</span>.FromArgb(<span class="nm">26</span>, <span class="nm">28</span>, <span class="nm">30</span>);
+        <span class="fn">BuildUI</span>();
+    }
+
+    <span class="kw">private void</span> <span class="fn">BuildUI</span>()
+    {
+        <span class="ty">Label</span> lbl = <span class="kw">new</span> <span class="ty">Label</span>
+        {
+            Text      = <span class="st">"ALMACENES POR AHÍ"</span>,
+            Location  = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">0</span>, <span class="nm">30</span>),
+            Size      = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">400</span>, <span class="nm">30</span>),
+            TextAlign = <span class="ty">ContentAlignment</span>.MiddleCenter,
+            Font      = <span class="kw">new</span> <span class="ty">Font</span>(<span class="st">"Segoe UI"</span>, <span class="nm">16</span>, <span class="ty">FontStyle</span>.Bold),
+            ForeColor = <span class="ty">Color</span>.FromArgb(<span class="nm">91</span>, <span class="nm">173</span>, <span class="nm">190</span>)
+        };
+        Controls.<span class="fn">Add</span>(lbl);
+
+        <span class="ty">Button</span> btnInv = <span class="kw">new</span> <span class="ty">Button</span>
+        {
+            Text      = <span class="st">"📦  Inventario de Productos"</span>,
+            Location  = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">110</span>, <span class="nm">90</span>),
+            Size      = <span class="kw">new</span> <span class="ty">Size</span>(<span class="nm">200</span>, <span class="nm">44</span>),
+            BackColor = <span class="ty">Color</span>.FromArgb(<span class="nm">42</span>, <span class="nm">45</span>, <span class="nm">51</span>),
+            ForeColor = <span class="ty">Color</span>.White,
+            FlatStyle = <span class="ty">FlatStyle</span>.Flat
+        };
+        btnInv.Click += (<span class="ty">s</span>, <span class="ty">e</span>) => { <span class="kw">using var</span> f = <span class="kw">new</span> <span class="ty">FrmInventario</span>(_svc); f.<span class="fn">ShowDialog</span>(<span class="kw">this</span>); };
+        Controls.<span class="fn">Add</span>(btnInv);
+    }
+}</pre>
+      </div>
+      <div class="ms-warn">Después de crear <code>FrmPrincipal</code>, actualiza <code>Program.cs</code> para que abra este form en vez de <code>Form1</code>: <code>Application.Run(new FrmPrincipal());</code></div>
+    </div>
+  </div>
+
+  <div class="manual-step">
+    <div class="ms-header">
+      <div class="ms-num">4</div>
+      <div class="ms-title">Crear FrmInventario — la tabla de productos</div>
+      <div class="ms-badge">Forms/FrmInventario.cs</div>
+    </div>
+    <div class="ms-body">
+      <p>Clic derecho en <code>Forms/</code> → <strong>Agregar → Clase</strong> → <code>FrmInventario.cs</code>. El código completo está en la sección anterior "Formulario Completo".</p>
+      <div class="ms-vs">Presiona <span class="kb">F5</span> para ejecutar. Aparece FrmPrincipal. Haz clic en "Inventario" → se abre FrmInventario con la tabla vacía.</div>
+      <div class="ms-tip">Si el DataGridView no muestra datos, verifica que <code>CargarGrid()</code> se llama en el constructor DESPUÉS de <code>BuildUI()</code>. El orden importa.</div>
+    </div>
+  </div>
+
+  <div class="manual-step">
+    <div class="ms-header">
+      <div class="ms-num">5</div>
+      <div class="ms-title">Probar agregar un producto</div>
+      <div class="ms-badge">Prueba en ejecución</div>
+    </div>
+    <div class="ms-body">
+      <p>Con la app corriendo, en FrmInventario:</p>
+      <ul class="lst">
+        <li>Escribe <strong>"Polera básica"</strong> en el campo Nombre</li>
+        <li>Escribe <strong>"9990"</strong> en Precio</li>
+        <li>Sube Stock a <strong>120</strong> con las flechas</li>
+        <li>Haz clic en <strong>"➕ Agregar"</strong></li>
+        <li>El producto debe aparecer en la tabla inmediatamente</li>
+      </ul>
+      <div class="ms-tip">Prueba también los casos de error: clic en Agregar con Nombre vacío → debe aparecer el MessageBox de validación. Precio "abc" → debe aparecer otro MessageBox.</div>
+      <div class="ms-warn">Si el producto no aparece en la tabla, el problema casi siempre es que <code>CargarGrid()</code> no se llamó después de <code>_svc.Agregar()</code>. Revisa el método <code>BtnAgregar_Click</code>.</div>
+    </div>
+  </div>
+
+  <div class="manual-step">
+    <div class="ms-header">
+      <div class="ms-num">6</div>
+      <div class="ms-title">Errores frecuentes y cómo resolverlos</div>
+      <div class="ms-badge">Troubleshooting</div>
+    </div>
+    <div class="ms-body">
+      <div class="grid2">
+        <div class="box ro">
+          <div class="box-lbl">❌ El control no aparece en la ventana</div>
+          <div class="box-body">Falta <code>Controls.Add(miControl)</code>. Puedes crear el control, configurarlo, pero si no lo agregas al formulario con <code>Controls.Add()</code> no será visible.</div>
+        </div>
+        <div class="box ro">
+          <div class="box-lbl">❌ NullReferenceException al cargar</div>
+          <div class="box-body">El orden en el constructor importa: primero <code>BuildUI()</code> (que asigna los controles) y después <code>CargarGrid()</code> (que los usa). Si está al revés, los controles son null.</div>
+        </div>
+        <div class="box ro">
+          <div class="box-lbl">❌ Error de compilación en .csproj</div>
+          <div class="box-body">Verifica que <code>&lt;UseWindowsForms&gt;true&lt;/UseWindowsForms&gt;</code> esté en el <code>.csproj</code> y que el <code>TargetFramework</code> sea <code>net8.0-windows</code> (con <strong>-windows</strong>).</div>
+        </div>
+        <div class="box ro">
+          <div class="box-lbl">❌ decimal.Parse lanza excepción</div>
+          <div class="box-body">Nunca usar <code>decimal.Parse(textBox.Text)</code> — si el usuario escribe texto el programa se cae. Siempre usar <code>decimal.TryParse(textBox.Text, out decimal valor)</code>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══ ENCARGO 1 ═══ -->
+<section id="sec-encargo" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">📝 Encargo 1 — Evaluación Semana 3</h2>
+  <p class="s-sub">Se evalúa en laboratorio esta semana. Ponderación: 10% de la nota de prácticas.</p>
+
+  <div class="encargo-box">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="font-size:28px">📋</div>
+      <div>
+        <div style="font-family:'Lora',serif;font-size:20px;font-weight:700;color:var(--text)">Encargo 1 — Aplicación de Consola C#</div>
+        <div style="font-size:14px;color:var(--amber);font-weight:700;margin-top:2px">Ponderación: 10% · Instrumento: Rúbrica · Contexto: Laboratorio</div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="box tl">
+        <div class="box-lbl">Evidencia</div>
+        <div class="box-body">Aplicación de <strong>consola</strong> de baja complejidad sobre el caso Almacenes Por Ahí. Ejecuta y explicas oralmente al docente.</div>
+      </div>
+      <div class="box sg">
+        <div class="box-lbl">Requisitos mínimos</div>
+        <div class="box-body">
+          <ul class="lst">
+            <li>Menú funcional con <code>while + switch</code></li>
+            <li>Al menos 2 módulos operativos (ej: Inventario y Clientes)</li>
+            <li>Al menos un ciclo (<code>foreach</code> o <code>for</code>)</li>
+            <li>Al menos una colección (<code>List&lt;T&gt;</code> o <code>Dictionary</code>)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="box am" style="margin-top:14px">
+      <div class="box-lbl">⚠️ Importante</div>
+      <div class="box-body">El Encargo 1 es la <strong>app de consola</strong> (Semanas 1-2), no la interfaz gráfica. La pantalla negra con menú. La interfaz WinForms corresponde al Encargo 2 (Semana 6, 20%).</div>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="box tl">
+      <div class="box-lbl">✅ Criterio 1</div>
+      <div class="box-body">Programa apps de consola usando C# para resolver problemas de baja complejidad. (PROG-3)</div>
+    </div>
+    <div class="box sg">
+      <div class="box-lbl">✅ Criterio 2</div>
+      <div class="box-body">Aplica estándares acordados: nombre de variables en camelCase, clases en PascalCase, comentarios en el código.</div>
+    </div>
+    <div class="box am">
+      <div class="box-lbl">✅ Criterio 3</div>
+      <div class="box-body">Delimita el problema considerando los tipos de variables involucradas y los requerimientos dados.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ QUIZ ═══ -->
+<section id="sec-quiz" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🧠 Quiz — Windows Forms</h2>
+  <p class="s-sub">4 preguntas · +25 XP por acierto · +50 XP si aciertas todas.</p>
+
+  <div id="quiz-container">
+    <div class="quiz-card" id="q1">
+      <div class="qc-head"><div class="qc-num">PREGUNTA 1 de 4</div><div class="qc-q">¿Qué pasa si creas un <code>Button</code> en el constructor de un formulario pero <em>no</em> llamas a <code>Controls.Add(btn)</code>?</div></div>
+      <div class="qc-opts">
+        <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ El botón se crea en memoria pero es invisible. Falta Controls.Add() para que aparezca.')">A) El botón aparece automáticamente</button>
+        <button class="qc-opt" onclick="answer(this,'q1','correct','✅ Correcto — el objeto existe en memoria RAM pero no es visible en la ventana. Controls.Add() lo registra en el formulario y lo hace visible.')">B) El botón existe en memoria pero no aparece en la ventana</button>
+        <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ No hay error de compilación — el error es en tiempo de ejecución: el botón no es visible.')">C) Hay un error de compilación</button>
+        <button class="qc-opt" onclick="answer(this,'q1','wrong','❌ No hay excepción — simplemente el botón no aparece.')">D) Se lanza una NullReferenceException</button>
+      </div>
+      <div class="qc-fb" id="fb-q1"></div>
+    </div>
+
+    <div class="quiz-card" id="q2">
+      <div class="qc-head"><div class="qc-num">PREGUNTA 2 de 4</div><div class="qc-q">¿Cuál es la diferencia entre <code>ShowDialog()</code> y <code>Show()</code> al abrir un formulario hijo?</div></div>
+      <div class="qc-opts">
+        <button class="qc-opt" onclick="answer(this,'q2','correct','✅ Correcto — ShowDialog() bloquea el padre (el usuario no puede interactuar con él) hasta que se cierre el hijo. Show() deja ambas ventanas activas.')">A) ShowDialog() bloquea el formulario padre — Show() deja ambos activos</button>
+        <button class="qc-opt" onclick="answer(this,'q2','wrong','❌ Al revés: ShowDialog() bloquea al padre, Show() lo deja activo.')">B) Show() bloquea el formulario padre — ShowDialog() los deja activos</button>
+        <button class="qc-opt" onclick="answer(this,'q2','wrong','❌ Son distintos métodos con comportamientos opuestos.')">C) Son exactamente iguales — solo cambia el nombre</button>
+        <button class="qc-opt" onclick="answer(this,'q2','wrong','❌ Show() no cierra nada — solo abre la ventana hija sin bloquear al padre.')">D) Show() cierra el formulario padre antes de abrir el hijo</button>
+      </div>
+      <div class="qc-fb" id="fb-q2"></div>
+    </div>
+
+    <div class="quiz-card" id="q3">
+      <div class="qc-head"><div class="qc-num">PREGUNTA 3 de 4</div><div class="qc-q">En el constructor de <code>FrmInventario</code>, ¿por qué se llama primero a <code>BuildUI()</code> y después a <code>CargarGrid()</code>?</div></div>
+      <div class="qc-opts">
+        <button class="qc-opt" onclick="answer(this,'q3','wrong','❌ No es por rendimiento — es por dependencia: CargarGrid() usa _grid que se crea en BuildUI().')">A) Por razones de rendimiento</button>
+        <button class="qc-opt" onclick="answer(this,'q3','correct','✅ Correcto — CargarGrid() usa _grid (el DataGridView). Si se llama antes de BuildUI(), _grid es null y se lanza NullReferenceException.')">B) Porque CargarGrid() usa el DataGridView (_grid) que se crea en BuildUI()</button>
+        <button class="qc-opt" onclick="answer(this,'q3','wrong','❌ El orden no es una convención arbitraria — tiene una razón técnica de dependencia.')">C) Es una convención de nomenclatura sin efecto funcional</button>
+        <button class="qc-opt" onclick="answer(this,'q3','wrong','❌ No tienen relación con la herencia de Form — son métodos privados de la clase.')">D) Porque Form requiere ese orden para la herencia</button>
+      </div>
+      <div class="qc-fb" id="fb-q3"></div>
+    </div>
+
+    <div class="quiz-card" id="q4">
+      <div class="qc-head"><div class="qc-num">PREGUNTA 4 de 4</div><div class="qc-q">Un TextBox tiene el texto "abc". El usuario quería ingresar el precio 9990. ¿Qué pasa si usas <code>decimal.Parse(txtPrecio.Text)</code>?</div></div>
+      <div class="qc-opts">
+        <button class="qc-opt" onclick="answer(this,'q4','wrong','❌ Parse() no retorna 0 — lanza una excepción FormatException que detiene el programa.')">A) Retorna 0 automáticamente</button>
+        <button class="qc-opt" onclick="answer(this,'q4','wrong','❌ Parse() no retorna false — es TryParse() el que retorna un bool.')">B) Retorna false</button>
+        <button class="qc-opt" onclick="answer(this,'q4','correct','✅ Correcto — decimal.Parse() lanza FormatException si el texto no es número. Siempre usar TryParse() en TextBox para manejar el error sin que el programa se caiga.')">C) Lanza una excepción FormatException — el programa se cae</button>
+        <button class="qc-opt" onclick="answer(this,'q4','wrong','❌ Parse() no convierte texto arbitrario a número — lanza excepción si no es parseable.')">D) Convierte "abc" a su valor ASCII</button>
+      </div>
+      <div class="qc-fb" id="fb-q4"></div>
+    </div>
+  </div>
+
+  <div id="quiz-result" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:22px;text-align:center">
+    <div style="font-size:34px;margin-bottom:9px" id="quiz-emoji">🎉</div>
+    <div style="font-family:'Lora',serif;font-size:20px;color:var(--text);margin-bottom:5px" id="quiz-msg"></div>
+    <div style="font-size:14px;color:var(--text2)" id="quiz-detail"></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ GLOSARIO ═══ -->
+<section id="sec-glos" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">📖 Glosario — Windows Forms</h2>
+  <p class="s-sub">Busca cualquier término técnico de la clase. +2 XP por cada término explorado.</p>
+  <input type="text" class="gl-search" placeholder="🔍 Form, Control, evento, Click, DataGridView..." oninput="filterGloss(this.value)" id="glSearch">
+  <div class="gl-filters">
+    <button class="gf on" onclick="filterCat('all',this)">Todos</button>
+    <button class="gf" onclick="filterCat('wf',this)">WinForms</button>
+    <button class="gf" onclick="filterCat('cs',this)">C#</button>
+    <button class="gf" onclick="filterCat('vs',this)">Visual Studio</button>
+    <button class="gf" onclick="filterCat('prev',this)">Java comparado</button>
+  </div>
+  <div id="glos-list">
+
+    <div class="gl-item" data-cat="wf" data-terms="form formulario ventana window clase hereda">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Form — La Ventana</span><span class="gi-cat wf">WinForms</span></div>
+      <div class="gi-body"><p><strong>Técnica:</strong> Clase de System.Windows.Forms que representa una ventana del sistema operativo. Hereda propiedades como <code>Text</code> (título), <code>Size</code>, <code>BackColor</code>.</p><p><strong>Simple:</strong> Cada ventana que ve el usuario es un objeto de tipo Form. Tu clase la hereda: <code>class FrmMiVentana : Form</code>.</p><p><strong>Java:</strong> Equivale a extender <code>JFrame</code> en Swing.</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="wf" data-terms="control button textbox label datagridview agregar controls add">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Control — Elemento Visual</span><span class="gi-cat wf">WinForms</span></div>
+      <div class="gi-body"><p><strong>Técnica:</strong> Clase base de todos los elementos visuales (Button, TextBox, Label, etc.). Tiene propiedades <code>Location</code>, <code>Size</code>, <code>Visible</code> y el método <code>Focus()</code>.</p><p><strong>Simple:</strong> Cualquier cosa que ves en la ventana es un Control. Para que aparezca debes llamar <code>Controls.Add(miControl)</code> — sin eso no existe visualmente.</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="wf" data-terms="evento event click textchanged suscribir delegado += manejador handler">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Evento — Click y manejadores</span><span class="gi-cat wf">WinForms</span></div>
+      <div class="gi-body"><p><strong>Técnica:</strong> Mecanismo basado en delegados. <code>btn.Click += Metodo</code> suscribe el método al evento. Cuando ocurre el Click, el runtime invoca todos los métodos suscritos.</p><p><strong>Simple:</strong> Es como poner un timbre: <code>+=</code> conecta el timbre (evento) con la acción (método). Cuando el usuario hace clic → tu método se ejecuta automáticamente.</p><p><strong>Java:</strong> Equivale a <code>btn.addActionListener(e -> miMetodo());</code></p></div>
+    </div>
+
+    <div class="gl-item" data-cat="wf" data-terms="showdialog show abrir ventana hija modal bloquear">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">ShowDialog() vs Show()</span><span class="gi-cat wf">WinForms</span></div>
+      <div class="gi-body"><p><strong>ShowDialog():</strong> Abre la ventana hija en modo modal — bloquea al padre. El código del padre espera hasta que se cierre la hija. Usar para flujos de negocio lineales.</p><p><strong>Show():</strong> Abre la ventana hija sin bloquear — el padre sigue activo. Ambas ventanas son independientes.</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="wf" data-terms="datagridview tabla rows add clear columnas grid">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">DataGridView — Tabla Visual</span><span class="gi-cat wf">WinForms</span></div>
+      <div class="gi-body"><p><strong>Técnica:</strong> Control de WinForms que muestra datos en filas y columnas. Se configura con <code>Columns.Add()</code> y se llena con <code>Rows.Add()</code>. <code>Rows.Clear()</code> borra todas las filas.</p><p><strong>Simple:</strong> Es como una tabla de Excel dentro de tu app. Cada <code>Rows.Add(v1,v2,v3)</code> agrega una fila con 3 celdas.</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="wf" data-terms="messagebox show dialogo emergente ok warning error validacion">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">MessageBox.Show() — Diálogo de alerta</span><span class="gi-cat wf">WinForms</span></div>
+      <div class="gi-body"><p><strong>Técnica:</strong> Método estático de la clase MessageBox. No se agrega a Controls — se llama directamente. Bloquea la ejecución hasta que el usuario hace clic en el botón del diálogo.</p><p><strong>Simple:</strong> El cuadrito que aparece con un mensaje y un botón OK. Se usa para validaciones y errores. No necesitas crear un objeto — se llama directo con <code>MessageBox.Show("mensaje")</code>.</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="cs" data-terms="null! exclamacion nullable operador asignacion diferida">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">null! — Supresión de null</span><span class="gi-cat cs">C#</span></div>
+      <div class="gi-body"><p><strong>Técnica:</strong> El operador <code>!</code> (null-forgiving) suprime la advertencia del compilador cuando una variable nullable se usa en un contexto no-nullable. Se usa cuando el desarrollador sabe que la variable se asignará antes de usarse.</p><p><strong>Simple:</strong> <code>private TextBox _txt = null!;</code> le dice al compilador: "Sé que ahora es null, pero te prometo que lo asignaré en BuildUI() antes de usarlo". Sin el <code>!</code>, el compilador daría una advertencia.</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="vs" data-terms="f5 ctrl f5 depurador ejecutar compilar ctrl shift b">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">Atajos de Visual Studio — WinForms</span><span class="gi-cat vs">Visual Studio</span></div>
+      <div class="gi-body"><p><span class="kb">F5</span> — Ejecutar con depurador (puedes poner breakpoints)<br><span class="kb">Ctrl+F5</span> — Ejecutar sin depurador (más rápido)<br><span class="kb">Ctrl+Shift+B</span> — Solo compilar sin ejecutar<br><span class="kb">F9</span> — Activar/desactivar breakpoint en la línea actual<br><span class="kb">F10</span> — Paso a paso (sin entrar en métodos)<br><span class="kb">F11</span> — Paso a paso (entrando en métodos)</p></div>
+    </div>
+
+    <div class="gl-item" data-cat="prev" data-terms="java jframe jbutton jlabel jtextfield swing comparacion">
+      <div class="gi-head" onclick="toggleGloss(this)"><span class="gi-term">WinForms vs Swing (Java) — comparación</span><span class="gi-cat prev">Java comparado</span></div>
+      <div class="gi-body"><p><strong>JFrame</strong> → <strong>Form</strong><br><strong>JButton</strong> → <strong>Button</strong><br><strong>JTextField</strong> → <strong>TextBox</strong><br><strong>JLabel</strong> → <strong>Label</strong><br><strong>JTable</strong> → <strong>DataGridView</strong><br><strong>JComboBox</strong> → <strong>ComboBox</strong><br><strong>addActionListener</strong> → <code>btn.Click += Metodo</code><br><strong>setVisible(true)</strong> → <code>Show()</code> o <code>ShowDialog()</code></p></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ═══ RESUMEN ═══ -->
+<section id="sec-sum" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">✅ Resumen de Objetivos</h2>
+  <p class="s-sub">¿Qué cubrimos hoy?</p>
+  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Crear proyecto Windows Forms en Visual Studio</div><div class="os-how">Nuevo proyecto → Aplicación WinForms → .NET 8. Verificar <code>UseWindowsForms=true</code> en el .csproj. Ejecutar con F5.</div></div></div>
+  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Usar controles: Label, TextBox, Button, DataGridView</div><div class="os-how">Crear por código con <code>new Button()</code>, configurar propiedades, agregar con <code>Controls.Add()</code>. El <code>Controls.Add()</code> es obligatorio para que el control sea visible.</div></div></div>
+  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Conectar eventos Click con métodos manejadores</div><div class="os-how"><code>btn.Click += BtnAgregar_Click;</code> — el operador <code>+=</code> suscribe el método. El método siempre tiene la firma <code>(object? sender, EventArgs e)</code>. Validar con TryParse antes de procesar.</div></div></div>
+  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Reutilizar servicios de la consola en la UI gráfica</div><div class="os-how">El mismo <code>ProductoService</code> de la consola se inyecta al formulario por el constructor. La lógica de negocio no se duplica — solo cambia la interfaz.</div></div></div>
+  <div class="os-item"><div class="os-dot">✓</div><div><div class="os-obj">Navegar entre formularios con ShowDialog()</div><div class="os-how"><code>using var frm = new FrmInventario(_svc); frm.ShowDialog(this);</code> — Abre la ventana hija bloqueando al padre. Usar <code>using</code> para liberar recursos al cerrarse.</div></div></div>
+
+  <div class="box sk" style="margin-top:18px">
+    <div class="box-lbl">📅 Próxima clase — Semana 4</div>
+    <div class="box-body"><strong>Entity Framework Core — Guardar y Eliminar.</strong> Conectaremos la aplicación a MySQL Workbench. Los datos dejarán de estar solo en memoria (List) y se guardarán en una base de datos real. Semana 4 usa: ORM, DbContext, Migrations, INSERT y DELETE.</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ PLENARIO ═══ -->
+<section id="sec-plen" class="scroll-sec">
+<div class="scroll-inner">
+  <h2 class="s-title">🎙️ Plenario Metacognitivo</h2>
+  <p class="s-sub">Reflexión de cierre. Solo preguntas — el debate es oral.</p>
+  <div class="plen-q"><div class="plen-n">PREGUNTA 1</div>¿Qué diferencia hay entre escribir código en la consola y programar un formulario Windows Forms? ¿Qué cambió en cómo piensas el programa?</div>
+  <div class="plen-q"><div class="plen-n">PREGUNTA 2</div>¿Por qué el mismo servicio ProductoService sirve tanto para la consola como para la ventana gráfica? ¿Qué principio de diseño hay detrás?</div>
+  <div class="plen-q"><div class="plen-n">PREGUNTA 3</div>Si olvidaras llamar a <code>Controls.Add(btn)</code> después de crear un botón, ¿qué pasaría? ¿Cómo lo detectarías?</div>
+  <div class="plen-q"><div class="plen-n">PREGUNTA 4</div>¿Por qué usamos <code>decimal.TryParse()</code> en lugar de <code>decimal.Parse()</code> para leer el precio del TextBox?</div>
+
+  <div class="sec-title" style="margin-top:24px"><span>🚦</span>Semáforo Colectivo</div>
+  <p style="font-size:15px;color:var(--text2);margin-bottom:12px">¿Cómo salgo de esta clase?</p>
+  <div class="sem">
+    <button class="sem-btn ve" onclick="semSel(this,'ve')">🟢 Lo entendí — puedo crear un form</button>
+    <button class="sem-btn am" onclick="semSel(this,'am')">🟡 Entendí los conceptos, me falta práctica</button>
+    <button class="sem-btn ro" onclick="semSel(this,'ro')">🔴 Necesito repasar antes de la semana 4</button>
+  </div>
+  <div id="sem-res" style="margin-top:12px;display:none"></div>
+
+  <div style="margin-top:32px;text-align:center;padding:26px;background:var(--bg2);border:1px solid var(--border);border-radius:13px">
+    <div style="font-size:28px;margin-bottom:8px">🪟</div>
+    <div style="font-family:'Lora',serif;font-size:18px;color:var(--text);margin-bottom:6px">¡Semana 3 completada!</div>
+    <div style="font-size:15px;color:var(--text2);max-width:520px;margin:0 auto">Pasaste de la consola de texto a ventanas reales. La semana 4 conecta todo a MySQL — los datos dejarán de vivir en RAM y se guardarán en una base de datos real.</div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  IEI-089 · Programación .NET · Semana 3 | Santo Tomás |
+  Hugon, J. (2022) C# 10 Desarrolle aplicaciones Windows con Visual Studio 2022 · Microsoft Learn (2024)
+</footer>
+
+<script>
+let xp=0,qCorr=0,qAns=0;
+const seen=new Set();
+function addXP(n){xp=Math.min(xp+n,600);document.getElementById('xp-badge').textContent=xp+' XP';document.getElementById('xp-fill').style.width=(xp/600*100)+'%'}
+
+// ─── HAMBURGER MENU ───────────────────────────────────────
+function toggleMenu(){
+  const open=document.getElementById('menuDrawer').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open',open);
+  document.getElementById('hamburger').classList.toggle('open',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeMenu(){
+  document.getElementById('menuDrawer').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow='';
+}
+// Cerrar con tecla Escape
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeMenu(); });
+
+// ─── ACTIVE LINK on scroll ────────────────────────────────
+const secs=[...document.querySelectorAll('.scroll-sec')];
+const dlinks=[...document.querySelectorAll('.dnav-link')];
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      dlinks.forEach(l=>l.classList.remove('active'));
+      const al=document.querySelector(`.dnav-link[href="#${id}"]`);
+      if(al)al.classList.add('active');
+      if(!seen.has(id)){seen.add(id);addXP(3)}
+    }
+  })
+},{rootMargin:'-25% 0px -65% 0px'});
+secs.forEach(s=>io.observe(s));
+
+// ─── OBJECTIVES ──────────────────────────────────────────
+function toggleObj(el){
+  if(el.classList.toggle('done')){el.querySelector('.obj-chk').textContent='✓';addXP(5);}
+  else{xp=Math.max(0,xp-5);document.getElementById('xp-badge').textContent=xp+' XP';document.getElementById('xp-fill').style.width=(xp/600*100)+'%';}
+}
+
+// ─── QUIZ ─────────────────────────────────────────────────
+function answer(btn,qId,res,fb){
+  const card=document.getElementById(qId);
+  if(card.dataset.ans)return;
+  card.dataset.ans='1';
+  card.querySelectorAll('.qc-opt').forEach(o=>o.disabled=true);
+  btn.classList.add(res);
+  const f=document.getElementById('fb-'+qId);
+  f.style.display='block';f.style.color=res==='correct'?'var(--sage)':'var(--rose)';f.textContent=fb;
+  if(res==='correct'){qCorr++;addXP(25)}
+  qAns++;
+  if(qAns===4){setTimeout(()=>{
+    const r=document.getElementById('quiz-result');r.style.display='block';
+    if(qCorr===4){addXP(50);document.getElementById('quiz-emoji').textContent='🏆';document.getElementById('quiz-msg').textContent='¡Quiz perfecto! +150 XP';document.getElementById('quiz-detail').textContent='4/4 correctas · Dominas WinForms';}
+    else{document.getElementById('quiz-emoji').textContent=qCorr>=3?'🎯':'📖';document.getElementById('quiz-msg').textContent=qCorr>=3?'¡Muy bien!':'Sigue practicando';document.getElementById('quiz-detail').textContent=qCorr+'/4 · Revisa el Manual del Alumno';}
+  },600)}
+}
+
+// ─── GLOSSARY ─────────────────────────────────────────────
+let curCat='all';
+function filterGloss(q){
+  const t=q.toLowerCase();
+  document.querySelectorAll('.gl-item').forEach(item=>{
+    const ok1=curCat==='all'||item.dataset.cat===curCat;
+    const ok2=!t||item.querySelector('.gi-term').textContent.toLowerCase().includes(t)||(item.dataset.terms||'').toLowerCase().includes(t);
+    item.style.display=ok1&&ok2?'':'none';
+  });
+}
+function filterCat(cat,btn){
+  curCat=cat;document.querySelectorAll('.gf').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  filterGloss(document.getElementById('glSearch').value);
+}
+function toggleGloss(head){
+  const body=head.nextElementSibling;
+  if(body.classList.toggle('op'))addXP(2);
+}
+
+// ─── SEMAPHORE ────────────────────────────────────────────
+function semSel(btn,c){
+  document.querySelectorAll('.sem-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  const msgs={ve:'✅ Listo para la Semana 4 — Entity Framework y MySQL.',am:'🟡 Practica el Manual del Alumno antes de la próxima clase.',ro:'🔴 Habla con el docente. Revisa la sección Errores frecuentes.'};
+  const r=document.getElementById('sem-res');
+  r.style.cssText='display:block;margin-top:12px;padding:12px 16px;border-radius:var(--r);font-size:15px;background:var(--bg3);color:var(--text2)';
+  r.textContent=msgs[c];
+}
+
+// ─── COPY CODE ────────────────────────────────────────────
+function copyCode(btn){
+  const pre=btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(()=>{btn.textContent='✓ Copiado';setTimeout(()=>btn.textContent='Copiar',1800);addXP(3)});
+}
+</script>
+</body>
+</html>
