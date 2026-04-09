@@ -25,29 +25,7 @@ body{font-family:'DM Sans',sans-serif;font-size:18px;line-height:1.8;color:var(-
 ::selection{background:var(--teal);color:#fff}
 
 /* ─── TOP BAR ────────────────────────────────────────────────── */
-#xp-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--bg3);z-index:1000}
-#xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sage),var(--teal),var(--plum));transition:width .6s ease}
-#xp-badge{flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:5px}
-#xp-badge::before{content:'⚡';font-size:12px}
-
 /* ─── STICKY NAV ─────────────────────────────────────────────── */
-.topnav{position:fixed;top:3px;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-bottom:1px solid var(--border);z-index:200;display:flex;align-items:center;padding:0 14px;gap:10px}
-.nav-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.nav-brand{display:flex;align-items:center;gap:5px;text-decoration:none}
-.nav-course{font-family:'Lora',serif;font-size:14px;font-weight:700;color:var(--teal)}
-.nav-sep{color:var(--text3);font-size:12px}
-.nav-wk{font-size:11px;font-weight:700;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:10px}
-.nav-title{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
-#xp-badge{flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--sage)}
-.topnav::-webkit-scrollbar{display:none}
-.nav-home{display:flex;align-items:center;gap:8px;padding:0 16px 0 4px;border-right:1px solid var(--border);margin-right:8px;flex-shrink:0;text-decoration:none}
-.nav-home-course{font-family:'Lora',serif;font-size:14px;font-weight:700;color:var(--teal);white-space:nowrap}
-.nav-home-week{font-size:11px;color:var(--text3);white-space:nowrap}
-.nlink{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all .18s;border:1px solid transparent}
-.nlink:hover{background:rgba(255,255,255,.05);color:var(--text)}
-.nlink.active{background:var(--teal-bg);color:var(--teal);border-color:rgba(91,173,190,.22)}
-.nicon{font-size:13px}
-
 /* ─── SCROLL SECTIONS ────────────────────────────────────────── */
 .scroll-sec{padding-top:calc(var(--nav-h) + 3px);min-height:100vh;scroll-margin-top:calc(var(--nav-h) + 3px)}
 .scroll-sec:first-of-type{padding-top:calc(var(--nav-h) + 3px)}
@@ -258,7 +236,6 @@ ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:780px){
-  .topnav{padding:0 8px}
   .scroll-inner{padding:36px 18px 56px}
   .grid2,.grid3{grid-template-columns:1fr}
   .four-cards{grid-template-columns:1fr 1fr}
@@ -274,109 +251,91 @@ ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
   .mod-grid{grid-template-columns:1fr}
 }
 
-/* ─── HAMBURGER NAV ─── */
-.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:1px solid rgba(255,255,255,.14);border-radius:8px;cursor:pointer;padding:7px;flex-shrink:0;transition:background .18s}
-.hamburger:hover{background:rgba(91,173,190,.11)}
+/* HAMBURGER NAV */
+#xp-bar{position:fixed;top:0;left:0;right:0;height:3px;background:var(--bg3);z-index:1000}
+#xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--sage),var(--teal),var(--plum));transition:width .6s}
+.topnav{position:fixed;top:3px;left:0;right:0;height:56px;background:var(--bg2);border-bottom:1px solid var(--border);z-index:200;display:flex;align-items:center;padding:0 14px;gap:10px}
+.nav-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.nav-brand{display:flex;align-items:center;gap:5px;text-decoration:none}
+.nav-course{font-family:'Lora',serif;font-size:14px;font-weight:700;color:var(--teal)}
+.nav-sep{font-size:12px;color:var(--text3)}
+.nav-wk{font-size:11px;font-weight:700;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:10px;white-space:nowrap}
+.nav-title{flex:1;text-align:center;font-size:13px;font-weight:600;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
+#xp-badge{flex-shrink:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:4px}
+.hamburger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;background:none;border:1px solid var(--border2);border-radius:8px;cursor:pointer;padding:7px;flex-shrink:0;transition:background .18s}
+.hamburger:hover{background:var(--teal-bg)}
 .hamburger span{display:block;height:2px;background:var(--text2);border-radius:2px;transition:all .25s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s}
 .menu-overlay.open{opacity:1;pointer-events:all}
-.menu-drawer{position:fixed;top:0;left:0;bottom:0;width:300px;background:var(--bg2);border-right:1px solid rgba(255,255,255,.14);z-index:500;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.menu-drawer{position:fixed;top:0;left:0;bottom:0;width:300px;background:var(--bg2);border-right:1px solid var(--border2);z-index:500;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto}
 .menu-drawer.open{transform:translateX(0)}
-.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;background:var(--bg3)}
+.drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg3)}
 .drawer-title{font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--text)}
-.drawer-close{background:none;border:1px solid rgba(255,255,255,.14);border-radius:6px;color:var(--text3);cursor:pointer;width:30px;height:30px;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .18s}
-.drawer-close:hover{background:rgba(196,123,123,.11);color:#c47b7b;border-color:#c47b7b}
-.drawer-week{padding:10px 18px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:rgba(91,173,190,.11);border-bottom:1px solid rgba(255,255,255,.07)}
-.drawer-nav{flex:1;padding:8px 0}
+.drawer-close{background:none;border:1px solid var(--border2);border-radius:6px;color:var(--text3);cursor:pointer;width:30px;height:30px;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.drawer-close:hover{background:var(--rose-bg);color:var(--rose);border-color:var(--rose)}
+.drawer-week{padding:10px 18px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:var(--teal-bg);border-bottom:1px solid var(--border)}
+.drawer-nav{flex:1;padding:8px 0;overflow-y:auto}
 .dnav-link{display:flex;align-items:center;gap:12px;padding:11px 18px;text-decoration:none;color:var(--text2);font-size:15px;font-weight:500;transition:all .18s;border-left:3px solid transparent}
 .dnav-link:hover{background:var(--bg3);color:var(--text);border-left-color:var(--teal)}
-.dnav-link.active{background:rgba(91,173,190,.11);color:var(--teal);border-left-color:var(--teal)}
+.dnav-link.active{background:var(--teal-bg);color:var(--teal);border-left-color:var(--teal)}
 .dnav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
-.drawer-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.drawer-footer{padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0}
 .drawer-portal{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--text3);text-decoration:none;transition:color .18s}
 .drawer-portal:hover{color:var(--teal)}
+.scroll-sec{scroll-margin-top:62px!important}
+body.menu-open{overflow:hidden}
+
 </style>
 </head>
-<body>
-
-<div id="xp-bar"><div id="xp-fill"></div></div>
-<!-- STICKY NAV -->
+<body><div id="xp-bar"><div id="xp-fill"></div></div>
 <nav class="topnav" id="topnav">
   <div class="nav-left">
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Índice">
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Indice">
       <span></span><span></span><span></span>
     </button>
     <a class="nav-brand" href="../index.html">
       <span class="nav-course">IEI-089</span>
-      <span class="nav-sep">·</span>
+      <span class="nav-sep">|</span>
       <span class="nav-wk">S01</span>
     </a>
   </div>
-  <div class="nav-title">Arquitectura .NET · Primer Programa</div>
+  <div class="nav-title">Arquitectura .NET &middot; Clases &middot; Primer Programa C#</div>
   <div id="xp-badge">0 XP</div>
 </nav>
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-<!-- DRAWER -->
 <aside class="menu-drawer" id="menuDrawer">
   <div class="drawer-header">
-    <div class="drawer-title">📋 Índice de la clase</div>
-    <button class="drawer-close" onclick="closeMenu()">✕</button>
+    <div class="drawer-title">Indice de la clase</div>
+    <button class="drawer-close" onclick="closeMenu()">&#x2715;</button>
   </div>
-  <div class="drawer-week">Semana 1 · CLR · C# · Primer programa</div>
+  <div class="drawer-week">Semana 1 &middot; CLR &middot; BCL &middot; CIL &middot; C#</div>
   <nav class="drawer-nav">
-    <a href="#sec-hero" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏠</span><span>Inicio</span></a>
-    <a href="#sec-obj" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎯</span><span>Objetivos</span></a>
-    <a href="#sec-tool" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🛠️</span><span>Visual Studio</span></a>
-    <a href="#sec-almacenes" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏬</span><span>Almacenes Por Ahí</span></a>
-    <a href="#sec-arch" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏗️</span><span>Arquitectura .NET</span></a>
-    <a href="#sec-clr" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">⚙️</span><span>CLR</span></a>
-    <a href="#sec-cil" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔤</span><span>CIL y JIT</span></a>
-    <a href="#sec-res" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔑</span><span>Palabras reservadas</span></a>
-    <a href="#sec-cls" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧱</span><span>Clases y POO</span></a>
-    <a href="#sec-prac" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">💻</span><span>Primer Programa C#</span></a>
-    <a href="#sec-quiz" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧠</span><span>Quiz</span></a>
-    <a href="#sec-glos" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📖</span><span>Glosario</span></a>
-    <a href="#sec-sum" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">✅</span><span>Resumen</span></a>
-    <a href="#sec-plen" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎙️</span><span>Plenario</span></a>
+    <a href="#sec-hero"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#127968;</span><span>Inicio</span></a>
+    <a href="#sec-obj"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#127919;</span><span>Objetivos</span></a>
+    <a href="#sec-herr"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128736;</span><span>Herramienta Visual Studio</span></a>
+    <a href="#sec-caso"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#127978;</span><span>Caso Almacenes Por Ahi</span></a>
+    <a href="#sec-modulos" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128230;</span><span>10 Modulos del sistema</span></a>
+    <a href="#sec-act11"   class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128270;</span><span>Actividad 1.1 Arquitectura</span></a>
+    <a href="#sec-arq"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#127963;</span><span>Arquitectura .NET</span></a>
+    <a href="#sec-pil"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">7&#65039;</span><span>7 Pilares de .NET</span></a>
+    <a href="#sec-clr"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#9881;</span><span>CLR Motor de ejecucion</span></a>
+    <a href="#sec-cil"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128308;</span><span>CIL y compilacion JIT</span></a>
+    <a href="#sec-res"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128273;</span><span>Palabras reservadas C#</span></a>
+    <a href="#sec-cls"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#129521;</span><span>Clases y POO</span></a>
+    <a href="#sec-est"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128196;</span><span>Estructura del proyecto</span></a>
+    <a href="#sec-prac"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128187;</span><span>Primer Programa C# Paso a Paso</span></a>
+    <a href="#sec-quiz"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#129504;</span><span>Quiz</span></a>
+    <a href="#sec-glos"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#128218;</span><span>Glosario</span></a>
+    <a href="#sec-sum"     class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#9989;</span><span>Resumen</span></a>
+    <a href="#sec-plen"    class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">&#127908;</span><span>Plenario</span></a>
   </nav>
   <div class="drawer-footer">
-    <a href="../index.html" class="drawer-portal">← Volver al portal</a>
+    <a href="../index.html" class="drawer-portal">&#8592; Volver al portal IEI-089</a>
   </div>
 </aside>
-
-<!-- OVERLAY -->
-<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-<!-- DRAWER -->
-<aside class="menu-drawer" id="menuDrawer">
-  <div class="drawer-header">
-    <div class="drawer-title">📋 Índice de la clase</div>
-    <button class="drawer-close" onclick="closeMenu()">✕</button>
-  </div>
-  <div class="drawer-week">Semana 1 · CLR · C# · Primer programa</div>
-  <nav class="drawer-nav">
-    <a href="#sec-hero" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏠</span><span>Inicio</span></a>
-    <a href="#sec-obj" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎯</span><span>Objetivos</span></a>
-    <a href="#sec-tool" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🛠️</span><span>Herramienta Visual Studio</span></a>
-    <a href="#sec-almacenes" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏬</span><span>Almacenes Por Ahí</span></a>
-    <a href="#sec-arch" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🏗️</span><span>Arquitectura .NET</span></a>
-    <a href="#sec-clr" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">⚙️</span><span>CLR — Motor de ejecución</span></a>
-    <a href="#sec-cil" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔤</span><span>CIL y compilación JIT</span></a>
-    <a href="#sec-res" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🔑</span><span>Palabras reservadas C#</span></a>
-    <a href="#sec-cls" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧱</span><span>Clases y POO</span></a>
-    <a href="#sec-prac" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">💻</span><span>Primer Programa C#</span></a>
-    <a href="#sec-quiz" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🧠</span><span>Quiz</span></a>
-    <a href="#sec-glos" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">📖</span><span>Glosario</span></a>
-    <a href="#sec-sum" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">✅</span><span>Resumen de objetivos</span></a>
-    <a href="#sec-plen" class="dnav-link" onclick="closeMenu()"><span class="dnav-icon">🎙️</span><span>Plenario</span></a>
-  </nav>
-  <div class="drawer-footer">
-    <a href="../index.html" class="drawer-portal">← Volver al portal IEI-089</a>
-  </div>
-</aside>
-
 <main>
 
 
@@ -609,14 +568,7 @@ ul.lst li{color:var(--text2);font-size:14.5px;margin-bottom:5px}
       card.style.borderRadius='var(--r) var(--r) 0 0';
     }
   }
-  
-const _secs2=[...document.querySelectorAll('.scroll-sec')];
-const _dlinks=[...document.querySelectorAll('.dnav-link')];
-if(_secs2.length>0){
-  const _io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){_dlinks.forEach(l=>l.classList.remove('active'));const al=document.querySelector('.dnav-link[href="#'+e.target.id+'"]');if(al)al.classList.add('active');}});},{rootMargin:'-20% 0px -70% 0px'});
-  _secs2.forEach(s=>_io.observe(s));
-}
-</script>
+  </script>
 
   </div>
 </section>
@@ -2051,8 +2003,8 @@ srv.<span class="fn">Agregar</span>(<span class="kw">new</span> <span class="ty"
 
 <span class="cm">// ─── USANDO LA CLASE ─────────────────────────────────────
 // 'new Persona(...)' llama al constructor y crea un objeto en memoria</span>
-<span class="ty">Persona</span> persona1 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Ana López"</span>, <span class="nm">25</span>, <span class="st">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1b7a757a5b767a727735787476">[email&#160;protected]</a>"</span>);
-<span class="ty">Persona</span> persona2 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Juan Pérez"</span>, <span class="nm">17</span>, <span class="st">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="523827333c123f333b3e7c313d3f">[email&#160;protected]</a>"</span>);
+<span class="ty">Persona</span> persona1 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Ana López"</span>, <span class="nm">25</span>, <span class="st">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9efff0ffdef3fff7f2b0fdf1f3">[email&#160;protected]</a>"</span>);
+<span class="ty">Persona</span> persona2 = <span class="kw">new</span> <span class="ty">Persona</span>(<span class="st">"Juan Pérez"</span>, <span class="nm">17</span>, <span class="st">"<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ee4fbefe0cee3efe7e2a0ede1e3">[email&#160;protected]</a>"</span>);
 
 <span class="cm">// Acceder a propiedades con el punto (.)</span>
 <span class="ty">Console</span>.<span class="fn">WriteLine</span>(<span class="st">$"Nombre: {persona1.Nombre}"</span>);   <span class="cm">// Ana López</span>
@@ -2438,7 +2390,8 @@ nuevo.Talla = talla;
   Albahari (2022) · Troelsen &amp; Japikse (2022) · Microsoft Learn (2024)
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
 let xp=0,qCorr=0,qAns=0;
 const seen=new Set();
 
@@ -2557,7 +2510,76 @@ function toggleGloss(head){
 
 /* SEMAPHORE */
 function semSel(btn,c){
-  document.querySelectorAll('.sem-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-  const msgs={ve:'✅ Listo para Semana 2 — Colecciones en C#.',am:'🟡 Repasa el glosario y el ciclo del CIL.',ro:'🔴 Habla con el docente antes de la próxima clase.'};
-  const r=document.getElementById('sem-res');
-  r.style.cssText='display:block;margin-top:12px;padding:12px 16px;border-radius:var(--r);font-size:14.5px;backg
+  document.querySelectorAll('.sem-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  var msgs={
+    ve:'Listo para Semana 2. Colecciones en C#.',
+    am:'Repasa el glosario y el ciclo del CIL antes de la siguiente clase.',
+    ro:'Habla con el docente antes de la proxima clase.'
+  };
+  var r=document.getElementById('sem-res');
+  r.style.display='block';
+  r.style.marginTop='12px';
+  r.style.padding='12px 16px';
+  r.style.borderRadius='var(--r)';
+  r.style.fontSize='15px';
+  r.style.background='var(--bg3)';
+  r.style.color='var(--text2)';
+  r.textContent=msgs[c]||'';
+}
+
+/* COPY CODE */
+function copyCode(btn){
+  var pre=btn.closest('.code-block').querySelector('pre');
+  if(!pre)return;
+  navigator.clipboard.writeText(pre.innerText).then(function(){
+    btn.textContent='Copiado';
+    setTimeout(function(){btn.textContent='Copiar';},1800);
+    if(typeof addXP==='function')addXP(3);
+  });
+}
+
+/* EXERCISE TABS */
+function switchEx(btn,id){
+  document.querySelectorAll('.ex-tab').forEach(function(t){t.classList.remove('on');});
+  document.querySelectorAll('.ex-pane').forEach(function(p){p.classList.remove('on');});
+  btn.classList.add('on');
+  var pane=document.getElementById(id);
+  if(pane)pane.classList.add('on');
+}
+
+/* HAMBURGER MENU */
+function toggleMenu(){
+  var open=document.getElementById('menuDrawer').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open',open);
+  document.getElementById('hamburger').classList.toggle('open',open);
+  document.body.classList.toggle('menu-open',open);
+}
+function closeMenu(){
+  document.getElementById('menuDrawer').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.classList.remove('menu-open');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+
+/* ACTIVE DRAWER LINK ON SCROLL */
+(function(){
+  var dlinks=Array.prototype.slice.call(document.querySelectorAll('.dnav-link'));
+  var secs=Array.prototype.slice.call(document.querySelectorAll('.scroll-sec'));
+  if(!secs.length||!dlinks.length)return;
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        dlinks.forEach(function(l){l.classList.remove('active');});
+        var al=document.querySelector('.dnav-link[href="#'+e.target.id+'"]');
+        if(al)al.classList.add('active');
+      }
+    });
+  },{rootMargin:'-15% 0px -75% 0px'});
+  secs.forEach(function(s){io.observe(s);});
+})();
+
+</script>
+</body>
+</html>
